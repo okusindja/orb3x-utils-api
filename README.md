@@ -1,29 +1,92 @@
-# ORB3X Tax Verifier
+# ORB3X Utils API
 
-Next.js API that verifies Angolan taxpayer data by querying the public AGT portal:
+Next.js API for ORB3X utilities:
 
-- Source portal: `https://portaldocontribuinte.minfin.gov.ao/consultar-nif-do-contribuinte`
-- API endpoint: `GET /api/nif/[nif]`
-- Runtime: Next.js App Router on the Node.js runtime, suitable for Vercel
-- Parser dependency: `cheerio`
+- Angola taxpayer lookup by NIF
+- Text translation
+- Currency rates and direct conversion
 
-## Response
+Runtime notes:
 
-Successful requests return:
+- Next.js App Router on the Node.js runtime
+- Suitable for Vercel deployment
+- `cheerio` is used for AGT HTML parsing
+
+## Endpoints
+
+### `GET /api/nif/[nif]`
+
+Returns:
 
 ```json
 {
-  "NIF": "5402162409",
-  "Name": "ELFRAN - COMERCIO E PRESTACAO DE SERVICOS, LDA",
-  "Type": "COLECTIVO - Empresa",
-  "Status": "Suspenso",
-  "Defaulting": "Sim",
+  "NIF": "004813023LA040",
+  "Name": "OKUSINDJA SANGUMBA RODRIGUES DE ALMEIDA",
+  "Type": "SINGULAR",
+  "Status": "Activo",
+  "Defaulting": "Não",
   "VATRegime": "Sem actividade em IVA (Não factura IVA)",
   "isTaxResident": true
 }
 ```
 
-`isTaxResident` is `true` only when the upstream portal response includes `Residente Fiscal`. Any other value is treated as `false`.
+### `POST /api/translate`
+
+Request:
+
+```json
+{
+  "text": "Olá mundo",
+  "to": "en"
+}
+```
+
+Response:
+
+```json
+{
+  "translatedText": "Hello world",
+  "sourceLanguage": "pt",
+  "targetLanguage": "en",
+  "status": true,
+  "message": ""
+}
+```
+
+### `GET /api/exchange/[base]`
+
+Example:
+
+```txt
+/api/exchange/aoa
+```
+
+Returns rate metadata plus unit rates for the requested base currency.
+
+### `GET /api/exchange/[base]?amount=1000000`
+
+Example:
+
+```txt
+/api/exchange/aoa?amount=1000000
+```
+
+Returns unit rates and the converted values for the provided amount.
+
+Example response excerpt:
+
+```json
+{
+  "baseCurrency": "AOA",
+  "amount": 1000000,
+  "ratesDate": "2026-03-21",
+  "convertedRates": {
+    "usd": 1089.4961,
+    "eur": 939.90832,
+    "brl": 5786.5844
+  }
+}
+```
 
 ## Local development
 
@@ -33,15 +96,15 @@ Install dependencies and start the app:
 pnpm dev
 ```
 
-The API will be available at [http://localhost:3000/api/nif/5402162409](http://localhost:3000/api/nif/5402162409).
+The homepage documents the available routes at [http://localhost:3000](http://localhost:3000).
 
 ## Deployment on Vercel
 
 This project is ready for Vercel as-is:
 
 - No browser binary is required.
-- The lookup uses the Node.js runtime and the built-in `fetch`.
-- The route is marked dynamic and disables caching for each lookup.
+- All utility routes use the Node.js runtime and built-in `fetch`.
+- Routes are dynamic and disable caching for each live lookup.
 
 Build locally with:
 
@@ -51,21 +114,30 @@ pnpm build
 
 ## Error responses
 
-Errors return JSON in this format:
+Tax and currency errors return JSON in this format:
 
 ```json
 {
   "error": {
-    "code": "NIF_NOT_FOUND",
-    "message": "nenhum resultado encontrado",
-    "nif": "0000000000"
+    "code": "UPSTREAM_UNAVAILABLE",
+    "message": "The upstream service could not be reached."
   }
 }
 ```
 
-Status codes used by the route:
+Translation errors return:
 
-- `400` for invalid NIF path params
-- `404` for known "not found" responses from the portal
-- `502` for upstream errors or unexpected HTML
+```json
+{
+  "status": false,
+  "message": "The text field is required.",
+  "code": "INVALID_TEXT"
+}
+```
+
+Status codes used across the API:
+
+- `400` for invalid inputs
+- `404` for known missing resources
+- `502` for upstream errors or unexpected payloads
 - `504` for upstream timeouts

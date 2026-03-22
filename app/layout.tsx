@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ORB3X Tax Verifier",
-  description: "API for verifying Angolan taxpayer details by NIF.",
+  title: "ORB3X Utils API",
+  description: "API utilities for taxpayer lookup, translation, and currency conversion.",
 };
 
 export default function RootLayout({
