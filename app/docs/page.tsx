@@ -147,13 +147,13 @@ export default function DocsPage() {
             <CodeBlock
               label={copy.docsOverview.quickstartLabel}
               language="bash"
-              code={`curl -s "https://your-domain.com/api/v1/validate/bank-account?account=004000010123456789012"
+              code={`curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/bank-account?account=004000010123456789012"
 
-curl -s "https://your-domain.com/api/v1/phone/validate?phone=%2B244923456789"
+curl -s "https://orb3x-utils-api.vercel.app/api/v1/phone/validate?phone=%2B244923456789"
 
-curl -s "https://your-domain.com/api/v1/finance/vat?amount=114000&inclusive=true"
+curl -s "https://orb3x-utils-api.vercel.app/api/v1/finance/vat?amount=114000&inclusive=true"
 
-curl -s -X POST https://your-domain.com/api/v1/documents/receipt \\
+curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/receipt \\
   -H "Content-Type: application/json" \\
   -d '{"receivedFrom":{"name":"Cliente Exemplo"},"amount":100000}'`}
             />
