@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://orb3x-utils-api.vercel.app/sitemap.xml

@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "docs": "Documentación",
+    "api": "Referencia de API",
+    "examples": "Ejemplos"
+  },
+  "header": {
+    "title": "ORB3X Utils API",
+    "subtitle": "Una superficie de API para verificación fiscal, traducción y conversión de moneda",
+    "toggleTheme": "Cambiar tema"
+  },
+  "footer": {
+    "legal": "Legal",
+    "terms": "Términos de Uso",
+    "privacy": "Política de Privacidad",
+    "faq": "FAQ",
+    "contact": "Contacto"
+  },
+  "api": {
+    "nif": {
+      "title": "Verificación de NIF",
+      "description": "Verificar números de identificación fiscal portugueses",
+      "endpoint": "GET /api/nif/[nif]",
+      "response": "Devuelve información del contribuyente incluyendo nombre, tipo, estado y residencia fiscal"
+    },
+    "translate": {
+      "title": "Traducción de Texto",
+      "description": "Traducir texto entre idiomas",
+      "endpoint": "POST /api/translate",
+      "request": "Acepta {text, to, from?} en el cuerpo de la solicitud",
+      "response": "Devuelve texto traducido con idioma de origen detectado"
+    },
+    "exchange": {
+      "title": "Cambio de Moneda",
+      "description": "Obtener tasas de cambio y convertir montos",
+      "endpoint": "GET /api/exchange/[base]?amount=1000000",
+      "response": "Devuelve tasas unitarias o montos convertidos para todas las monedas"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "tryAgain": "Intentar de Nuevo"
+  }
+}

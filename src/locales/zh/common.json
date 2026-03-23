@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "首页",
+    "docs": "文档",
+    "api": "API 参考",
+    "examples": "示例"
+  },
+  "header": {
+    "title": "ORB3X Utils API",
+    "subtitle": "税务验证、翻译和货币转换的一站式 API",
+    "toggleTheme": "切换主题"
+  },
+  "footer": {
+    "legal": "法律",
+    "terms": "使用条款",
+    "privacy": "隐私政策",
+    "faq": "常见问题",
+    "contact": "联系我们"
+  },
+  "api": {
+    "nif": {
+      "title": "NIF 验证",
+      "description": "验证葡萄牙税务识别号码",
+      "endpoint": "GET /api/nif/[nif]",
+      "response": "返回纳税人信息，包括姓名、类型、状态和税务居民身份"
+    },
+    "translate": {
+      "title": "文本翻译",
+      "description": "在语言之间翻译文本",
+      "endpoint": "POST /api/translate",
+      "request": "在请求体中接受 {text, to, from?}",
+      "response": "返回翻译后的文本和检测到的源语言"
+    },
+    "exchange": {
+      "title": "货币兑换",
+      "description": "获取汇率并转换金额",
+      "endpoint": "GET /api/exchange/[base]?amount=1000000",
+      "response": "返回所有货币的单位汇率或转换金额"
+    }
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "tryAgain": "重试"
+  }
+}

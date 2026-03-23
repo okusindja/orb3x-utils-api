@@ -3,7 +3,7 @@ import {
   PortalLookupError,
   lookupTaxpayerByNif,
   sanitizeNif,
-} from "@/src/lib/agt-nif";
+} from "@/lib/agt-nif";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

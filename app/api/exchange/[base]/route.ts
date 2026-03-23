@@ -4,7 +4,7 @@ import {
   convertCurrencyRates,
   fetchCurrencyRates,
   sanitizeCurrencyCode,
-} from "@/src/lib/currency";
+} from "@/lib/currency";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

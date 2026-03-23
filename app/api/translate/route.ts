@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { TranslationError, translateText } from "@/src/lib/translate";
+import { TranslationError, translateText } from "@/lib/translate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "docs": "ドキュメント",
+    "api": "API リファレンス",
+    "examples": "例"
+  },
+  "header": {
+    "title": "ORB3X Utils API",
+    "subtitle": "税務検証、翻訳、通貨変換のためのワンストップ API",
+    "toggleTheme": "テーマを切り替え"
+  },
+  "footer": {
+    "legal": "法的",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "faq": "FAQ",
+    "contact": "お問い合わせ"
+  },
+  "api": {
+    "nif": {
+      "title": "NIF 検証",
+      "description": "ポルトガルの税務識別番号を検証",
+      "endpoint": "GET /api/nif/[nif]",
+      "response": "納税者の情報（名前、タイプ、ステータス、税務居住者）を返します"
+    },
+    "translate": {
+      "title": "テキスト翻訳",
+      "description": "言語間でテキストを翻訳",
+      "endpoint": "POST /api/translate",
+      "request": "リクエストボディで {text, to, from?} を受け入れます",
+      "response": "翻訳されたテキストと検出されたソース言語を返します"
+    },
+    "exchange": {
+      "title": "通貨交換",
+      "description": "為替レートを取得し金額を変換",
+      "endpoint": "GET /api/exchange/[base]?amount=1000000",
+      "response": "すべての通貨の単位レートまたは変換金額を返します"
+    }
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "tryAgain": "再試行"
+  }
+}

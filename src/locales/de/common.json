@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "docs": "Dokumentation",
+    "api": "API-Referenz",
+    "examples": "Beispiele"
+  },
+  "header": {
+    "title": "ORB3X Utils API",
+    "subtitle": "Eine API-Oberfläche für Steuerverifizierung, Übersetzung und Währungsumrechnung",
+    "toggleTheme": "Theme umschalten"
+  },
+  "footer": {
+    "legal": "Rechtliches",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "faq": "FAQ",
+    "contact": "Kontakt"
+  },
+  "api": {
+    "nif": {
+      "title": "NIF-Verifizierung",
+      "description": "Portugiesische Steueridentifikationsnummern verifizieren",
+      "endpoint": "GET /api/nif/[nif]",
+      "response": "Gibt Steuerzahlerinformationen zurück einschließlich Name, Typ, Status und Steuerwohnsitz"
+    },
+    "translate": {
+      "title": "Textübersetzung",
+      "description": "Text zwischen Sprachen übersetzen",
+      "endpoint": "POST /api/translate",
+      "request": "Akzeptiert {text, to, from?} im Anfragekörper",
+      "response": "Gibt übersetzten Text mit erkannter Quellsprache zurück"
+    },
+    "exchange": {
+      "title": "Währungsumtausch",
+      "description": "Währungskurse abrufen und Beträge umrechnen",
+      "endpoint": "GET /api/exchange/[base]?amount=1000000",
+      "response": "Gibt Einheitskurse oder umgerechnete Beträge für alle Währungen zurück"
+    }
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "tryAgain": "Erneut versuchen"
+  }
+}
