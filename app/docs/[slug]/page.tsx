@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { DocsDetailContent } from '@/components/docs-detail-content';
+import { JsonLd } from '@/components/seo/json-ld';
 import { getLocalizedDocsPage } from '@/lib/site-copy';
 import { docsPageSlugs, isDocsPageSlug } from '@/lib/site-content';
+import { createBreadcrumbJsonLd, createDocsArticleJsonLd, getDocsPageMetadata } from '@/lib/seo';
 
 type PageProps = {
   params: Promise<{
@@ -17,25 +19,35 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = isDocsPageSlug(slug) ? getLocalizedDocsPage('en', slug) : null;
-
-  if (!page) {
+  if (!isDocsPageSlug(slug)) {
     return {};
   }
 
-  return {
-    title: `${page.label} | ORB3X Utils API`,
-    description: page.description,
-  };
+  return getDocsPageMetadata(slug);
 }
 
 export default async function DocsDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const page = isDocsPageSlug(slug) ? getLocalizedDocsPage('en', slug) : null;
+  const docsSlug = isDocsPageSlug(slug) ? slug : null;
+  const page = docsSlug ? getLocalizedDocsPage('en', docsSlug) : null;
 
-  if (!page) {
+  if (!page || !docsSlug) {
     notFound();
   }
 
-  return <DocsDetailContent slug={slug} />;
+  return (
+    <>
+      <JsonLd
+        data={[
+          createBreadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Documentation', path: '/docs' },
+            { name: page.label, path: `/docs/${slug}` },
+          ]),
+          createDocsArticleJsonLd(docsSlug),
+        ]}
+      />
+      <DocsDetailContent slug={slug} />
+    </>
+  );
 }

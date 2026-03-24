@@ -30,7 +30,7 @@ export type DocsTable = {
 
 export type DocsCodeSample = {
   label: string;
-  language: 'bash' | 'json' | 'ts';
+  language: 'bash' | 'json' | 'js' | 'ts';
   content: string;
 };
 

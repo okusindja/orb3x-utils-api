@@ -5,6 +5,11 @@ export const ptSiteCopy = {
   languages: {
     en: 'English',
     pt: 'Português',
+    es: 'Español',
+    fr: 'Français',
+    de: 'Deutsch',
+    zh: '中文',
+    ja: '日本語',
   },
   metadata: {
     title: 'ORB3X Utils API - Verificação Fiscal, Tradução e Câmbio',
@@ -24,6 +29,7 @@ export const ptSiteCopy = {
   },
   brand: {
     homeAriaLabel: 'Página inicial da ORB3X Utils API',
+    companyWebsiteAriaLabel: 'Abrir o website da empresa ORB3X',
   },
   header: {
     themeToDark: 'Mudar para o tema escuro',
@@ -42,6 +48,9 @@ export const ptSiteCopy = {
   },
   footer: {
     description: 'Documentação e páginas de referência para as famílias de rotas angolanas da ORB3X Utils API.',
+    companyLabel: 'Empresa',
+    companyDescription: 'A ORB3X Utils API é mantida pela ORB3X. Visite o website principal da empresa para a presença institucional e do produto mais amplo.',
+    companyWebsite: 'Visitar orb3x.com',
     explore: 'Explorar',
     documentation: 'Documentação',
     policies: 'Políticas',
@@ -71,7 +80,8 @@ export const ptSiteCopy = {
     description: 'Use a documentação para verificar formatos de pedido, payloads de resposta, calculadoras e comportamento upstream em toda a superfície atual da ORB3X Utils API.',
     primaryCta: 'Começar pela documentação',
     secondaryCta: 'Ver exemplos',
-    quickRequestLabel: 'Exemplo rápido de pedido',
+    quickRequestLabel: 'Exemplo rápido de pedido (cURL)',
+    quickRequestNodeLabel: 'Exemplo rápido de pedido (Node.js)',
     stats: [
       { label: 'Rotas publicadas', value: '28' },
       { label: 'Formato de resposta', value: 'JSON' },
@@ -91,6 +101,9 @@ export const ptSiteCopy = {
         description: 'Cada família de rotas tem uma página dedicada com formato do pedido, payload de resposta, pressupostos e casos de falha comuns.',
       },
     ],
+    ownershipLabel: 'Mantida pela ORB3X',
+    ownershipDescription: 'A ORB3X Utils API faz parte da plataforma mais ampla da ORB3X. O website institucional da empresa está em orb3x.com.',
+    ownershipCta: 'Abrir orb3x.com',
     docs: {
       eyebrow: 'Documentação',
       title: 'Escrito como páginas de referência, não como marketing.',
@@ -128,13 +141,19 @@ export const ptSiteCopy = {
     sharedBehaviorColumns: ['Aspeto', 'Comportamento'],
     quickstartTitle: 'Arranque rápido',
     quickstartDescription: 'Execute um pedido por rota antes de ligar os endpoints ao código da aplicação.',
-    quickstartLabel: 'Sequência de smoke tests',
+    quickstartLabel: 'Sequência de smoke tests (cURL)',
+    quickstartNodeLabel: 'Sequência de smoke tests (Node.js)',
     sharedBehaviorRows: [
       ['Corpo do pedido', 'A maioria das rotas são GET guiadas por query. As rotas de documentos e `/api/translate` esperam corpos JSON.'],
       ['Atualidade da resposta', 'Cada rota envia Cache-Control: no-store. Algumas são determinísticas e outras dependem de serviços externos ao vivo.'],
       ['Tratamento de erros', 'Verifique o estado HTTP e o campo code ou error.code antes de decidir se deve repetir.'],
       ['Perfil de deployment', 'Os handlers correm em Node.js e são marcados como dinâmicos.'],
     ],
+    versionLabel: 'Versão',
+    versionSelectorLabel: 'Selecionar a versão da documentação',
+    versionCurrent: 'v1',
+    versionLatest: 'Mais recente',
+    versionDescription: 'Documentação estável atual da API para a superfície de rotas `/api/v1`.',
     onPageLabel: 'Nesta página',
     onPageItems: ['Comece aqui', 'Rotas', 'Comportamento partilhado', 'Arranque rápido'],
     open: 'Abrir',
@@ -236,6 +255,9 @@ export const ptSiteCopy = {
     updatedOn: '22 de março de 2026',
     scope: 'Âmbito',
     appliesTo: 'Aplica-se a',
+    companySite: 'Website da empresa',
+    companySiteDescription: 'A informação institucional e do publicador desta API está disponível no website oficial da ORB3X.',
+    companySiteCta: 'Abrir orb3x.com',
     privacy: {
       title: 'Política de privacidade.',
       description: 'Esta página explica quais categorias de informação podem ser processadas quando o site ou as rotas da API são utilizadas.',

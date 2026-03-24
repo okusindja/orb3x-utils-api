@@ -2,6 +2,7 @@
 
 import { useLocale, useSiteCopy } from '@/components/locale-provider';
 import { supportedLocales } from '@/lib/site-copy';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function LanguageSelector() {
   const { locale, setLocale } = useLocale();
@@ -13,17 +14,20 @@ export default function LanguageSelector() {
   }));
 
   return (
-    <select
-      aria-label={copy.header.language}
-      value={locale}
-      onChange={(e) => setLocale(e.target.value as typeof locale)}
-      className="h-10 w-full min-w-[10rem] rounded-md border border-input bg-background px-3 text-sm text-foreground shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-    >
-      {languages.map((lang) => (
-        <option key={lang.code} value={lang.code}>
-          {lang.name}
-        </option>
-      ))}
-    </select>
+    <Select value={locale} onValueChange={(value) => setLocale(value as typeof locale)}>
+      <SelectTrigger
+        aria-label={copy.header.language}
+        className="min-w-[10rem]"
+      >
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent align="end">
+        {languages.map((lang) => (
+          <SelectItem key={lang.code} value={lang.code}>
+            {lang.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

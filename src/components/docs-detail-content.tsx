@@ -3,9 +3,34 @@
 import Link from 'next/link';
 
 import { useSiteCopy } from '@/components/locale-provider';
-import { CodeBlock, DataTable, Eyebrow } from '@/components/site-primitives';
+import { CodeBlock, CodeSampleSwitcher, DataTable, Eyebrow } from '@/components/site-primitives';
 import { Card, CardContent } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { isDocsPageSlug } from '@/lib/site-content';
+
+function splitUsageSamples(
+  snippets: {
+    label: string;
+    language: string;
+    content: string;
+  }[],
+) {
+  if (snippets.length >= 2 && snippets[0]?.language === 'bash' && snippets[1]?.language === 'js') {
+    return {
+      usageSamples: snippets.slice(0, 2).map((snippet) => ({
+        label: snippet.label,
+        language: snippet.language,
+        code: snippet.content,
+      })),
+      remainingSamples: snippets.slice(2),
+    };
+  }
+
+  return {
+    usageSamples: null,
+    remainingSamples: snippets,
+  };
+}
 
 export function DocsDetailContent({ slug }: { slug: string }) {
   const copy = useSiteCopy();
@@ -16,7 +41,7 @@ export function DocsDetailContent({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_14rem]">
+    <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1fr)_14rem]">
       <article className="min-w-0">
         <header className="border-b border-border pb-8 md:pb-10">
           <div className="flex flex-wrap items-center gap-3">
@@ -51,7 +76,11 @@ export function DocsDetailContent({ slug }: { slug: string }) {
             <div className="space-y-3">
               <div className="flex items-start justify-between gap-4">
                 <h2 className="text-2xl font-semibold tracking-tight text-foreground">{section.title}</h2>
-                <a href={`#${section.id}`} className="hidden text-sm font-semibold text-primary sm:inline">
+                <a
+                  href={`#${section.id}`}
+                  aria-label={`Jump to ${section.title}`}
+                  className="hidden text-sm font-semibold text-primary sm:inline"
+                >
                   #
                 </a>
               </div>
@@ -98,14 +127,23 @@ export function DocsDetailContent({ slug }: { slug: string }) {
 
             {section.codes ? (
               <div className="mt-6 grid gap-4">
-                {section.codes.map((snippet) => (
-                  <CodeBlock
-                    key={`${section.id}-${snippet.label}`}
-                    label={snippet.label}
-                    language={snippet.language}
-                    code={snippet.content}
-                  />
-                ))}
+                {(() => {
+                  const { usageSamples, remainingSamples } = splitUsageSamples(section.codes);
+
+                  return (
+                    <>
+                      {usageSamples ? <CodeSampleSwitcher samples={usageSamples} /> : null}
+                      {remainingSamples.map((snippet) => (
+                        <CodeBlock
+                          key={`${section.id}-${snippet.label}`}
+                          label={snippet.label}
+                          language={snippet.language}
+                          code={snippet.content}
+                        />
+                      ))}
+                    </>
+                  );
+                })()}
               </div>
             ) : null}
 
@@ -143,36 +181,44 @@ export function DocsDetailContent({ slug }: { slug: string }) {
         </section>
       </article>
 
-      <aside className="hidden xl:block">
-        <div className="sticky top-24 space-y-6 border-l border-border pl-6">
-          {page.endpoint ? (
-            <Card className="bg-secondary text-secondary-foreground">
-              <CardContent className="px-4 py-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{copy.docsDetail.endpoint}</p>
-                <p className="mt-2 text-sm font-semibold">
-                  {page.endpoint.method} {page.endpoint.path}
-                </p>
-              </CardContent>
-            </Card>
-          ) : null}
+      <aside className="sticky top-24 hidden self-start xl:block">
+        <div className="h-[calc(100svh-7rem)] border-l border-border pl-4">
+          <ScrollArea className="h-full">
+            <div className="space-y-6 pl-2 pr-3">
+              {page.endpoint ? (
+                <Card className="bg-secondary text-secondary-foreground">
+                  <CardContent className="px-4 py-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                      {copy.docsDetail.endpoint}
+                    </p>
+                    <p className="mt-2 text-sm font-semibold">
+                      {page.endpoint.method} {page.endpoint.path}
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : null}
 
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">{copy.docsDetail.onPage}</p>
-            <nav className="mt-4 space-y-1.5">
-              {page.sections.map((section) => (
-                <a
-                  key={section.id}
-                  href={`#${section.id}`}
-                  className="block text-sm text-muted-foreground hover:text-foreground"
-                >
-                  {section.title}
-                </a>
-              ))}
-              <a href="#related" className="block text-sm text-muted-foreground hover:text-foreground">
-                {copy.docsDetail.relatedPages}
-              </a>
-            </nav>
-          </div>
+              <div className="pb-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                  {copy.docsDetail.onPage}
+                </p>
+                <nav aria-label={copy.docsDetail.onPage} className="mt-4 space-y-1.5">
+                  {page.sections.map((section) => (
+                    <a
+                      key={section.id}
+                      href={`#${section.id}`}
+                      className="block text-sm text-muted-foreground hover:text-foreground"
+                    >
+                      {section.title}
+                    </a>
+                  ))}
+                  <a href="#related" className="block text-sm text-muted-foreground hover:text-foreground">
+                    {copy.docsDetail.relatedPages}
+                  </a>
+                </nav>
+              </div>
+            </div>
+          </ScrollArea>
         </div>
       </aside>
     </div>

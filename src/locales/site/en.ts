@@ -5,6 +5,11 @@ export const enSiteCopy = {
   languages: {
     en: 'English',
     pt: 'Português',
+    es: 'Español',
+    fr: 'Français',
+    de: 'Deutsch',
+    zh: '中文',
+    ja: '日本語',
   },
   metadata: {
     title: 'ORB3X Utils API - Tax Verification, Translation & Currency Conversion',
@@ -24,6 +29,7 @@ export const enSiteCopy = {
   },
   brand: {
     homeAriaLabel: 'ORB3X Utils API home',
+    companyWebsiteAriaLabel: 'Open the ORB3X company website',
   },
   header: {
     themeToDark: 'Switch to dark mode',
@@ -42,6 +48,9 @@ export const enSiteCopy = {
   },
   footer: {
     description: 'Documentation and reference pages for the Angola-focused ORB3X Utils API route families.',
+    companyLabel: 'Company',
+    companyDescription: 'ORB3X Utils API is maintained by ORB3X. Visit the main company website for the broader product and institutional presence.',
+    companyWebsite: 'Visit orb3x.com',
     explore: 'Explore',
     documentation: 'Documentation',
     policies: 'Policies',
@@ -71,7 +80,8 @@ export const enSiteCopy = {
     description: 'Use the docs to check request formats, response payloads, calculators, and upstream behavior across the current ORB3X Utils API surface.',
     primaryCta: 'Start with the docs',
     secondaryCta: 'View examples',
-    quickRequestLabel: 'Quick request sample',
+    quickRequestLabel: 'Quick request sample (cURL)',
+    quickRequestNodeLabel: 'Quick request sample (Node.js)',
     stats: [
       { label: 'Published routes', value: '28' },
       { label: 'Response format', value: 'JSON' },
@@ -91,6 +101,9 @@ export const enSiteCopy = {
         description: 'Each route family has a dedicated page covering request shape, response payload, assumptions, and common failure cases.',
       },
     ],
+    ownershipLabel: 'Maintained by ORB3X',
+    ownershipDescription: 'ORB3X Utils API is part of the broader ORB3X platform. The institutional company website lives at orb3x.com.',
+    ownershipCta: 'Open orb3x.com',
     docs: {
       eyebrow: 'Documentation',
       title: 'Written like reference pages, not marketing copy.',
@@ -128,13 +141,19 @@ export const enSiteCopy = {
     sharedBehaviorColumns: ['Concern', 'Behavior'],
     quickstartTitle: 'Quickstart',
     quickstartDescription: 'Run one request per route before you wire the endpoints into application code.',
-    quickstartLabel: 'Smoke test sequence',
+    quickstartLabel: 'Smoke test sequence (cURL)',
+    quickstartNodeLabel: 'Smoke test sequence (Node.js)',
     sharedBehaviorRows: [
       ['Request body', 'Most routes are query-driven GET endpoints. The document routes and `/api/translate` expect JSON bodies.'],
       ['Response freshness', 'Each route sends Cache-Control: no-store. Some endpoints are deterministic, while others depend on live upstream services.'],
       ['Error handling', 'Check HTTP status and the returned code field or error.code value before deciding whether to retry.'],
       ['Deployment profile', 'Handlers run on Node.js and are marked dynamic.'],
     ],
+    versionLabel: 'Version',
+    versionSelectorLabel: 'Select documentation version',
+    versionCurrent: 'v1',
+    versionLatest: 'Latest',
+    versionDescription: 'Current stable API documentation for the `/api/v1` route surface.',
     onPageLabel: 'On this page',
     onPageItems: ['Start here', 'Routes', 'Shared behavior', 'Quickstart'],
     open: 'Open',
@@ -200,6 +219,9 @@ export const enSiteCopy = {
     updatedOn: 'March 22, 2026',
     scope: 'Scope',
     appliesTo: 'Applies to',
+    companySite: 'Company website',
+    companySiteDescription: 'The publisher and company information for this API is available on the official ORB3X website.',
+    companySiteCta: 'Open orb3x.com',
     privacy: {
       title: 'Privacy policy.',
       description: 'This page explains which categories of information may be processed when the site or API routes are used.',

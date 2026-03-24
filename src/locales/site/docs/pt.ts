@@ -1,3 +1,4 @@
+import { makeCurlAndNodeCodeSamples } from '@/lib/docs-code';
 import type { DocsPageMap, DocsSection } from '@/lib/site-content';
 
 function routeSection({
@@ -20,8 +21,8 @@ function routeSection({
   usage: string;
   success: string;
   error: string;
-  successLanguage?: 'bash' | 'json' | 'ts';
-  errorLanguage?: 'bash' | 'json' | 'ts';
+  successLanguage?: 'bash' | 'json' | 'js' | 'ts';
+  errorLanguage?: 'bash' | 'json' | 'js' | 'ts';
   bullets?: string[];
   note?: string;
 }): DocsSection {
@@ -34,7 +35,10 @@ function routeSection({
       rows: params,
     },
     codes: [
-      { label: 'Uso', language: 'bash', content: usage },
+      ...makeCurlAndNodeCodeSamples(usage, {
+        curl: 'Uso em cURL',
+        node: 'Uso em Node.js',
+      }),
       { label: 'Resposta 200', language: successLanguage, content: success },
       { label: 'Resposta de erro', language: errorLanguage, content: error },
     ],
@@ -91,10 +95,8 @@ export const ptDocsPages: DocsPageMap = {
         id: 'first-calls',
         title: 'Faça um primeiro pedido bem-sucedido',
         description: 'Execute um pedido por rota antes de integrar os endpoints no código da aplicação.',
-        code: {
-          label: 'Smoke tests iniciais',
-          language: 'bash',
-          content: `curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/iban?iban=AO06004000010123456789012"
+        codes: makeCurlAndNodeCodeSamples(
+          `curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/iban?iban=AO06004000010123456789012"
 
 curl -s "https://orb3x-utils-api.vercel.app/api/v1/phone/validate?phone=%2B244923456789"
 
@@ -103,7 +105,11 @@ curl -s "https://orb3x-utils-api.vercel.app/api/v1/finance/vat?amount=114000&inc
 curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
   -H "Content-Type: application/json" \\
   -d '{"seller":{"name":"Orb3x, Lda"},"buyer":{"name":"Cliente Exemplo"},"items":[{"description":"Servico","quantity":1,"unitPrice":100000,"vatRate":14}]}'`,
-        },
+          {
+            curl: 'Smoke tests iniciais (cURL)',
+            node: 'Smoke tests iniciais (Node.js)',
+          },
+        ),
         bullets: [
           'Verifique as rotas de documento no mesmo runtime que vai para produção, porque a geração de PDF corre no servidor.',
           'Registe request IDs e códigos de erro upstream nas rotas de NIF, tradução e câmbio.',
@@ -1419,31 +1425,33 @@ Content-Disposition: attachment; filename="contract.pdf"`,
   examples: {
     slug: 'examples',
     label: 'Exemplos',
-    description: 'Exemplos práticos em cURL e TypeScript para uso próximo de produção.',
+    description: 'Exemplos práticos em cURL, Node.js e TypeScript para uso próximo de produção.',
     eyebrow: 'Implementação',
     title: 'Exemplos para chamar as rotas publicadas.',
     intro:
-      'Os snippets abaixo mostram pedidos em cURL e um helper tipado em TypeScript para as rotas publicadas neste repositório.',
+      'Os snippets abaixo mostram pedidos em cURL, chamadas equivalentes em Node.js com fetch e um helper tipado em TypeScript para as rotas publicadas neste repositório.',
     summaryCards: [
-      { label: 'Formatos', value: 'cURL + TypeScript' },
+      { label: 'Formatos', value: 'cURL + Node.js' },
       { label: 'Foco do cliente', value: 'fetch no servidor' },
       { label: 'Estratégia de erro', value: 'Tratamento por código' },
     ],
     sections: [
       {
         id: 'curl',
-        title: 'Exemplos em cURL',
-        code: {
-          label: 'Smoke tests no terminal',
-          language: 'bash',
-          content: `curl -s https://orb3x-utils-api.vercel.app/api/nif/004813023LA040
+        title: 'Exemplos em cURL e Node.js',
+        codes: makeCurlAndNodeCodeSamples(
+          `curl -s https://orb3x-utils-api.vercel.app/api/nif/004813023LA040
 
 curl -s -X POST https://orb3x-utils-api.vercel.app/api/translate \\
   -H "Content-Type: application/json" \\
   -d '{"text":"Preciso de ajuda","to":"en"}'
 
 curl -s "https://orb3x-utils-api.vercel.app/api/exchange/aoa?amount=250000"`,
-        },
+          {
+            curl: 'Smoke tests no terminal (cURL)',
+            node: 'Smoke tests no terminal (Node.js)',
+          },
+        ),
       },
       {
         id: 'typescript',

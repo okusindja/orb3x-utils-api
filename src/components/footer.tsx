@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 
+import { CompanyWebsiteLink } from '@/components/company-website-link';
 import { useSiteCopy } from '@/components/locale-provider';
 import { BrandLockup } from '@/components/brand-lockup';
 import { docsPageSlugs } from '@/lib/site-content';
@@ -33,11 +34,26 @@ export function Footer() {
             <p className="max-w-md text-sm leading-7 text-muted-foreground">
               {copy.footer.description}
             </p>
+            <div className="space-y-2 border-t border-border pt-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                {copy.footer.companyLabel}
+              </p>
+              <p className="max-w-md text-sm leading-7 text-muted-foreground">
+                {copy.footer.companyDescription}
+              </p>
+              <CompanyWebsiteLink
+                className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
+              >
+                {copy.footer.companyWebsite}
+                <span aria-hidden="true">→</span>
+              </CompanyWebsiteLink>
+            </div>
           </div>
 
           <div className="space-y-4">
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{copy.footer.explore}</h2>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <nav aria-label={copy.footer.explore}>
+              <ul className="space-y-3 text-sm text-muted-foreground">
               {productLinks.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="hover:text-foreground">
@@ -45,12 +61,14 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-            </ul>
+              </ul>
+            </nav>
           </div>
 
           <div className="space-y-4">
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{copy.footer.documentation}</h2>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <nav aria-label={copy.footer.documentation}>
+              <ul className="space-y-3 text-sm text-muted-foreground">
               {docsLinks.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="hover:text-foreground">
@@ -58,12 +76,14 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-            </ul>
+              </ul>
+            </nav>
           </div>
 
           <div className="space-y-4">
             <h2 className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">{copy.footer.policies}</h2>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <nav aria-label={copy.footer.policies}>
+              <ul className="space-y-3 text-sm text-muted-foreground">
               {policyLinks.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="hover:text-foreground">
@@ -71,7 +91,8 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-            </ul>
+              </ul>
+            </nav>
           </div>
         </div>
 

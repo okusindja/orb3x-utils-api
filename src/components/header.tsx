@@ -18,6 +18,7 @@ import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { RouteProgress } from '@/components/route-progress';
 
 export function Header() {
   const { theme, toggleTheme } = useTheme();
@@ -79,11 +80,12 @@ export function Header() {
           />
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <nav className="hidden items-center gap-2 lg:flex">
+            <nav aria-label={copy.header.navigation} className="hidden items-center gap-2 lg:flex">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
                   className={cn(
                     'rounded-md px-4 py-2 text-sm font-medium',
                     isActive(item.href)
@@ -174,12 +176,13 @@ export function Header() {
                     </Button>
                   </div>
 
-                  <nav className="grid gap-2">
+                  <nav aria-label={copy.header.navigation} className="grid gap-2">
                     {navigationItems.map((item) => (
                       <Link
                         key={item.href}
                         href={item.href}
                         onClick={() => setIsMenuOpen(false)}
+                        aria-current={isActive(item.href) ? 'page' : undefined}
                         className={cn(
                           'rounded-lg border px-4 py-3 text-sm font-medium',
                           isActive(item.href)
@@ -208,6 +211,7 @@ export function Header() {
           ) : null}
         </AnimatePresence>
       </div>
+      <RouteProgress />
     </motion.header>
   );
 }

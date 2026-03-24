@@ -1,3 +1,4 @@
+import { makeCurlAndNodeCodeSamples } from '@/lib/docs-code';
 import type { DocsPageMap, DocsSection } from '@/lib/site-content';
 
 function routeSection({
@@ -20,8 +21,8 @@ function routeSection({
   usage: string;
   success: string;
   error: string;
-  successLanguage?: 'bash' | 'json' | 'ts';
-  errorLanguage?: 'bash' | 'json' | 'ts';
+  successLanguage?: 'bash' | 'json' | 'js' | 'ts';
+  errorLanguage?: 'bash' | 'json' | 'js' | 'ts';
   bullets?: string[];
   note?: string;
 }): DocsSection {
@@ -34,7 +35,10 @@ function routeSection({
       rows: params,
     },
     codes: [
-      { label: 'Usage', language: 'bash', content: usage },
+      ...makeCurlAndNodeCodeSamples(usage, {
+        curl: 'cURL usage',
+        node: 'Node.js usage',
+      }),
       { label: '200 response', language: successLanguage, content: success },
       { label: 'Error response', language: errorLanguage, content: error },
     ],
@@ -91,10 +95,8 @@ export const enDocsPages: DocsPageMap = {
         id: 'first-calls',
         title: 'Make a first successful request',
         description: 'Run one request per route before you integrate them into application code.',
-        code: {
-          label: 'Starter smoke tests',
-          language: 'bash',
-          content: `curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/iban?iban=AO06004000010123456789012"
+        codes: makeCurlAndNodeCodeSamples(
+          `curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/iban?iban=AO06004000010123456789012"
 
 curl -s "https://orb3x-utils-api.vercel.app/api/v1/phone/validate?phone=%2B244923456789"
 
@@ -103,7 +105,11 @@ curl -s "https://orb3x-utils-api.vercel.app/api/v1/finance/vat?amount=114000&inc
 curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
   -H "Content-Type: application/json" \\
   -d '{"seller":{"name":"Orb3x, Lda"},"buyer":{"name":"Cliente Exemplo"},"items":[{"description":"Service","quantity":1,"unitPrice":100000,"vatRate":14}]}'`,
-        },
+          {
+            curl: 'Starter smoke tests (cURL)',
+            node: 'Starter smoke tests (Node.js)',
+          },
+        ),
         bullets: [
           'Verify document routes from the exact runtime you deploy because PDF generation runs server-side.',
           'Log request IDs and upstream error codes for the NIF, translation, and exchange endpoints.',
@@ -1423,31 +1429,33 @@ Content-Disposition: attachment; filename="contract.pdf"`,
   examples: {
     slug: 'examples',
     label: 'Examples',
-    description: 'Practical cURL and TypeScript examples for production-like usage.',
+    description: 'Practical cURL, Node.js, and TypeScript examples for production-like usage.',
     eyebrow: 'Implementation',
     title: 'Examples for calling the published routes.',
     intro:
-      'The snippets below show cURL requests and a typed TypeScript helper for the routes published in this repository.',
+      'The snippets below show cURL requests, matching Node.js fetch calls, and a typed TypeScript helper for the routes published in this repository.',
     summaryCards: [
-      { label: 'Formats', value: 'cURL + TypeScript' },
+      { label: 'Formats', value: 'cURL + Node.js' },
       { label: 'Client focus', value: 'Server-safe fetch' },
       { label: 'Error strategy', value: 'Code-aware handling' },
     ],
     sections: [
       {
         id: 'curl',
-        title: 'cURL examples',
-        code: {
-          label: 'Terminal smoke tests',
-          language: 'bash',
-          content: `curl -s https://orb3x-utils-api.vercel.app/api/nif/004813023LA040
+        title: 'cURL and Node.js examples',
+        codes: makeCurlAndNodeCodeSamples(
+          `curl -s https://orb3x-utils-api.vercel.app/api/nif/004813023LA040
 
 curl -s -X POST https://orb3x-utils-api.vercel.app/api/translate \\
   -H "Content-Type: application/json" \\
   -d '{"text":"Preciso de ajuda","to":"en"}'
 
 curl -s "https://orb3x-utils-api.vercel.app/api/exchange/aoa?amount=250000"`,
-        },
+          {
+            curl: 'Terminal smoke tests (cURL)',
+            node: 'Terminal smoke tests (Node.js)',
+          },
+        ),
       },
       {
         id: 'typescript',

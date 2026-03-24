@@ -5,8 +5,26 @@ import Link from 'next/link';
 import { PropsWithChildren, ReactNode } from 'react';
 
 import { ArrowRightIcon } from '@/components/icons';
+import {
+  type BundledLanguage,
+  CodeBlock as UICodeBlock,
+  type CodeBlockData as UICodeBlockData,
+  CodeBlockBody as UICodeBlockBody,
+  CodeBlockContent as UICodeBlockContent,
+  CodeBlockCopyButton,
+  CodeBlockFilename,
+  CodeBlockFiles,
+  CodeBlockHeader,
+  CodeBlockItem as UICodeBlockItem,
+  CodeBlockSelect,
+  CodeBlockSelectContent,
+  CodeBlockSelectItem,
+  CodeBlockSelectTrigger,
+  CodeBlockSelectValue,
+} from '@/components/ui/code-block';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 function getRevealProps(shouldReduceMotion: boolean, delay = 0) {
@@ -160,6 +178,201 @@ export function LinkCard({
   );
 }
 
+type CodePanelSample = {
+  label: string;
+  code: string;
+  language: string;
+};
+
+function resolveSyntaxLanguage(language: string): BundledLanguage {
+  switch (language.toLowerCase()) {
+    case 'js':
+      return 'javascript';
+    case 'ts':
+      return 'typescript';
+    case 'md':
+      return 'markdown';
+    case 'sh':
+    case 'shell':
+      return 'bash';
+    default:
+      return language;
+  }
+}
+
+function resolveDisplayLanguage(language: string) {
+  switch (language.toLowerCase()) {
+    case 'js':
+      return 'JS';
+    case 'ts':
+      return 'TS';
+    default:
+      return language.toUpperCase();
+  }
+}
+
+function resolveFilename(language: string) {
+  switch (language.toLowerCase()) {
+    case 'bash':
+    case 'sh':
+    case 'shell':
+      return 'request.sh';
+    case 'js':
+      return 'example.js';
+    case 'ts':
+      return 'example.ts';
+    case 'tsx':
+      return 'component.tsx';
+    case 'jsx':
+      return 'component.jsx';
+    case 'json':
+      return 'response.json';
+    case 'md':
+    case 'markdown':
+      return 'readme.md';
+    case 'html':
+      return 'index.html';
+    default:
+      return `snippet.${language.toLowerCase()}`;
+  }
+}
+
+function shouldShowLineNumbers(language: string) {
+  return !['bash', 'sh', 'shell', 'json', 'md', 'markdown', 'text', 'plaintext'].includes(
+    language.toLowerCase(),
+  );
+}
+
+function shouldHighlightSyntax(language: string) {
+  return !['text', 'plaintext'].includes(language.toLowerCase());
+}
+
+function buildCodeBlockData(samples: CodePanelSample[]): UICodeBlockData[] {
+  return samples.map((sample, index) => ({
+    value: `${sample.language}-${index}`,
+    language: sample.language,
+    displayLanguage: resolveDisplayLanguage(sample.language),
+    filename: resolveFilename(sample.language),
+    label: sample.label,
+    code: sample.code,
+    lineNumbers: shouldShowLineNumbers(sample.language),
+    syntaxHighlighting: shouldHighlightSyntax(sample.language),
+    syntaxLanguage: resolveSyntaxLanguage(sample.language),
+  }));
+}
+
+function CodePanel({
+  samples,
+  className,
+  heightClassName,
+}: {
+  samples: CodePanelSample[];
+  className?: string;
+  heightClassName: string;
+}) {
+  const shouldReduceMotion = Boolean(useReducedMotion());
+  const data = buildCodeBlockData(samples);
+
+  if (!data.length) {
+    return null;
+  }
+
+  return (
+    <motion.div
+      {...getRevealProps(shouldReduceMotion)}
+      className={cn('min-w-0 max-w-full', className)}
+    >
+      <UICodeBlock
+        data={data}
+        defaultValue={data[0]?.value}
+        className="min-w-0 overflow-hidden rounded-xl border shadow-lg"
+        style={{
+          borderColor: 'var(--code-border)',
+          backgroundColor: 'var(--code-bg)',
+          color: 'var(--code-foreground)',
+          boxShadow: 'var(--shadow-soft)',
+        }}
+      >
+        <CodeBlockHeader
+          style={{
+            borderColor: 'var(--code-border)',
+            backgroundColor: 'var(--code-toolbar)',
+            color: 'var(--code-muted)',
+          }}
+        >
+          <CodeBlockFiles>
+            {(item) => (
+              <CodeBlockFilename
+                key={item.value}
+                value={item.value}
+                filename={item.filename}
+                language={item.language}
+                className="min-w-0 text-[0.8rem] font-medium"
+                style={{ color: 'var(--code-muted)' }}
+              >
+                {item.label ?? item.filename}
+              </CodeBlockFilename>
+            )}
+          </CodeBlockFiles>
+
+          {data.length > 1 ? (
+            <CodeBlockSelect>
+              <CodeBlockSelectTrigger
+                aria-label="Choose code sample language"
+                style={{
+                  backgroundColor: 'var(--code-chip-bg)',
+                  color: 'var(--code-chip-foreground)',
+                }}
+              >
+                <CodeBlockSelectValue />
+              </CodeBlockSelectTrigger>
+              <CodeBlockSelectContent align="end">
+                {(item) => (
+                  <CodeBlockSelectItem key={item.value} value={item.value}>
+                    {item.displayLanguage ?? resolveDisplayLanguage(item.language)}
+                  </CodeBlockSelectItem>
+                )}
+              </CodeBlockSelectContent>
+            </CodeBlockSelect>
+          ) : null}
+
+          <CodeBlockCopyButton
+            aria-label="Copy code sample"
+            className="hover:bg-[var(--code-chip-bg)] hover:text-[var(--code-foreground)]"
+            style={{
+              color: 'var(--code-muted)',
+            }}
+          />
+        </CodeBlockHeader>
+
+        <ScrollArea
+          className={cn('w-full', heightClassName)}
+          style={{ backgroundColor: 'var(--code-bg)' }}
+        >
+          <UICodeBlockBody className="h-full">
+            {(item) => (
+              <UICodeBlockItem
+                key={item.value}
+                value={item.value}
+                lineNumbers={item.lineNumbers}
+                className="h-full"
+              >
+                <UICodeBlockContent
+                  className="h-full"
+                  language={item.syntaxLanguage}
+                  syntaxHighlighting={item.syntaxHighlighting}
+                >
+                  {item.code}
+                </UICodeBlockContent>
+              </UICodeBlockItem>
+            )}
+          </UICodeBlockBody>
+        </ScrollArea>
+      </UICodeBlock>
+    </motion.div>
+  );
+}
+
 export function CodeBlock({
   label,
   code,
@@ -172,33 +385,32 @@ export function CodeBlock({
   className?: string;
   delay?: number;
 }) {
-  const shouldReduceMotion = Boolean(useReducedMotion());
-
   return (
-    <motion.div
-      {...getRevealProps(shouldReduceMotion)}
-      className={cn(
-        'min-w-0 max-w-full overflow-hidden rounded-xl border shadow-lg',
-        className,
-      )}
-      style={{
-        borderColor: 'var(--code-border)',
-        backgroundColor: 'var(--code-bg)',
-        color: 'var(--code-foreground)',
-        boxShadow: 'var(--shadow-soft)',
-      }}
-    >
-      <div
-        className="flex items-center justify-between border-b px-5 py-3 text-xs font-semibold uppercase tracking-[0.2em]"
-        style={{ borderColor: 'var(--code-border)', color: 'var(--code-muted)' }}
-      >
-        <span>{label}</span>
-        <span>{language}</span>
-      </div>
-      <pre className="max-w-full overflow-x-auto px-4 py-4 text-sm leading-7 sm:px-5 sm:py-5">
-        <code>{code}</code>
-      </pre>
-    </motion.div>
+    <CodePanel
+      samples={[{ label, code, language }]}
+      className={className}
+      heightClassName="max-h-[30rem]"
+    />
+  );
+}
+
+export function CodeSampleSwitcher({
+  samples,
+  className,
+}: {
+  samples: {
+    label: string;
+    code: string;
+    language: string;
+  }[];
+  className?: string;
+}) {
+  return (
+    <CodePanel
+      samples={samples}
+      className={className}
+      heightClassName="h-[22rem]"
+    />
   );
 }
 

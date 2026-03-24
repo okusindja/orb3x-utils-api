@@ -127,6 +127,30 @@ export function ArrowRightIcon(props: IconProps) {
   );
 }
 
+export function ChevronDownIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="m6 9 6 6 6-6" />
+    </BaseIcon>
+  );
+}
+
+export function ChevronUpIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="m6 15 6-6 6 6" />
+    </BaseIcon>
+  );
+}
+
+export function CheckIcon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="m5 12 4 4L19 6" />
+    </BaseIcon>
+  );
+}
+
 export function MenuIcon(props: IconProps) {
   return (
     <BaseIcon {...props}>
