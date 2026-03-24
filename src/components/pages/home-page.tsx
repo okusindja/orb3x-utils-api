@@ -135,7 +135,7 @@ export function HomePage() {
             ]}
           />
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3">
             {copy.home.notes.map((item) => (
               <Card key={item.title}>
                 <CardContent className="p-4 text-sm text-card-foreground">
