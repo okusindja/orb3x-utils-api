@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { type DocsPageSlug } from '@/lib/site-content';
 import { enSiteCopy } from '@/locales/site/en';
 
-const DEFAULT_SITE_URL = 'https://orb3x-utils-api.vercel.app';
+const DEFAULT_SITE_URL = 'https://utils.api.orb3x.com';
 export const ORGANIZATION_SITE_URL = 'https://www.orb3x.com/';
 const DEFAULT_OG_IMAGE_PATH = '/opengraph-image';
 const DEFAULT_OG_IMAGE_ALT = 'ORB3X Utils API preview card';

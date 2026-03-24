@@ -53,13 +53,13 @@ const docsIcons = [
   <SparkIcon key="spark" className="size-4" />,
 ];
 
-const homeQuickRequestCurl = `curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/iban?iban=AO06004000010123456789012"
+const homeQuickRequestCurl = `curl -s "https://utils.api.orb3x.com/api/v1/validate/iban?iban=AO06004000010123456789012"
 
-curl -s "https://orb3x-utils-api.vercel.app/api/v1/address/suggest?q=talatona&type=municipality"
+curl -s "https://utils.api.orb3x.com/api/v1/address/suggest?q=talatona&type=municipality"
 
-curl -s "https://orb3x-utils-api.vercel.app/api/v1/salary/net?gross=500000&year=2026"
+curl -s "https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026"
 
-curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
+curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
   -H "Content-Type: application/json" \\
   -d '{"seller":{"name":"Orb3x, Lda"},"buyer":{"name":"Cliente Exemplo"},"items":[{"description":"Service","quantity":1,"unitPrice":100000,"vatRate":14}]}'`;
 

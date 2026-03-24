@@ -96,13 +96,13 @@ export const ptDocsPages: DocsPageMap = {
         title: 'Faça um primeiro pedido bem-sucedido',
         description: 'Execute um pedido por rota antes de integrar os endpoints no código da aplicação.',
         codes: makeCurlAndNodeCodeSamples(
-          `curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/iban?iban=AO06004000010123456789012"
+          `curl -s "https://utils.api.orb3x.com/api/v1/validate/iban?iban=AO06004000010123456789012"
 
-curl -s "https://orb3x-utils-api.vercel.app/api/v1/phone/validate?phone=%2B244923456789"
+curl -s "https://utils.api.orb3x.com/api/v1/phone/validate?phone=%2B244923456789"
 
-curl -s "https://orb3x-utils-api.vercel.app/api/v1/finance/vat?amount=114000&inclusive=true"
+curl -s "https://utils.api.orb3x.com/api/v1/finance/vat?amount=114000&inclusive=true"
 
-curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
+curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
   -H "Content-Type: application/json" \\
   -d '{"seller":{"name":"Orb3x, Lda"},"buyer":{"name":"Cliente Exemplo"},"items":[{"description":"Servico","quantity":1,"unitPrice":100000,"vatRate":14}]}'`,
           {
@@ -246,7 +246,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/validate/iban',
         description: 'Use esta rota quando já tiver um IBAN AO completo e precisar de partes normalizadas, metadados do banco e flags de validação.',
         params: [['iban', 'Sim', 'IBAN no formato AO. O handler remove separadores e converte o valor para maiúsculas antes da validação.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/iban?iban=AO06004000010123456789012"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/validate/iban?iban=AO06004000010123456789012"',
         success: `{
   "isValid": true,
   "normalized": "AO06004000010123456789012",
@@ -290,7 +290,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/validate/bank-account',
         description: 'Use esta rota para contas locais de 21 dígitos quando precisar de validação estrutural e do IBAN correspondente.',
         params: [['account', 'Sim', 'Conta bancária local angolana com 21 dígitos. Separadores não numéricos são ignorados.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/validate/bank-account?account=004000010123456789012"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/validate/bank-account?account=004000010123456789012"',
         success: `{
   "isValid": true,
   "normalized": "004000010123456789012",
@@ -361,7 +361,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/phone/parse',
         description: 'Use parse quando precisar de um número canónico e de formatações reutilizáveis para armazenamento ou UI.',
         params: [['phone', 'Sim', 'Número angolano local ou internacional, como `923456789` ou `+244923456789`.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/phone/parse?phone=%2B244923456789"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/phone/parse?phone=%2B244923456789"',
         success: `{
   "normalized": "+244923456789",
   "countryCode": "+244",
@@ -393,7 +393,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/phone/validate',
         description: 'Use validate quando precisar de um resultado passa/falha juntamente com a disponibilidade do plano de numeração.',
         params: [['phone', 'Sim', 'Número angolano local ou internacional.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/phone/validate?phone=952345678"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/phone/validate?phone=952345678"',
         success: `{
   "isValid": true,
   "normalized": "+244952345678",
@@ -424,7 +424,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/phone/operator',
         description: 'Use operator quando precisar apenas do lookup da operadora e não do restante payload do parse.',
         params: [['phone', 'Sim', 'Número angolano local ou internacional.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/phone/operator?phone=912345678"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/phone/operator?phone=912345678"',
         success: `{
   "phone": "912345678",
   "operator": {
@@ -479,7 +479,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/address/normalize',
         description: 'Use normalize para limpar uma morada em texto livre antes de a persistir ou comparar com registos internos.',
         params: [['address', 'Sim', 'Morada angolana em texto livre. Abreviações comuns como `prov.` e `mun.` são expandidas automaticamente.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/address/normalize?address=Benfica,%20Luanda"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/address/normalize?address=Benfica,%20Luanda"',
         success: `{
   "input": "Benfica, Luanda",
   "normalized": "Benfica, Luanda",
@@ -515,7 +515,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['municipality', 'Não', 'Filtro opcional de município.'],
           ['limit', 'Não', 'Máximo de sugestões a devolver.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/address/suggest?q=tal&type=municipality&province=Luanda"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/address/suggest?q=tal&type=municipality&province=Luanda"',
         success: `{
   "query": "tal",
   "suggestions": [
@@ -540,7 +540,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/geo/provinces',
         description: 'Use provinces como feed de topo para seletores de localização e filtros administrativos.',
         params: [],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/geo/provinces"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/geo/provinces"',
         success: `{
   "country": "AO",
   "countryName": "Angola",
@@ -565,7 +565,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/geo/municipalities',
         description: 'Use municipalities para alimentar seletores de segundo nível, com ou sem filtro por província.',
         params: [['province', 'Não', 'Nome da província usado para filtrar a lista.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/geo/municipalities?province=Luanda"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/geo/municipalities?province=Luanda"',
         success: `{
   "province": "Luanda",
   "municipalities": [
@@ -594,7 +594,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['municipality', 'Sim', 'Nome do município a expandir.'],
           ['province', 'Não', 'Nome da província para desambiguar municípios repetidos.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/geo/communes?municipality=Talatona&province=Luanda"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/geo/communes?municipality=Talatona&province=Luanda"',
         success: `{
   "municipality": "Talatona",
   "province": "Luanda",
@@ -647,7 +647,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/calendar/holidays',
         description: 'Use holidays para obter o calendário de feriados públicos suportado para um ano.',
         params: [['year', 'Não', 'Ano civil opcional. Por omissão usa o ano atual.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/calendar/holidays?year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/calendar/holidays?year=2026"',
         success: `{
   "year": 2026,
   "holidays": [
@@ -682,7 +682,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['from', 'Sim', 'Data inicial em `YYYY-MM-DD`.'],
           ['to', 'Sim', 'Data final em `YYYY-MM-DD`.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/calendar/working-days?from=2026-03-20&to=2026-03-24"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/calendar/working-days?from=2026-03-20&to=2026-03-24"',
         success: `{
   "from": "2026-03-20",
   "to": "2026-03-24",
@@ -707,7 +707,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['date', 'Sim', 'Data base em `YYYY-MM-DD`.'],
           ['days', 'Sim', 'Inteiro com o deslocamento em dias úteis.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/calendar/add-working-days?date=2026-03-20&days=1"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/calendar/add-working-days?date=2026-03-20&days=1"',
         success: `{
   "inputDate": "2026-03-20",
   "days": 1,
@@ -761,7 +761,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['rate', 'Não', 'Percentagem da taxa. Por omissão usa 14.'],
           ['inclusive', 'Não', 'Quando `true`, trata amount como valor com IVA incluído. Quando `false`, trata amount como líquido.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/finance/vat?amount=114000&inclusive=true"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/finance/vat?amount=114000&inclusive=true"',
         success: `{
   "amount": 114000,
   "rate": 14,
@@ -788,7 +788,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['discount', 'Não', 'Valor ou percentagem do desconto, conforme `discountType`.'],
           ['discountType', 'Não', 'Pode ser `amount` ou `percent`.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/finance/invoice-total?lines=%5B%7B%22description%22%3A%22Service%22%2C%22quantity%22%3A1%2C%22unitPrice%22%3A100000%2C%22vatRate%22%3A14%7D%5D&discount=10&discountType=percent"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/finance/invoice-total?lines=%5B%7B%22description%22%3A%22Service%22%2C%22quantity%22%3A1%2C%22unitPrice%22%3A100000%2C%22vatRate%22%3A14%7D%5D&discount=10&discountType=percent"',
         success: `{
   "currency": "AOA",
   "discountType": "percent",
@@ -815,7 +815,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['from', 'Sim', 'Data ou ano de origem. Os primeiros quatro dígitos definem o ano CPI.'],
           ['to', 'Sim', 'Data ou ano de destino. Os primeiros quatro dígitos definem o ano CPI.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/finance/inflation-adjust?amount=100000&from=2020-01-01&to=2025-01-01"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/finance/inflation-adjust?amount=100000&from=2020-01-01&to=2025-01-01"',
         success: `{
   "currency": "AOA",
   "amount": 100000,
@@ -872,7 +872,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['gross', 'Sim', 'Salário bruto mensal.'],
           ['year', 'Não', 'Ano fiscal suportado. Atualmente `2025` ou `2026`. Por omissão usa `2026`.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/salary/net?gross=500000&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
@@ -901,7 +901,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['net', 'Sim', 'Salário líquido mensal desejado.'],
           ['year', 'Não', 'Ano fiscal suportado. Por omissão usa `2026`.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/salary/gross?net=432900&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
@@ -928,7 +928,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['gross', 'Sim', 'Salário bruto mensal.'],
           ['year', 'Não', 'Ano fiscal suportado. Por omissão usa `2026`.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/salary/employer-cost?gross=500000&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
@@ -980,7 +980,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
         title: 'GET /api/v1/time/now',
         description: 'Use now quando precisar da hora local atual para um fuso IANA específico.',
         params: [['timezone', 'Não', 'Timezone IANA. Por omissão usa `Africa/Luanda`.']],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/time/now?timezone=Africa/Luanda"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/time/now?timezone=Africa/Luanda"',
         success: `{
   "iso": "2026-03-23T18:45:00",
   "timezone": "Africa/Luanda",
@@ -1013,7 +1013,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['from', 'Sim', 'Timezone IANA de origem.'],
           ['to', 'Sim', 'Timezone IANA de destino.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/time/convert?datetime=2026-03-23T10:00:00&from=Africa/Luanda&to=UTC"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/time/convert?datetime=2026-03-23T10:00:00&from=Africa/Luanda&to=UTC"',
         success: `{
   "input": {
     "datetime": "2026-03-23T10:00:00",
@@ -1047,7 +1047,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['start', 'Não', 'Início do horário comercial em `HH:mm`. Por omissão `08:00`.'],
           ['end', 'Não', 'Fim do horário comercial em `HH:mm`. Por omissão `17:00`.'],
         ],
-        usage: 'curl -s "https://orb3x-utils-api.vercel.app/api/v1/time/business-hours?datetime=2026-03-23T09:30:00&timezone=Africa/Luanda"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/time/business-hours?datetime=2026-03-23T09:30:00&timezone=Africa/Luanda"',
         success: `{
   "timezone": "Africa/Luanda",
   "businessHours": {
@@ -1106,7 +1106,7 @@ curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
           ['items', 'Sim', 'Array de itens com `description`, `quantity`, `unitPrice` e `vatRate` opcional.'],
           ['invoiceNumber / issueDate / dueDate / notes', 'Não', 'Campos opcionais de metadados da fatura.'],
         ],
-        usage: `curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/invoice \\
+        usage: `curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
   -H "Content-Type: application/json" \\
   -d '{"seller":{"name":"Orb3x, Lda"},"buyer":{"name":"Cliente Exemplo"},"items":[{"description":"Service","quantity":1,"unitPrice":100000,"vatRate":14}]}' \\
   --output invoice.pdf`,
@@ -1130,7 +1130,7 @@ Content-Disposition: attachment; filename="invoice.pdf"`,
           ['amount', 'Sim', 'Montante recebido.'],
           ['receiptNumber / issueDate / reason / paymentMethod / notes', 'Não', 'Campos opcionais de metadados do recibo.'],
         ],
-        usage: `curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/receipt \\
+        usage: `curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/receipt \\
   -H "Content-Type: application/json" \\
   -d '{"receivedFrom":{"name":"Cliente Exemplo"},"amount":100000}' \\
   --output receipt.pdf`,
@@ -1154,7 +1154,7 @@ Content-Disposition: attachment; filename="receipt.pdf"`,
           ['clauses', 'Sim', 'Array de cláusulas do contrato.'],
           ['title / contractNumber / issueDate / notes', 'Não', 'Campos opcionais de metadados do contrato.'],
         ],
-        usage: `curl -s -X POST https://orb3x-utils-api.vercel.app/api/v1/documents/contract \\
+        usage: `curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/contract \\
   -H "Content-Type: application/json" \\
   -d '{"parties":[{"name":"Orb3x, Lda"},{"name":"Cliente Exemplo"}],"clauses":["The provider delivers the service.","The client pays within 15 days."]}' \\
   --output contract.pdf`,
@@ -1440,13 +1440,13 @@ Content-Disposition: attachment; filename="contract.pdf"`,
         id: 'curl',
         title: 'Exemplos em cURL e Node.js',
         codes: makeCurlAndNodeCodeSamples(
-          `curl -s https://orb3x-utils-api.vercel.app/api/nif/004813023LA040
+          `curl -s https://utils.api.orb3x.com/api/nif/004813023LA040
 
-curl -s -X POST https://orb3x-utils-api.vercel.app/api/translate \\
+curl -s -X POST https://utils.api.orb3x.com/api/translate \\
   -H "Content-Type: application/json" \\
   -d '{"text":"Preciso de ajuda","to":"en"}'
 
-curl -s "https://orb3x-utils-api.vercel.app/api/exchange/aoa?amount=250000"`,
+curl -s "https://utils.api.orb3x.com/api/exchange/aoa?amount=250000"`,
           {
             curl: 'Smoke tests no terminal (cURL)',
             node: 'Smoke tests no terminal (Node.js)',
