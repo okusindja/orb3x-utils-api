@@ -845,15 +845,15 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
   salary: {
     slug: 'salary',
     label: 'Salary',
-    description: 'Estimate net salary, gross salary, and employer cost under Angola payroll assumptions.',
+    description: 'Estimate net salary, gross salary, and employer cost under Angola payroll rules with subsidy handling.',
     eyebrow: 'Category',
-    title: 'Run Angola payroll estimates for employee and employer views.',
+    title: 'Run Angola payroll estimates with 2025 and 2026 tax tables plus subsidy support.',
     intro:
-      'The salary family applies internal Angola payroll assumptions for employee social security, employer social security, and employment-income withholding tables for supported years.',
+      'The salary family applies Angola payroll assumptions for employee social security, employer social security, the supported IRT tables, and food or transport subsidies with monthly or daily input modes. The 2026 calculator is aligned to the current AGT simulator outputs, including bracket labeling and payroll-step rounding.',
     summaryCards: [
       { label: 'Routes', value: '3 GET' },
       { label: 'Years', value: '2025 and 2026' },
-      { label: 'Outputs', value: 'Net, gross, employer cost' },
+      { label: 'Subsidies', value: 'Meal and transport' },
     ],
     sections: [
       {
@@ -862,58 +862,95 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
         table: {
           columns: ['Route', 'Purpose', 'Key query'],
           rows: [
-            ['/api/v1/salary/net', 'Estimate take-home salary from gross salary.', 'gross, year'],
-            ['/api/v1/salary/gross', 'Estimate the required gross salary for a target net.', 'net, year'],
-            ['/api/v1/salary/employer-cost', 'Estimate employer cost including contributions.', 'gross, year'],
+            ['/api/v1/salary/net', 'Estimate take-home salary from gross salary.', 'gross, year, mealSubsidy, transportSubsidy, subsidyPeriod'],
+            ['/api/v1/salary/gross', 'Estimate the required gross salary for a target net.', 'net, year, mealSubsidy, transportSubsidy, subsidyPeriod'],
+            ['/api/v1/salary/employer-cost', 'Estimate employer cost including contributions.', 'gross, year, mealSubsidy, transportSubsidy, subsidyPeriod'],
           ],
         },
       },
       routeSection({
         id: 'salary-net-route',
         title: 'GET /api/v1/salary/net',
-        description: 'Use net when your source value is the gross salary and you want the estimated take-home amount.',
+        description: 'Use net when your source value is the monthly base gross salary and you want the estimated take-home amount including optional subsidies.',
         params: [
-          ['gross', 'Yes', 'Gross monthly salary.'],
+          ['gross', 'Yes', 'Base gross monthly salary before optional subsidies.'],
+          ['mealSubsidy', 'No', 'Meal subsidy value. Defaults to `0`.'],
+          ['transportSubsidy', 'No', 'Transport subsidy value. Defaults to `0`.'],
+          ['subsidyPeriod', 'No', 'Use `month` for monthly subsidy inputs or `day` to multiply the subsidy by `22` working days. Defaults to `month`.'],
           ['year', 'No', 'Supported tax year. Currently `2025` or `2026`. Defaults to `2026`.'],
         ],
-        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
-  "grossSalary": 500000,
-  "taxableIncome": 485000,
-  "employeeSocialSecurity": 15000,
-  "irtRate": 16,
-  "irtTaxAmount": 52100,
-  "netSalary": 432900,
-  "employerContribution": 40000,
-  "assumptions": ["Applies monthly employment-income withholding for Angola."]
+  "grossSalary": 1500000,
+  "totalGrossCompensation": 1673970.94,
+  "taxableIncomeBeforeExemptions": 1623751.81,
+  "taxableIncome": 1563751.81,
+  "employeeSocialSecurity": 50219.13,
+  "subsidies": {
+    "subsidyPeriod": "day",
+    "workingDaysApplied": 22,
+    "mealSubsidy": {
+      "inputAmount": 4747.77,
+      "monthlyAmount": 104450.94,
+      "exemptAmount": 30000,
+      "taxableAmount": 74450.94
+    },
+    "transportSubsidy": {
+      "inputAmount": 3160,
+      "monthlyAmount": 69520,
+      "exemptAmount": 30000,
+      "taxableAmount": 39520
+    }
+  },
+  "irtBracket": 8,
+  "irtRate": 22,
+  "irtTaxAmount": 306274.18,
+  "netSalary": 1317477.63,
+  "employerContribution": 133917.68
 }`,
         error: `{
   "error": {
-    "code": "UNSUPPORTED_TAX_YEAR",
-    "message": "Supported salary-tax years are 2025 and 2026.",
-    "year": 2024
+    "code": "INVALID_ENUM",
+    "message": "The \\"subsidyPeriod\\" query parameter must be one of: month, day.",
+    "field": "subsidyPeriod",
+    "value": "weekly"
   }
 }`,
+        bullets: [
+          'Food and transport subsidies each receive their own monthly IRT exemption cap of Kz 30,000.',
+          'Daily subsidy inputs are converted with a fixed 22-working-day month.',
+          'Social security still applies to contributory remuneration before the IRT subsidy exemptions are deducted.',
+          'The 2026 bracket metadata is aligned to the current AGT simulator outputs, which can differ from simplified secondary summaries.',
+        ],
       }),
       routeSection({
         id: 'salary-gross-route',
         title: 'GET /api/v1/salary/gross',
-        description: 'Use gross when the target value is net pay and you need the approximate gross salary required to reach it.',
+        description: 'Use gross when the target value is total take-home pay and you need the approximate base gross salary required to reach it with the given subsidies.',
         params: [
-          ['net', 'Yes', 'Desired net monthly salary.'],
+          ['net', 'Yes', 'Desired total net monthly salary.'],
+          ['mealSubsidy', 'No', 'Meal subsidy value. Defaults to `0`.'],
+          ['transportSubsidy', 'No', 'Transport subsidy value. Defaults to `0`.'],
+          ['subsidyPeriod', 'No', 'Use `month` or `day`. Daily mode multiplies each subsidy by `22`.'],
           ['year', 'No', 'Supported tax year. Defaults to `2026`.'],
         ],
-        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
-  "targetNetSalary": 432900,
-  "grossSalary": 500000,
-  "employeeSocialSecurity": 15000,
-  "irtTaxAmount": 52100,
-  "netSalary": 432900
+  "targetNetSalary": 450000,
+  "grossSalary": 513200.72,
+  "totalGrossCompensation": 553200.72,
+  "employeeSocialSecurity": 16596.02,
+  "subsidies": {
+    "subsidyPeriod": "month",
+    "totalMonthlyAmount": 40000,
+    "totalExemptAmount": 40000
+  },
+  "irtTaxAmount": 86604.7,
+  "netSalary": 450000
 }`,
         error: `{
   "error": {
@@ -927,18 +964,22 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
       routeSection({
         id: 'salary-employer-cost-route',
         title: 'GET /api/v1/salary/employer-cost',
-        description: 'Use employer-cost when payroll planning needs the company-side contribution on top of the employee gross salary.',
+        description: 'Use employer-cost when payroll planning needs the company-side contribution on top of the base gross salary and optional subsidies.',
         params: [
-          ['gross', 'Yes', 'Gross monthly salary.'],
+          ['gross', 'Yes', 'Base gross monthly salary before optional subsidies.'],
+          ['mealSubsidy', 'No', 'Meal subsidy value. Defaults to `0`.'],
+          ['transportSubsidy', 'No', 'Transport subsidy value. Defaults to `0`.'],
+          ['subsidyPeriod', 'No', 'Use `month` or `day`. Daily mode multiplies each subsidy by `22`.'],
           ['year', 'No', 'Supported tax year. Defaults to `2026`.'],
         ],
-        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
   "grossSalary": 500000,
-  "employerContribution": 40000,
-  "totalEmployerCost": 540000
+  "totalGrossCompensation": 540000,
+  "employerContribution": 43200,
+  "totalEmployerCost": 583200
 }`,
         error: `{
   "error": {
@@ -948,7 +989,7 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
     "value": "abc"
   }
 }`,
-        note: 'These endpoints are scenario calculators, not payroll-filing services. Surface the assumptions in any UI that shows the result.',
+        note: 'These endpoints are scenario calculators, not payroll-filing services. Surface the assumptions, tax year, and subsidy treatment in any UI that shows the result.',
       }),
     ],
     relatedSlugs: ['finance', 'time', 'examples'],

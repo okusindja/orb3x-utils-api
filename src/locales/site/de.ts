@@ -282,7 +282,7 @@ export const deSiteCopy: PartialSiteCopy = {
           },
           {
             "question": "Wo sollte ich beim Debuggen zuerst suchen?",
-            "answer": "Beginnen Sie mit der API-Referenz für gemeinsame Statuscodes und wechseln Sie dann zur dedizierten Routenseite für endpunktspezifische Anforderungs- und Antwortdetails."
+            "answer": "Beginnen Sie mit der Referenz API für gemeinsame Statuscodes und wechseln Sie dann zur dedizierten Routenseite für endpunktspezifische Anfrage- und Antwortdetails."
           },
           {
             "question": "Welche Seiten sollten während der Integration geöffnet bleiben?",

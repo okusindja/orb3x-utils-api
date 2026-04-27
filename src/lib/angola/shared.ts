@@ -78,6 +78,14 @@ export function parsePositiveNumber(value: string | null, field: string) {
   return parsed;
 }
 
+export function parseOptionalPositiveNumber(value: string | null, field: string) {
+  if (value === null || value === '') {
+    return undefined;
+  }
+
+  return parsePositiveNumber(value, field);
+}
+
 export function parseInteger(value: string | null, field: string) {
   if (value === null || value === '') {
     throw new RouteError('MISSING_QUERY_PARAMETER', `The "${field}" query parameter is required.`, 400, {
@@ -95,6 +103,38 @@ export function parseInteger(value: string | null, field: string) {
   }
 
   return parsed;
+}
+
+export function parseEnum<T extends readonly string[]>(
+  value: string | null,
+  field: string,
+  supportedValues: T,
+  fallback?: T[number],
+) {
+  if (value === null || value === '') {
+    if (fallback !== undefined) {
+      return fallback;
+    }
+
+    throw new RouteError('MISSING_QUERY_PARAMETER', `The "${field}" query parameter is required.`, 400, {
+      field,
+    });
+  }
+
+  if (supportedValues.includes(value as T[number])) {
+    return value as T[number];
+  }
+
+  throw new RouteError(
+    'INVALID_ENUM',
+    `The "${field}" query parameter must be one of: ${supportedValues.join(', ')}.`,
+    400,
+    {
+      field,
+      value,
+      supportedValues: [...supportedValues],
+    },
+  );
 }
 
 export function parseIsoDate(value: string | null, field: string) {
@@ -124,7 +164,7 @@ export function parseIsoDate(value: string | null, field: string) {
 }
 
 export function formatCurrency(value: number) {
-  return Number(value.toFixed(2));
+  return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
 export function uniqueBy<T>(items: T[], keySelector: (item: T) => string) {

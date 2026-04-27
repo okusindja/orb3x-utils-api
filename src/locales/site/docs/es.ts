@@ -292,7 +292,7 @@ export const esDocsPages: DocsPageMap = {
     "slug": "validation",
     "label": "Validación",
     "description": "IBAN y validación de cuenta bancaria local angoleña con detección bancaria.",
-    "eyebrow": "categoría",
+    "eyebrow": "Categoría",
     "title": "Validar identificadores bancarios angoleños y detectar el banco emisor.",
     "intro": "La familia de validación cubre `/api/v1/validate/iban` y `/api/v1/validate/bank-account`. Ambas rutas normalizan la entrada, detectan el banco a partir del código bancario y devuelven una imagen de credencial bancaria generada para uso de la interfaz de usuario.",
     "summaryCards": [
@@ -434,7 +434,7 @@ export const esDocsPages: DocsPageMap = {
     "slug": "phone",
     "label": "Teléfono",
     "description": "Analiza, valida y clasifica números de teléfono angoleños por operador.",
-    "eyebrow": "categoría",
+    "eyebrow": "Categoría",
     "title": "Analizar números angoleños y clasificar el rango de numeración.",
     "intro": "Las rutas telefónicas normalizan la entrada local o internacional, separan las partes nacionales y nacionales y asignan prefijos móviles a Unitel, Africell o Movicel cuando se conoce el alcance.",
     "summaryCards": [
@@ -615,7 +615,7 @@ export const esDocsPages: DocsPageMap = {
     "slug": "address-geo",
     "label": "Dirección y geografía",
     "description": "Normalizar direcciones angoleñas y leer provincias, municipios y comunas.",
-    "eyebrow": "categoría",
+    "eyebrow": "Categoría",
     "title": "Estandarizar direcciones angoleñas y consultar el registro de ubicaciones.",
     "intro": "La normalización y sugerencia de direcciones están respaldadas por un registro geográfico seleccionado de Angola. Las rutas geográficas devuelven datos de provincias, municipios y comunas que pueden impulsar formularios de administración y flujos de autocompletar.",
     "summaryCards": [
@@ -907,7 +907,7 @@ export const esDocsPages: DocsPageMap = {
     "slug": "calendar",
     "label": "Calendario",
     "description": "Días festivos angoleños y cómputo de días hábiles.",
-    "eyebrow": "categoría",
+    "eyebrow": "Categoría",
     "title": "Trabaje con feriados, días laborables y compensaciones de días hábiles.",
     "intro": "La familia de calendarios devuelve días festivos oficiales fijos y móviles, además de cálculos de días hábiles útiles para la nómina, la facturación y la programación de entregas.",
     "summaryCards": [
@@ -1097,7 +1097,7 @@ export const esDocsPages: DocsPageMap = {
     "slug": "finance",
     "label": "Finanzas",
     "description": "VAT, totales de facturas y ajustes por inflación para los flujos de dinero angoleños.",
-    "eyebrow": "categoría",
+    "eyebrow": "Categoría",
     "title": "Calcule VAT, los totales de las facturas y los valores ajustados por inflación.",
     "intro": "Los puntos finales de finanzas proporcionan cálculos deterministas que se pueden utilizar en sistemas administrativos, estimaciones cotizadas y herramientas de generación de informes. Devuelven tanto los valores derivados como la base utilizada para alcanzarlos.",
     "summaryCards": [
@@ -1307,10 +1307,10 @@ export const esDocsPages: DocsPageMap = {
   "salary": {
     "slug": "salary",
     "label": "Salario",
-    "description": "Calcule el salario neto, el salario bruto y el costo para el empleador según los supuestos de la nómina de Angola.",
-    "eyebrow": "categoría",
-    "title": "Ejecute estimaciones de nómina en Angola para conocer las opiniones de empleados y empleadores.",
-    "intro": "La familia salarial aplica supuestos internos de nómina de Angola para la seguridad social de los empleados, la seguridad social del empleador y las tablas de retención de ingresos laborales para los años respaldados.",
+    "description": "Calcule el salario neto, el salario bruto y el costo para el empleador según las reglas de nómina de Angola con manejo de subsidios.",
+    "eyebrow": "Categoría",
+    "title": "Ejecute estimaciones de nómina de Angola con tablas de impuestos para 2025 y 2026 más subsidios.",
+    "intro": "La familia salarial aplica supuestos de nómina de Angola para la seguridad social de los empleados, la seguridad social del empleador, las tablas IRT admitidas y los subsidios de alimentación o transporte con modos de entrada mensuales o diarios. La calculadora 2026 está alineada con los resultados actuales del simulador AGT, incluido el etiquetado de tramos y el redondeo de pasos de nómina.",
     "summaryCards": [
       {
         "label": "Rutas",
@@ -1321,8 +1321,8 @@ export const esDocsPages: DocsPageMap = {
         "value": "2025 y 2026"
       },
       {
-        "label": "Salidas",
-        "value": "Costo neto, bruto, para el empleador"
+        "label": "Subvenciones",
+        "value": "Comida y transporte"
       }
     ],
     "sections": [
@@ -1339,17 +1339,17 @@ export const esDocsPages: DocsPageMap = {
             [
               "/api/v1/salary/net",
               "Calcule el salario neto a partir del salario bruto.",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/gross",
               "Calcule el salario bruto requerido para un objetivo neto.",
-              "net, year"
+              "net, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/employer-cost",
               "Estimar el costo del empleador, incluidas las contribuciones.",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ]
           ]
         }
@@ -1357,7 +1357,7 @@ export const esDocsPages: DocsPageMap = {
       {
         "id": "salary-net-route",
         "title": "GET /api/v1/salary/net",
-        "description": "Utilice neto cuando su valor fuente sea el salario bruto y desee el monto neto estimado.",
+        "description": "Utilice neto cuando su valor fuente sea el salario bruto base mensual y desee el monto neto estimado, incluidos los subsidios opcionales.",
         "table": {
           "columns": [
             "Parámetro",
@@ -1368,7 +1368,22 @@ export const esDocsPages: DocsPageMap = {
             [
               "bruto",
               "si",
-              "Salario mensual bruto."
+              "Salario base mensual bruto antes de subsidios opcionales."
+            ],
+            [
+              "comidasubsidio",
+              "No",
+              "Valor del subsidio de comidas. El valor predeterminado es `0`."
+            ],
+            [
+              "transportesubsidio",
+              "No",
+              "Valor de la subvención al transporte. El valor predeterminado es `0`."
+            ],
+            [
+              "Período de subvención",
+              "No",
+              "Utilice `month` para entradas de subsidio mensual o `day` para multiplicar el subsidio por `22` días hábiles. El valor predeterminado es `month`."
             ],
             [
               "año",
@@ -1381,29 +1396,35 @@ export const esDocsPages: DocsPageMap = {
           {
             "label": "Uso de cURL",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\""
           },
           {
             "label": "Uso de Node.js",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 respuesta",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"taxableIncome\": 485000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtRate\": 16,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900,\n  \"employerContribution\": 40000,\n  \"assumptions\": [\"Applies monthly employment-income withholding for Angola.\"]\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 1500000,\n  \"totalGrossCompensation\": 1673970.94,\n  \"taxableIncomeBeforeExemptions\": 1623751.81,\n  \"taxableIncome\": 1563751.81,\n  \"employeeSocialSecurity\": 50219.13,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"day\",\n    \"workingDaysApplied\": 22,\n    \"mealSubsidy\": {\n      \"inputAmount\": 4747.77,\n      \"monthlyAmount\": 104450.94,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 74450.94\n    },\n    \"transportSubsidy\": {\n      \"inputAmount\": 3160,\n      \"monthlyAmount\": 69520,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 39520\n    }\n  },\n  \"irtBracket\": 8,\n  \"irtRate\": 22,\n  \"irtTaxAmount\": 306274.18,\n  \"netSalary\": 1317477.63,\n  \"employerContribution\": 133917.68\n}"
           },
           {
             "label": "Respuesta de error",
             "language": "json",
-            "content": "{\n  \"error\": {\n    \"code\": \"UNSUPPORTED_TAX_YEAR\",\n    \"message\": \"Supported salary-tax years are 2025 and 2026.\",\n    \"year\": 2024\n  }\n}"
+            "content": "{\n  \"error\": {\n    \"code\": \"INVALID_ENUM\",\n    \"message\": \"The \\\"subsidyPeriod\\\" query parameter must be one of: month, day.\",\n    \"field\": \"subsidyPeriod\",\n    \"value\": \"weekly\"\n  }\n}"
           }
+        ],
+        "bullets": [
+          "Los subsidios para alimentos y transporte reciben cada uno su propio límite mensual de exención del IRT de 30.000 coronas checas.",
+          "Los insumos de subsidio diario se convierten con un mes fijo de 22 días hábiles.",
+          "La seguridad social todavía se aplica a la remuneración contributiva antes de que se deduzcan las exenciones del subsidio del IRT.",
+          "Los metadatos del grupo 2026 están alineados con los resultados actuales del simulador AGT, que pueden diferir de los resúmenes secundarios simplificados."
         ]
       },
       {
         "id": "salary-gross-route",
         "title": "GET /api/v1/salary/gross",
-        "description": "Utilice bruto cuando el valor objetivo sea el salario neto y necesite el salario bruto aproximado necesario para alcanzarlo.",
+        "description": "Utilice el valor bruto cuando el valor objetivo sea el salario neto total y necesite el salario bruto base aproximado necesario para alcanzarlo con los subsidios proporcionados.",
         "table": {
           "columns": [
             "Parámetro",
@@ -1414,7 +1435,22 @@ export const esDocsPages: DocsPageMap = {
             [
               "neto",
               "si",
-              "Salario neto mensual deseado."
+              "Salario mensual neto total deseado."
+            ],
+            [
+              "comidasubsidio",
+              "No",
+              "Valor del subsidio de comidas. El valor predeterminado es `0`."
+            ],
+            [
+              "transportesubsidio",
+              "No",
+              "Valor de la subvención al transporte. El valor predeterminado es `0`."
+            ],
+            [
+              "Período de subvención",
+              "No",
+              "Utilice `month` o `day`. La modalidad diaria multiplica cada subsidio por `22`."
             ],
             [
               "año",
@@ -1427,17 +1463,17 @@ export const esDocsPages: DocsPageMap = {
           {
             "label": "Uso de cURL",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Uso de Node.js",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 respuesta",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 432900,\n  \"grossSalary\": 500000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 450000,\n  \"grossSalary\": 513200.72,\n  \"totalGrossCompensation\": 553200.72,\n  \"employeeSocialSecurity\": 16596.02,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"month\",\n    \"totalMonthlyAmount\": 40000,\n    \"totalExemptAmount\": 40000\n  },\n  \"irtTaxAmount\": 86604.7,\n  \"netSalary\": 450000\n}"
           },
           {
             "label": "Respuesta de error",
@@ -1449,7 +1485,7 @@ export const esDocsPages: DocsPageMap = {
       {
         "id": "salary-employer-cost-route",
         "title": "GET /api/v1/salary/employer-cost",
-        "description": "Utilice el costo del empleador cuando la planificación de la nómina necesite la contribución de la empresa además del salario bruto del empleado.",
+        "description": "Utilice el costo del empleador cuando la planificación de la nómina necesite la contribución de la empresa además del salario bruto base y los subsidios opcionales.",
         "table": {
           "columns": [
             "Parámetro",
@@ -1460,7 +1496,22 @@ export const esDocsPages: DocsPageMap = {
             [
               "bruto",
               "si",
-              "Salario mensual bruto."
+              "Salario base mensual bruto antes de subsidios opcionales."
+            ],
+            [
+              "comidasubsidio",
+              "No",
+              "Valor del subsidio de comidas. El valor predeterminado es `0`."
+            ],
+            [
+              "transportesubsidio",
+              "No",
+              "Valor de la subvención al transporte. El valor predeterminado es `0`."
+            ],
+            [
+              "Período de subvención",
+              "No",
+              "Utilice `month` o `day`. La modalidad diaria multiplica cada subsidio por `22`."
             ],
             [
               "año",
@@ -1473,17 +1524,17 @@ export const esDocsPages: DocsPageMap = {
           {
             "label": "Uso de cURL",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Uso de Node.js",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 respuesta",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"employerContribution\": 40000,\n  \"totalEmployerCost\": 540000\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"totalGrossCompensation\": 540000,\n  \"employerContribution\": 43200,\n  \"totalEmployerCost\": 583200\n}"
           },
           {
             "label": "Respuesta de error",
@@ -1491,7 +1542,7 @@ export const esDocsPages: DocsPageMap = {
             "content": "{\n  \"error\": {\n    \"code\": \"INVALID_NUMBER\",\n    \"message\": \"The \\\"gross\\\" query parameter must be a non-negative number.\",\n    \"field\": \"gross\",\n    \"value\": \"abc\"\n  }\n}"
           }
         ],
-        "note": "Estos puntos finales son calculadoras de escenarios, no servicios de presentación de nóminas. Descubra las suposiciones en cualquier interfaz de usuario que muestre el resultado."
+        "note": "Estos puntos finales son calculadoras de escenarios, no servicios de presentación de nóminas. Muestre los supuestos, el año fiscal y el tratamiento del subsidio en cualquier interfaz de usuario que muestre el resultado."
       }
     ],
     "relatedSlugs": [
@@ -1504,7 +1555,7 @@ export const esDocsPages: DocsPageMap = {
     "slug": "time",
     "label": "tiempo",
     "description": "Verificaciones de hora local actual, conversión de zona horaria y horario comercial.",
-    "eyebrow": "categoría",
+    "eyebrow": "Categoría",
     "title": "Trabaje con zonas horarias y comprobaciones de horarios comerciales locales.",
     "intro": "Los puntos finales de tiempo le brindan una pequeña capa de utilidad de zona horaria sin necesidad de incorporar una plataforma de programación completa a su aplicación.",
     "summaryCards": [
@@ -1709,7 +1760,7 @@ export const esDocsPages: DocsPageMap = {
     "slug": "documents",
     "label": "Documentos",
     "description": "Genere archivos PDF de facturas, recibos y contratos a partir de cargas útiles JSON.",
-    "eyebrow": "categoría",
+    "eyebrow": "Categoría",
     "title": "Genere archivos PDF de transacciones y contratos a pedido.",
     "intro": "Las rutas de documentos convierten cargas útiles compactas JSON en archivos PDF sincrónicos que pueden descargarse directamente o almacenarse mediante su propia aplicación.",
     "summaryCards": [
@@ -2012,7 +2063,7 @@ export const esDocsPages: DocsPageMap = {
         "id": "integration-tips",
         "title": "Consejos de integración",
         "bullets": [
-          "Normalice los espacios y mayúsculas en los identificadores ingresados por el usuario antes de crear la ruta.",
+          "Normalice los espacios y las mayúsculas en los identificadores ingresados por el usuario antes de crear la ruta.",
           "Trate este punto final como una verificación en vivo en lugar de una fuente de registro permanente; Los datos del portal pueden cambiar con el tiempo.",
           "Almacene el resultado de la búsqueda sin procesar junto con su propio contexto de auditoría cuando el resultado informe las acciones de cumplimiento.",
           "Muestre mensajes de usuario claros cuando el portal no esté disponible temporalmente en lugar de convertir los fallos ascendentes en errores de validación genéricos."
@@ -2297,7 +2348,7 @@ export const esDocsPages: DocsPageMap = {
         "bullets": [
           "Envuelva llamadas en un cliente compartido con formas de éxito y error escritas.",
           "Emita métricas de tiempo de espera, mala respuesta, no encontrado y tasas de entrada no válidas por separado.",
-          "Mantenga la lógica de reintento cerca del límite del cliente para que el código del producto no la vuelva a implementar por función.",
+          "Mantenga la lógica de reintento cerca del límite del cliente para que el código del producto no la vuelva a implementar por característica.",
           "Registre ratesDate y sourceLanguage cuando esos campos sean importantes para la auditabilidad o la revisión editorial."
         ]
       }

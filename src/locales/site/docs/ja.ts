@@ -347,7 +347,7 @@ export const jaDocsPages: DocsPageMap = {
             [
               "イバン",
               "はい",
-              "AO 形式 IBAN。ハンドラーは、値をチェックする前に区切り文字を削除し、値を大文字にします。"
+              "AO 形式 IBAN。ハンドラーは値をチェックする前に区切り文字を削除し、値を大文字にします。"
             ]
           ]
         },
@@ -1307,10 +1307,10 @@ export const jaDocsPages: DocsPageMap = {
   "salary": {
     "slug": "salary",
     "label": "給与",
-    "description": "アンゴラの給与計算の仮定に基づいて、純給与、総給与、雇用主コストを推定します。",
+    "description": "補助金の取り扱いを伴うアンゴラの給与規則に基づいて、純給与、総給与、雇用主コストを見積もります。",
     "eyebrow": "カテゴリ",
-    "title": "従業員と雇用主の観点からアンゴラの給与推計を実行します。",
-    "intro": "サラリーファミリーは、従業員の社会保障、雇用主の社会保障、およびサポート対象期間の雇用所得の源泉徴収表について、アンゴラの内部給与仮定を適用します。",
+    "title": "2025 年と 2026 年の税金表と補助金サポートを使用して、アンゴラの給与計算を実行します。",
+    "intro": "給与ファミリは、従業員の社会保障、雇用主の社会保障、サポートされている IRT テーブル、月次または日次の入力モードでの食料や交通の補助金について、アンゴラの給与計算の仮定を適用します。 2026 年の計算ツールは、括弧のラベル付けや給与ステップの四捨五入など、現在の AGT シミュレーターの出力に合わせて調整されています。",
     "summaryCards": [
       {
         "label": "ルート",
@@ -1321,8 +1321,8 @@ export const jaDocsPages: DocsPageMap = {
         "value": "2025 年と 2026 年"
       },
       {
-        "label": "出力",
-        "value": "正味、総、雇用主コスト"
+        "label": "補助金",
+        "value": "食事と交通手段"
       }
     ],
     "sections": [
@@ -1339,17 +1339,17 @@ export const jaDocsPages: DocsPageMap = {
             [
               "/api/v1/salary/net",
               "総給与から手取り給与を推定します。",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/gross",
               "ターゲットネットに必要な総給与を見積もります。",
-              "net, year"
+              "net, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/employer-cost",
               "拠出金を含む雇用主のコストを見積もります。",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ]
           ]
         }
@@ -1357,7 +1357,7 @@ export const jaDocsPages: DocsPageMap = {
       {
         "id": "salary-net-route",
         "title": "GET /api/v1/salary/net",
-        "description": "ソース値が総給与であり、推定手取り金額が必要な場合は、net を使用します。",
+        "description": "ソース値が毎月の基本総給与であり、オプションの補助金を含む推定手取り額が必要な場合は、ネットを使用します。",
         "table": {
           "columns": [
             "パラメータ",
@@ -1368,7 +1368,22 @@ export const jaDocsPages: DocsPageMap = {
             [
               "ひどい",
               "はい",
-              "総月給。"
+              "オプションの補助金前の基本総月給。"
+            ],
+            [
+              "食事補助",
+              "いいえ",
+              "食事補助額。デフォルトは `0` です。"
+            ],
+            [
+              "交通補助金",
+              "いいえ",
+              "交通補助金の値。デフォルトは `0` です。"
+            ],
+            [
+              "補助期間",
+              "いいえ",
+              "毎月の補助金入力には `month` を使用するか、補助金に `22` 営業日を乗算するには `day` を使用します。デフォルトは `month` です。"
             ],
             [
               "年",
@@ -1381,29 +1396,35 @@ export const jaDocsPages: DocsPageMap = {
           {
             "label": "cURL の使用法",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\""
           },
           {
             "label": "Node.js の使用法",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 応答",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"taxableIncome\": 485000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtRate\": 16,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900,\n  \"employerContribution\": 40000,\n  \"assumptions\": [\"Applies monthly employment-income withholding for Angola.\"]\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 1500000,\n  \"totalGrossCompensation\": 1673970.94,\n  \"taxableIncomeBeforeExemptions\": 1623751.81,\n  \"taxableIncome\": 1563751.81,\n  \"employeeSocialSecurity\": 50219.13,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"day\",\n    \"workingDaysApplied\": 22,\n    \"mealSubsidy\": {\n      \"inputAmount\": 4747.77,\n      \"monthlyAmount\": 104450.94,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 74450.94\n    },\n    \"transportSubsidy\": {\n      \"inputAmount\": 3160,\n      \"monthlyAmount\": 69520,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 39520\n    }\n  },\n  \"irtBracket\": 8,\n  \"irtRate\": 22,\n  \"irtTaxAmount\": 306274.18,\n  \"netSalary\": 1317477.63,\n  \"employerContribution\": 133917.68\n}"
           },
           {
             "label": "エラー応答",
             "language": "json",
-            "content": "{\n  \"error\": {\n    \"code\": \"UNSUPPORTED_TAX_YEAR\",\n    \"message\": \"Supported salary-tax years are 2025 and 2026.\",\n    \"year\": 2024\n  }\n}"
+            "content": "{\n  \"error\": {\n    \"code\": \"INVALID_ENUM\",\n    \"message\": \"The \\\"subsidyPeriod\\\" query parameter must be one of: month, day.\",\n    \"field\": \"subsidyPeriod\",\n    \"value\": \"weekly\"\n  }\n}"
           }
+        ],
+        "bullets": [
+          "食料と交通の補助金には、それぞれ月あたり 30,000 クザミの IRT 免除上限が適用されます。",
+          "1 日あたりの補助金投入量は、固定の 22 労働日月で換算されます。",
+          "IRT 補助金の免除が差し引かれる前の拠出報酬には、社会保障が引き続き適用されます。",
+          "2026 ブラケットのメタデータは、現在の AGT シミュレーターの出力に合わせて調整されており、簡略化された二次サマリーとは異なる場合があります。"
         ]
       },
       {
         "id": "salary-gross-route",
         "title": "GET /api/v1/salary/gross",
-        "description": "目標値が純給与であり、その目標値を達成するために必要なおおよその総給与が必要な場合は、gross を使用します。",
+        "description": "目標値が手取り総額であり、指定された補助金で目標値を達成するために必要なおおよその基本総給与が必要な場合は、gross を使用します。",
         "table": {
           "columns": [
             "パラメータ",
@@ -1414,7 +1435,22 @@ export const jaDocsPages: DocsPageMap = {
             [
               "ネット",
               "はい",
-              "希望する純月収。"
+              "希望する純月給総額。"
+            ],
+            [
+              "食事補助",
+              "いいえ",
+              "食事補助額。デフォルトは `0` です。"
+            ],
+            [
+              "交通補助金",
+              "いいえ",
+              "交通補助金の値。デフォルトは `0` です。"
+            ],
+            [
+              "補助期間",
+              "いいえ",
+              "`month` または `day` を使用します。日次モードでは、各補助金に `22` を掛けます。"
             ],
             [
               "年",
@@ -1427,17 +1463,17 @@ export const jaDocsPages: DocsPageMap = {
           {
             "label": "cURL の使用法",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Node.js の使用法",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 応答",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 432900,\n  \"grossSalary\": 500000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 450000,\n  \"grossSalary\": 513200.72,\n  \"totalGrossCompensation\": 553200.72,\n  \"employeeSocialSecurity\": 16596.02,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"month\",\n    \"totalMonthlyAmount\": 40000,\n    \"totalExemptAmount\": 40000\n  },\n  \"irtTaxAmount\": 86604.7,\n  \"netSalary\": 450000\n}"
           },
           {
             "label": "エラー応答",
@@ -1449,7 +1485,7 @@ export const jaDocsPages: DocsPageMap = {
       {
         "id": "salary-employer-cost-route",
         "title": "GET /api/v1/salary/employer-cost",
-        "description": "給与計画で従業員の総給与に加えて会社側の負担が必要な場合は、雇用主コストを使用します。",
+        "description": "給与計画で基本総給与やオプションの補助金に加えて企業側の拠出が必要な場合は、雇用主コストを使用します。",
         "table": {
           "columns": [
             "パラメータ",
@@ -1460,7 +1496,22 @@ export const jaDocsPages: DocsPageMap = {
             [
               "ひどい",
               "はい",
-              "総月給。"
+              "オプションの補助金前の基本総月給。"
+            ],
+            [
+              "食事補助",
+              "いいえ",
+              "食事補助額。デフォルトは `0` です。"
+            ],
+            [
+              "交通補助金",
+              "いいえ",
+              "交通補助金の値。デフォルトは `0` です。"
+            ],
+            [
+              "補助期間",
+              "いいえ",
+              "`month` または `day` を使用します。日次モードでは、各補助金に `22` を掛けます。"
             ],
             [
               "年",
@@ -1473,17 +1524,17 @@ export const jaDocsPages: DocsPageMap = {
           {
             "label": "cURL の使用法",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Node.js の使用法",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 応答",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"employerContribution\": 40000,\n  \"totalEmployerCost\": 540000\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"totalGrossCompensation\": 540000,\n  \"employerContribution\": 43200,\n  \"totalEmployerCost\": 583200\n}"
           },
           {
             "label": "エラー応答",
@@ -1491,7 +1542,7 @@ export const jaDocsPages: DocsPageMap = {
             "content": "{\n  \"error\": {\n    \"code\": \"INVALID_NUMBER\",\n    \"message\": \"The \\\"gross\\\" query parameter must be a non-negative number.\",\n    \"field\": \"gross\",\n    \"value\": \"abc\"\n  }\n}"
           }
         ],
-        "note": "これらのエンドポイントはシナリオ計算ツールであり、給与計算サービスではありません。結果を表示する UI で仮定を明らかにします。"
+        "note": "これらのエンドポイントはシナリオ計算ツールであり、給与計算サービスではありません。結果を表示する UI に、前提条件、課税年度、補助金の扱いを表示します。"
       }
     ],
     "relatedSlugs": [
@@ -1975,7 +2026,7 @@ export const jaDocsPages: DocsPageMap = {
               "ポータルの応答から解析された登録納税者名。"
             ],
             [
-              "タイプ",
+              "種類",
               "ソースポータルから返された納税者の分類。"
             ],
             [

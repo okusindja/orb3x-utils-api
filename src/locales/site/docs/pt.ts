@@ -841,15 +841,15 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
   salary: {
     slug: 'salary',
     label: 'Salário',
-    description: 'Estimativas de salário líquido, bruto e custo do empregador segundo pressupostos angolanos.',
+    description: 'Estimativas de salário líquido, bruto e custo do empregador segundo regras salariais angolanas com subsídios.',
     eyebrow: 'Categoria',
-    title: 'Execute estimativas de payroll para visão do colaborador e do empregador.',
+    title: 'Execute estimativas salariais com tabelas de 2025 e 2026 e suporte a subsídios.',
     intro:
-      'A família de salário aplica pressupostos internos de payroll de Angola para segurança social do trabalhador, do empregador e tabelas de retenção suportadas por ano.',
+      'A família de salário aplica pressupostos de payroll de Angola para segurança social do trabalhador, do empregador, tabelas de IRT suportadas e subsídios de alimentação ou transporte com entrada mensal ou diária. O cálculo de 2026 está alinhado com os resultados actuais do simulador da AGT, incluindo a rotulagem dos escalões e o arredondamento por etapa.',
     summaryCards: [
       { label: 'Rotas', value: '3 GET' },
       { label: 'Anos', value: '2025 e 2026' },
-      { label: 'Saídas', value: 'Líquido, bruto, custo' },
+      { label: 'Subsídios', value: 'Alimentação e transporte' },
     ],
     sections: [
       {
@@ -858,58 +858,95 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
         table: {
           columns: ['Rota', 'Objetivo', 'Query principal'],
           rows: [
-            ['/api/v1/salary/net', 'Estimar salário líquido a partir do bruto.', 'gross, year'],
-            ['/api/v1/salary/gross', 'Estimar o bruto necessário para um líquido desejado.', 'net, year'],
-            ['/api/v1/salary/employer-cost', 'Estimar o custo total do empregador.', 'gross, year'],
+            ['/api/v1/salary/net', 'Estimar salário líquido a partir do bruto.', 'gross, year, mealSubsidy, transportSubsidy, subsidyPeriod'],
+            ['/api/v1/salary/gross', 'Estimar o bruto necessário para um líquido desejado.', 'net, year, mealSubsidy, transportSubsidy, subsidyPeriod'],
+            ['/api/v1/salary/employer-cost', 'Estimar o custo total do empregador.', 'gross, year, mealSubsidy, transportSubsidy, subsidyPeriod'],
           ],
         },
       },
       routeSection({
         id: 'salary-net-route',
         title: 'GET /api/v1/salary/net',
-        description: 'Use net quando o valor de partida é o salário bruto e precisa do líquido estimado.',
+        description: 'Use net quando o valor de partida é o salário bruto base mensal e precisa do líquido estimado com subsídios opcionais.',
         params: [
-          ['gross', 'Sim', 'Salário bruto mensal.'],
+          ['gross', 'Sim', 'Salário bruto base mensal antes dos subsídios opcionais.'],
+          ['mealSubsidy', 'Não', 'Valor do subsídio de alimentação. Por omissão usa `0`.'],
+          ['transportSubsidy', 'Não', 'Valor do subsídio de transporte. Por omissão usa `0`.'],
+          ['subsidyPeriod', 'Não', 'Use `month` para valores mensais ou `day` para multiplicar o subsídio por `22` dias úteis. Por omissão usa `month`.'],
           ['year', 'Não', 'Ano fiscal suportado. Atualmente `2025` ou `2026`. Por omissão usa `2026`.'],
         ],
-        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
-  "grossSalary": 500000,
-  "taxableIncome": 485000,
-  "employeeSocialSecurity": 15000,
-  "irtRate": 16,
-  "irtTaxAmount": 52100,
-  "netSalary": 432900,
-  "employerContribution": 40000,
-  "assumptions": ["Applies monthly employment-income withholding for Angola."]
+  "grossSalary": 1500000,
+  "totalGrossCompensation": 1673970.94,
+  "taxableIncomeBeforeExemptions": 1623751.81,
+  "taxableIncome": 1563751.81,
+  "employeeSocialSecurity": 50219.13,
+  "subsidies": {
+    "subsidyPeriod": "day",
+    "workingDaysApplied": 22,
+    "mealSubsidy": {
+      "inputAmount": 4747.77,
+      "monthlyAmount": 104450.94,
+      "exemptAmount": 30000,
+      "taxableAmount": 74450.94
+    },
+    "transportSubsidy": {
+      "inputAmount": 3160,
+      "monthlyAmount": 69520,
+      "exemptAmount": 30000,
+      "taxableAmount": 39520
+    }
+  },
+  "irtBracket": 8,
+  "irtRate": 22,
+  "irtTaxAmount": 306274.18,
+  "netSalary": 1317477.63,
+  "employerContribution": 133917.68
 }`,
         error: `{
   "error": {
-    "code": "UNSUPPORTED_TAX_YEAR",
-    "message": "Supported salary-tax years are 2025 and 2026.",
-    "year": 2024
+    "code": "INVALID_ENUM",
+    "message": "The \\"subsidyPeriod\\" query parameter must be one of: month, day.",
+    "field": "subsidyPeriod",
+    "value": "weekly"
   }
 }`,
+        bullets: [
+          'Os subsídios de alimentação e de transporte recebem cada um um limite mensal isento de IRT de Kz 30.000.',
+          'Os valores diários de subsídio são convertidos com um mês fixo de 22 dias úteis.',
+          'A segurança social continua a incidir sobre a remuneração contributiva antes da dedução das isenções de IRT dos subsídios.',
+          'Os metadados de escalão de 2026 estão alinhados com os resultados actuais do simulador da AGT, que podem divergir de alguns resumos secundários simplificados.',
+        ],
       }),
       routeSection({
         id: 'salary-gross-route',
         title: 'GET /api/v1/salary/gross',
-        description: 'Use gross quando o valor-alvo é o salário líquido e precisa do bruto aproximado necessário para o atingir.',
+        description: 'Use gross quando o valor-alvo é o líquido total e precisa do salário bruto base aproximado necessário para o atingir com os subsídios informados.',
         params: [
-          ['net', 'Sim', 'Salário líquido mensal desejado.'],
+          ['net', 'Sim', 'Salário líquido mensal total desejado.'],
+          ['mealSubsidy', 'Não', 'Valor do subsídio de alimentação. Por omissão usa `0`.'],
+          ['transportSubsidy', 'Não', 'Valor do subsídio de transporte. Por omissão usa `0`.'],
+          ['subsidyPeriod', 'Não', 'Use `month` ou `day`. O modo diário multiplica cada subsídio por `22`.'],
           ['year', 'Não', 'Ano fiscal suportado. Por omissão usa `2026`.'],
         ],
-        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
-  "targetNetSalary": 432900,
-  "grossSalary": 500000,
-  "employeeSocialSecurity": 15000,
-  "irtTaxAmount": 52100,
-  "netSalary": 432900
+  "targetNetSalary": 450000,
+  "grossSalary": 513200.72,
+  "totalGrossCompensation": 553200.72,
+  "employeeSocialSecurity": 16596.02,
+  "subsidies": {
+    "subsidyPeriod": "month",
+    "totalMonthlyAmount": 40000,
+    "totalExemptAmount": 40000
+  },
+  "irtTaxAmount": 86604.7,
+  "netSalary": 450000
 }`,
         error: `{
   "error": {
@@ -923,18 +960,22 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
       routeSection({
         id: 'salary-employer-cost-route',
         title: 'GET /api/v1/salary/employer-cost',
-        description: 'Use employer-cost quando o planeamento de payroll precisa do custo da empresa em cima do bruto do trabalhador.',
+        description: 'Use employer-cost quando o planeamento de payroll precisa do custo da empresa sobre o bruto base e os subsídios opcionais.',
         params: [
-          ['gross', 'Sim', 'Salário bruto mensal.'],
+          ['gross', 'Sim', 'Salário bruto base mensal antes dos subsídios opcionais.'],
+          ['mealSubsidy', 'Não', 'Valor do subsídio de alimentação. Por omissão usa `0`.'],
+          ['transportSubsidy', 'Não', 'Valor do subsídio de transporte. Por omissão usa `0`.'],
+          ['subsidyPeriod', 'Não', 'Use `month` ou `day`. O modo diário multiplica cada subsídio por `22`.'],
           ['year', 'Não', 'Ano fiscal suportado. Por omissão usa `2026`.'],
         ],
-        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026"',
+        usage: 'curl -s "https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026"',
         success: `{
   "currency": "AOA",
   "year": 2026,
   "grossSalary": 500000,
-  "employerContribution": 40000,
-  "totalEmployerCost": 540000
+  "totalGrossCompensation": 540000,
+  "employerContribution": 43200,
+  "totalEmployerCost": 583200
 }`,
         error: `{
   "error": {
@@ -944,7 +985,7 @@ curl -s -X POST https://utils.api.orb3x.com/api/v1/documents/invoice \\
     "value": "abc"
   }
 }`,
-        note: 'Estes endpoints são calculadoras de cenário, não serviços de processamento salarial. Mostre os pressupostos na UI.',
+        note: 'Estes endpoints são calculadoras de cenário, não serviços de processamento salarial. Mostre os pressupostos, o ano fiscal e o tratamento dos subsídios na UI.',
       }),
     ],
     relatedSlugs: ['finance', 'time', 'examples'],

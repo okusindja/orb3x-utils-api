@@ -1,6 +1,7 @@
 import { GET as getIban } from '@/../app/api/v1/validate/iban/route';
 import { GET as getVat } from '@/../app/api/v1/finance/vat/route';
 import { POST as postInvoice } from '@/../app/api/v1/documents/invoice/route';
+import { GET as getSalaryNet } from '@/../app/api/v1/salary/net/route';
 import { buildAngolanIbanFromBban } from '@/lib/angola/banks';
 
 describe('angola route handlers', () => {
@@ -21,6 +22,33 @@ describe('angola route handlers', () => {
 
     expect(response.status).toBe(200);
     expect(body.netAmount).toBe(100);
+  });
+
+  it('returns salary output with normalized subsidies from the route layer', async () => {
+    const response = getSalaryNet(
+      new Request(
+        'http://localhost/api/v1/salary/net?gross=1500000&year=2026&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day',
+      ),
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.subsidies.workingDaysApplied).toBe(22);
+    expect(body.subsidies.totalMonthlyAmount).toBe(173_970.94);
+    expect(body.irtBracket).toBe(8);
+    expect(body.irtTaxAmount).toBe(306_274.18);
+    expect(body.netSalary).toBe(1_317_477.63);
+  });
+
+  it('returns a validation error for unsupported salary subsidy periods', async () => {
+    const response = getSalaryNet(
+      new Request('http://localhost/api/v1/salary/net?gross=500000&subsidyPeriod=weekly'),
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(body.error.code).toBe('INVALID_ENUM');
+    expect(body.error.field).toBe('subsidyPeriod');
   });
 
   it('returns a PDF from the invoice document route', async () => {

@@ -124,7 +124,7 @@ export const jaSiteCopy: PartialSiteCopy = {
         "フェッチ ヘルパーまたはスモーク テストを配線している間は、サンプル ページを開いたままにしてください。"
       ],
       "tableLabel": "ドキュメントページ",
-      "tableType": "タイプ",
+      "tableType": "種類",
       "tableTypeValue": "ドキュメント",
       "open": "開く"
     }
@@ -319,7 +319,7 @@ export const jaSiteCopy: PartialSiteCopy = {
           "bullets": [
             "API に送信されたリクエストの内容",
             "タイムスタンプ、ルート名、応答ステータスなどのメタデータ",
-            "セキュリティ、デバッグ、レート制御に使用されるネットワークとデバイスの信号"
+            "セキュリティ、デバッグ、レート制御に使用されるネットワークおよびデバイス信号"
           ]
         },
         {

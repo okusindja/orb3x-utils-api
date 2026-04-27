@@ -188,7 +188,7 @@ export const esSiteCopy: PartialSiteCopy = {
     "versionCurrent": "v1",
     "versionLatest": "Lo último",
     "versionDescription": "Documentación API estable actual para la superficie de ruta `/api/v1`.",
-    "onPageLabel": "En esta página",
+    "onPageLabel": "En esta pagina",
     "onPageItems": [
       "Empieza aquí",
       "Rutas",
@@ -199,7 +199,7 @@ export const esSiteCopy: PartialSiteCopy = {
   },
   "docsDetail": {
     "endpoint": "Punto final",
-    "onPage": "En esta página",
+    "onPage": "En esta pagina",
     "relatedPages": "Páginas relacionadas",
     "open": "Abierto"
   },

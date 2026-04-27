@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --watchman=false",
+    "test:watch": "jest --watch --watchman=false"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.13.0",

@@ -1110,7 +1110,7 @@ export const deDocsPages: DocsPageMap = {
         "value": "AOA-zuerst"
       },
       {
-        "label": "Rechnungseingang",
+        "label": "Rechnungseingabe",
         "value": "JSON Nutzlast abfragen"
       }
     ],
@@ -1307,10 +1307,10 @@ export const deDocsPages: DocsPageMap = {
   "salary": {
     "slug": "salary",
     "label": "Gehalt",
-    "description": "Schätzen Sie das Nettogehalt, das Bruttogehalt und die Arbeitgeberkosten unter den Annahmen zur Lohn- und Gehaltsabrechnung in Angola.",
+    "description": "Schätzen Sie das Nettogehalt, das Bruttogehalt und die Arbeitgeberkosten gemäß den angolanischen Lohn- und Gehaltsabrechnungsregeln mit Subventionsabwicklung.",
     "eyebrow": "Kategorie",
-    "title": "Führen Sie Gehaltsschätzungen für Angola für Arbeitnehmer- und Arbeitgeberansichten durch.",
-    "intro": "Die Gehaltsfamilie wendet interne angolanische Gehaltsabrechnungsannahmen für die Sozialversicherung der Arbeitnehmer, die Sozialversicherung des Arbeitgebers und die Quellensteuertabellen für Arbeitseinkommen für unterstützte Jahre an.",
+    "title": "Führen Sie Gehaltsschätzungen für Angola mit Steuertabellen für 2025 und 2026 sowie Subventionsunterstützung durch.",
+    "intro": "Die Gehaltsfamilie wendet die Gehaltsannahmen Angolas für die Sozialversicherung der Arbeitnehmer, die Sozialversicherung des Arbeitgebers, die unterstützten IRT-Tabellen und Lebensmittel- oder Transportzuschüsse mit monatlichen oder täglichen Eingabemodi an. Der 2026-Rechner ist auf die aktuellen AGT-Simulatorausgaben abgestimmt, einschließlich Klammerbeschriftung und Rundung der Gehaltsabrechnungsschritte.",
     "summaryCards": [
       {
         "label": "Routen",
@@ -1321,8 +1321,8 @@ export const deDocsPages: DocsPageMap = {
         "value": "2025 und 2026"
       },
       {
-        "label": "Ausgänge",
-        "value": "Netto-, Brutto-, Arbeitgeberkosten"
+        "label": "Subventionen",
+        "value": "Essen und Transport"
       }
     ],
     "sections": [
@@ -1339,17 +1339,17 @@ export const deDocsPages: DocsPageMap = {
             [
               "/api/v1/salary/net",
               "Schätzen Sie das Take-Home-Gehalt anhand des Bruttogehalts.",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/gross",
               "Schätzen Sie das erforderliche Bruttogehalt für ein Zielnetto.",
-              "net, year"
+              "net, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/employer-cost",
               "Schätzen Sie die Arbeitgeberkosten einschließlich der Beiträge.",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ]
           ]
         }
@@ -1357,7 +1357,7 @@ export const deDocsPages: DocsPageMap = {
       {
         "id": "salary-net-route",
         "title": "GET /api/v1/salary/net",
-        "description": "Verwenden Sie „Netto“, wenn Ihr Quellwert das Bruttogehalt ist und Sie den geschätzten Nettobetrag wünschen.",
+        "description": "Verwenden Sie „Netto“, wenn Ihr Quellwert das monatliche Grundbruttogehalt ist und Sie den geschätzten Nettobetrag einschließlich optionaler Zuschüsse wünschen.",
         "table": {
           "columns": [
             "Parameter",
@@ -1368,7 +1368,22 @@ export const deDocsPages: DocsPageMap = {
             [
               "eklig",
               "Ja",
-              "Bruttomonatsgehalt."
+              "Grundbruttomonatsgehalt vor optionalen Zuschüssen."
+            ],
+            [
+              "Essenszuschuss",
+              "Nein",
+              "Wert des Essenszuschusses. Der Standardwert ist `0`."
+            ],
+            [
+              "Transportsubvention",
+              "Nein",
+              "Wert der Verkehrssubvention. Der Standardwert ist `0`."
+            ],
+            [
+              "Förderzeitraum",
+              "Nein",
+              "Verwenden Sie `month` für monatliche Subventionseingaben oder `day`, um die Subvention mit `22` Arbeitstagen zu multiplizieren. Standardmäßig ist `month`."
             ],
             [
               "Jahr",
@@ -1381,29 +1396,35 @@ export const deDocsPages: DocsPageMap = {
           {
             "label": "cURL Nutzung",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\""
           },
           {
             "label": "Node.js Nutzung",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 Antwort",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"taxableIncome\": 485000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtRate\": 16,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900,\n  \"employerContribution\": 40000,\n  \"assumptions\": [\"Applies monthly employment-income withholding for Angola.\"]\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 1500000,\n  \"totalGrossCompensation\": 1673970.94,\n  \"taxableIncomeBeforeExemptions\": 1623751.81,\n  \"taxableIncome\": 1563751.81,\n  \"employeeSocialSecurity\": 50219.13,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"day\",\n    \"workingDaysApplied\": 22,\n    \"mealSubsidy\": {\n      \"inputAmount\": 4747.77,\n      \"monthlyAmount\": 104450.94,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 74450.94\n    },\n    \"transportSubsidy\": {\n      \"inputAmount\": 3160,\n      \"monthlyAmount\": 69520,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 39520\n    }\n  },\n  \"irtBracket\": 8,\n  \"irtRate\": 22,\n  \"irtTaxAmount\": 306274.18,\n  \"netSalary\": 1317477.63,\n  \"employerContribution\": 133917.68\n}"
           },
           {
             "label": "Fehlerreaktion",
             "language": "json",
-            "content": "{\n  \"error\": {\n    \"code\": \"UNSUPPORTED_TAX_YEAR\",\n    \"message\": \"Supported salary-tax years are 2025 and 2026.\",\n    \"year\": 2024\n  }\n}"
+            "content": "{\n  \"error\": {\n    \"code\": \"INVALID_ENUM\",\n    \"message\": \"The \\\"subsidyPeriod\\\" query parameter must be one of: month, day.\",\n    \"field\": \"subsidyPeriod\",\n    \"value\": \"weekly\"\n  }\n}"
           }
+        ],
+        "bullets": [
+          "Lebensmittel- und Transportsubventionen erhalten jeweils eine eigene monatliche IRT-Befreiungsobergrenze von 30.000 Kz.",
+          "Tägliche Fördermitteleinträge werden mit einem festen 22-Tage-Monat umgerechnet.",
+          "Die Sozialversicherung gilt weiterhin für die beitragsbezogene Vergütung, bevor die IRT-Zuschussbefreiungen abgezogen werden.",
+          "Die Metadaten der Klammer 2026 sind an den aktuellen AGT-Simulatorausgaben ausgerichtet, die von vereinfachten sekundären Zusammenfassungen abweichen können."
         ]
       },
       {
         "id": "salary-gross-route",
         "title": "GET /api/v1/salary/gross",
-        "description": "Verwenden Sie „Brutto“, wenn der Zielwert der Nettolohn ist und Sie das ungefähre Bruttogehalt benötigen, um diesen zu erreichen.",
+        "description": "Verwenden Sie „Brutto“, wenn der Zielwert das Gesamtgehalt zum Mitnehmen ist und Sie das ungefähre Grundbruttogehalt benötigen, das erforderlich ist, um dieses Ziel mit den gegebenen Zuschüssen zu erreichen.",
         "table": {
           "columns": [
             "Parameter",
@@ -1414,7 +1435,22 @@ export const deDocsPages: DocsPageMap = {
             [
               "Netto",
               "Ja",
-              "Gewünschtes Netto-Monatsgehalt."
+              "Gewünschtes Gesamtnettomonatsgehalt."
+            ],
+            [
+              "Essenszuschuss",
+              "Nein",
+              "Wert des Essenszuschusses. Der Standardwert ist `0`."
+            ],
+            [
+              "Transportsubvention",
+              "Nein",
+              "Wert der Verkehrssubvention. Der Standardwert ist `0`."
+            ],
+            [
+              "Förderzeitraum",
+              "Nein",
+              "Verwenden Sie `month` oder `day`. Im Tagesmodus wird jede Subvention mit `22` multipliziert."
             ],
             [
               "Jahr",
@@ -1427,17 +1463,17 @@ export const deDocsPages: DocsPageMap = {
           {
             "label": "cURL Nutzung",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Node.js Nutzung",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 Antwort",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 432900,\n  \"grossSalary\": 500000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 450000,\n  \"grossSalary\": 513200.72,\n  \"totalGrossCompensation\": 553200.72,\n  \"employeeSocialSecurity\": 16596.02,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"month\",\n    \"totalMonthlyAmount\": 40000,\n    \"totalExemptAmount\": 40000\n  },\n  \"irtTaxAmount\": 86604.7,\n  \"netSalary\": 450000\n}"
           },
           {
             "label": "Fehlerreaktion",
@@ -1449,7 +1485,7 @@ export const deDocsPages: DocsPageMap = {
       {
         "id": "salary-employer-cost-route",
         "title": "GET /api/v1/salary/employer-cost",
-        "description": "Verwenden Sie die Arbeitgeberkosten, wenn bei der Lohn- und Gehaltsabrechnung der unternehmensseitige Beitrag zusätzlich zum Bruttogehalt des Arbeitnehmers erforderlich ist.",
+        "description": "Verwenden Sie die Arbeitgeberkosten, wenn bei der Lohn- und Gehaltsabrechnung der unternehmensseitige Beitrag zusätzlich zum Grundbruttogehalt und optionalen Zuschüssen erforderlich ist.",
         "table": {
           "columns": [
             "Parameter",
@@ -1460,7 +1496,22 @@ export const deDocsPages: DocsPageMap = {
             [
               "eklig",
               "Ja",
-              "Bruttomonatsgehalt."
+              "Grundbruttomonatsgehalt vor optionalen Zuschüssen."
+            ],
+            [
+              "Essenszuschuss",
+              "Nein",
+              "Wert des Essenszuschusses. Der Standardwert ist `0`."
+            ],
+            [
+              "Transportsubvention",
+              "Nein",
+              "Wert der Verkehrssubvention. Der Standardwert ist `0`."
+            ],
+            [
+              "Förderzeitraum",
+              "Nein",
+              "Verwenden Sie `month` oder `day`. Im Tagesmodus wird jede Subvention mit `22` multipliziert."
             ],
             [
               "Jahr",
@@ -1473,17 +1524,17 @@ export const deDocsPages: DocsPageMap = {
           {
             "label": "cURL Nutzung",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Node.js Nutzung",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 Antwort",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"employerContribution\": 40000,\n  \"totalEmployerCost\": 540000\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"totalGrossCompensation\": 540000,\n  \"employerContribution\": 43200,\n  \"totalEmployerCost\": 583200\n}"
           },
           {
             "label": "Fehlerreaktion",
@@ -1491,7 +1542,7 @@ export const deDocsPages: DocsPageMap = {
             "content": "{\n  \"error\": {\n    \"code\": \"INVALID_NUMBER\",\n    \"message\": \"The \\\"gross\\\" query parameter must be a non-negative number.\",\n    \"field\": \"gross\",\n    \"value\": \"abc\"\n  }\n}"
           }
         ],
-        "note": "Bei diesen Endpunkten handelt es sich um Szenariorechner, nicht um Gehaltsabrechnungsdienste. Zeigen Sie die Annahmen in jeder Benutzeroberfläche an, die das Ergebnis anzeigt."
+        "note": "Bei diesen Endpunkten handelt es sich um Szenariorechner, nicht um Gehaltsabrechnungsdienste. Zeigen Sie die Annahmen, das Steuerjahr und die Subventionsbehandlung in jeder Benutzeroberfläche an, die das Ergebnis anzeigt."
       }
     ],
     "relatedSlugs": [

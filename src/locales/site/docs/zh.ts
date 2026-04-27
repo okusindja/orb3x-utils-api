@@ -1307,10 +1307,10 @@ export const zhDocsPages: DocsPageMap = {
   "salary": {
     "slug": "salary",
     "label": "薪资",
-    "description": "根据安哥拉工资假设估算净工资、总工资和雇主成本。",
+    "description": "根据安哥拉工资规则和补贴处理估算净工资、总工资和雇主成本。",
     "eyebrow": "类别",
-    "title": "运行安哥拉工资估算以了解雇员和雇主的意见。",
-    "intro": "工资族对雇员社会保障、雇主社会保障和受支持年份的就业收入预扣表应用安哥拉内部工资假设。",
+    "title": "使用 2025 年和 2026 年税表以及补贴支持来估算安哥拉工资。",
+    "intro": "工资族将安哥拉工资假设应用于雇员社会保障、雇主社会保障、支持的IRT表以及按月或按日投入模式的食品或交通补贴。 2026 计算器与当前 AGT 模拟器输出保持一致，包括括号标签和工资单步舍入。",
     "summaryCards": [
       {
         "label": "路线",
@@ -1321,8 +1321,8 @@ export const zhDocsPages: DocsPageMap = {
         "value": "2025 年和 2026 年"
       },
       {
-        "label": "输出",
-        "value": "净额、毛额、雇主成本"
+        "label": "补贴",
+        "value": "膳食和交通"
       }
     ],
     "sections": [
@@ -1339,17 +1339,17 @@ export const zhDocsPages: DocsPageMap = {
             [
               "/api/v1/salary/net",
               "根据工资总额估算实得工资。",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/gross",
               "估计目标净额所需的工资总额。",
-              "net, year"
+              "net, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ],
             [
               "/api/v1/salary/employer-cost",
               "估计雇主成本，包括缴款。",
-              "gross, year"
+              "gross, year, mealSubsidy, transportSubsidy, subsidyPeriod"
             ]
           ]
         }
@@ -1357,7 +1357,7 @@ export const zhDocsPages: DocsPageMap = {
       {
         "id": "salary-net-route",
         "title": "GET /api/v1/salary/net",
-        "description": "当您的源值是工资总额并且您想要估计的实得金额时，请使用净额。",
+        "description": "当您的源值是每月基本工资总额并且您想要包括可选补贴在内的估计实得金额时，请使用净额。",
         "table": {
           "columns": [
             "参数",
@@ -1368,7 +1368,22 @@ export const zhDocsPages: DocsPageMap = {
             [
               "毛重",
               "是的",
-              "每月工资总额。"
+              "可选补贴之前的基本月薪总额。"
+            ],
+            [
+              "膳食补贴",
+              "否",
+              "餐费补贴值。默认为 `0`。"
+            ],
+            [
+              "交通补贴",
+              "否",
+              "交通补贴值。默认为 `0`。"
+            ],
+            [
+              "补贴期",
+              "否",
+              "使用 `month` 作为每月补贴投入，或使用 `day` 将补贴乘以 `22` 个工作日。默认为 `month`。"
             ],
             [
               "年",
@@ -1381,29 +1396,35 @@ export const zhDocsPages: DocsPageMap = {
           {
             "label": "cURL 用法",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\""
           },
           {
             "label": "Node.js 用法",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/net?gross=1500000&mealSubsidy=4747.77&transportSubsidy=3160&subsidyPeriod=day&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 条回复",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"taxableIncome\": 485000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtRate\": 16,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900,\n  \"employerContribution\": 40000,\n  \"assumptions\": [\"Applies monthly employment-income withholding for Angola.\"]\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 1500000,\n  \"totalGrossCompensation\": 1673970.94,\n  \"taxableIncomeBeforeExemptions\": 1623751.81,\n  \"taxableIncome\": 1563751.81,\n  \"employeeSocialSecurity\": 50219.13,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"day\",\n    \"workingDaysApplied\": 22,\n    \"mealSubsidy\": {\n      \"inputAmount\": 4747.77,\n      \"monthlyAmount\": 104450.94,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 74450.94\n    },\n    \"transportSubsidy\": {\n      \"inputAmount\": 3160,\n      \"monthlyAmount\": 69520,\n      \"exemptAmount\": 30000,\n      \"taxableAmount\": 39520\n    }\n  },\n  \"irtBracket\": 8,\n  \"irtRate\": 22,\n  \"irtTaxAmount\": 306274.18,\n  \"netSalary\": 1317477.63,\n  \"employerContribution\": 133917.68\n}"
           },
           {
             "label": "错误响应",
             "language": "json",
-            "content": "{\n  \"error\": {\n    \"code\": \"UNSUPPORTED_TAX_YEAR\",\n    \"message\": \"Supported salary-tax years are 2025 and 2026.\",\n    \"year\": 2024\n  }\n}"
+            "content": "{\n  \"error\": {\n    \"code\": \"INVALID_ENUM\",\n    \"message\": \"The \\\"subsidyPeriod\\\" query parameter must be one of: month, day.\",\n    \"field\": \"subsidyPeriod\",\n    \"value\": \"weekly\"\n  }\n}"
           }
+        ],
+        "bullets": [
+          "食品和交通补贴各自获得每月 30,000 哈萨克斯坦克朗的 IRT 豁免上限。",
+          "每日补贴投入按固定22个工作日折算。",
+          "在扣除 IRT 补贴豁免之前，社会保障仍然适用于缴费型薪酬。",
+          "2026 括号元数据与当前 AGT 模拟器输出保持一致，这可能与简化的辅助摘要不同。"
         ]
       },
       {
         "id": "salary-gross-route",
         "title": "GET /api/v1/salary/gross",
-        "description": "当目标值为净工资并且您需要达到该目标所需的大致工资总额时，请使用毛工资。",
+        "description": "当目标值是实得工资总额并且您需要通过给定补贴达到该目标所需的大致基本工资总额时，请使用毛额。",
         "table": {
           "columns": [
             "参数",
@@ -1414,7 +1435,22 @@ export const zhDocsPages: DocsPageMap = {
             [
               "网",
               "是的",
-              "期望的月净工资。"
+              "期望的月净工资总额。"
+            ],
+            [
+              "膳食补贴",
+              "否",
+              "餐费补贴值。默认为 `0`。"
+            ],
+            [
+              "交通补贴",
+              "否",
+              "交通补贴值。默认为 `0`。"
+            ],
+            [
+              "补贴期",
+              "否",
+              "使用 `month` 或 `day`。每日模式将每项补贴乘以 `22`。"
             ],
             [
               "年",
@@ -1427,17 +1463,17 @@ export const zhDocsPages: DocsPageMap = {
           {
             "label": "cURL 用法",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Node.js 用法",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=432900&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/gross?net=450000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 条回复",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 432900,\n  \"grossSalary\": 500000,\n  \"employeeSocialSecurity\": 15000,\n  \"irtTaxAmount\": 52100,\n  \"netSalary\": 432900\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"targetNetSalary\": 450000,\n  \"grossSalary\": 513200.72,\n  \"totalGrossCompensation\": 553200.72,\n  \"employeeSocialSecurity\": 16596.02,\n  \"subsidies\": {\n    \"subsidyPeriod\": \"month\",\n    \"totalMonthlyAmount\": 40000,\n    \"totalExemptAmount\": 40000\n  },\n  \"irtTaxAmount\": 86604.7,\n  \"netSalary\": 450000\n}"
           },
           {
             "label": "错误响应",
@@ -1449,7 +1485,7 @@ export const zhDocsPages: DocsPageMap = {
       {
         "id": "salary-employer-cost-route",
         "title": "GET /api/v1/salary/employer-cost",
-        "description": "当工资计划需要公司方在员工工资总额之上缴款时，请使用雇主成本。",
+        "description": "当薪资计划需要公司方在基本工资总额和可选补贴之上缴款时，请使用雇主成本。",
         "table": {
           "columns": [
             "参数",
@@ -1460,7 +1496,22 @@ export const zhDocsPages: DocsPageMap = {
             [
               "毛重",
               "是的",
-              "每月工资总额。"
+              "可选补贴之前的基本月薪总额。"
+            ],
+            [
+              "膳食补贴",
+              "否",
+              "餐费补贴值。默认为 `0`。"
+            ],
+            [
+              "交通补贴",
+              "否",
+              "交通补贴值。默认为 `0`。"
+            ],
+            [
+              "补贴期",
+              "否",
+              "使用 `month` 或 `day`。每日模式将每项补贴乘以 `22`。"
             ],
             [
               "年",
@@ -1473,17 +1524,17 @@ export const zhDocsPages: DocsPageMap = {
           {
             "label": "cURL 用法",
             "language": "bash",
-            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\""
+            "content": "curl -s \"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\""
           },
           {
             "label": "Node.js 用法",
             "language": "js",
-            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/v1/salary/employer-cost?gross=500000&mealSubsidy=25000&transportSubsidy=15000&subsidyPeriod=month&year=2026\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           },
           {
             "label": "200 条回复",
             "language": "json",
-            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"employerContribution\": 40000,\n  \"totalEmployerCost\": 540000\n}"
+            "content": "{\n  \"currency\": \"AOA\",\n  \"year\": 2026,\n  \"grossSalary\": 500000,\n  \"totalGrossCompensation\": 540000,\n  \"employerContribution\": 43200,\n  \"totalEmployerCost\": 583200\n}"
           },
           {
             "label": "错误响应",
@@ -1491,7 +1542,7 @@ export const zhDocsPages: DocsPageMap = {
             "content": "{\n  \"error\": {\n    \"code\": \"INVALID_NUMBER\",\n    \"message\": \"The \\\"gross\\\" query parameter must be a non-negative number.\",\n    \"field\": \"gross\",\n    \"value\": \"abc\"\n  }\n}"
           }
         ],
-        "note": "这些端点是场景计算器，而不是工资单归档服务。在显示结果的任何 UI 中呈现假设。"
+        "note": "这些端点是场景计算器，而不是工资单归档服务。在任何显示结果的用户界面中显示假设、纳税年度和补贴待遇。"
       }
     ],
     "relatedSlugs": [
@@ -1884,7 +1935,7 @@ export const zhDocsPages: DocsPageMap = {
               "一系列合同条款。"
             ],
             [
-              "标题/合同号/发行日期/注释",
+              "标题/合同号/发行日期/备注",
               "否",
               "可选的合同元数据字段。"
             ]
@@ -2162,7 +2213,7 @@ export const zhDocsPages: DocsPageMap = {
         "id": "lookup-shape",
         "title": "成功有效负载，无金额",
         "code": {
-          "label": "单位费率查询",
+          "label": "单位费率查找",
           "language": "json",
           "content": "{\n  \"currencyCode\": \"aoa\",\n  \"currencyName\": \"Angolan kwanza\",\n  \"currencySymbol\": \"Kz\",\n  \"countryName\": \"Angola\",\n  \"countryCode\": \"AO\",\n  \"flagImage\": \"https://example.com/flags/ao.png\",\n  \"ratesDate\": \"2026-03-22\",\n  \"baseCurrency\": \"AOA\",\n  \"unitRates\": {\n    \"usd\": 0.0011,\n    \"eur\": 0.0010\n  }\n}"
         }
