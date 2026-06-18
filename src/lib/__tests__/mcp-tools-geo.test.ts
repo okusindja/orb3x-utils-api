@@ -77,7 +77,7 @@ describe('registerGeoTools', () => {
     expect(parsed.code).toBe('PROVINCE_NOT_FOUND');
   });
 
-  it('geo_communes error path: ambiguous municipality returns isError:true code AMBIGUOUS_MUNICIPALITY', async () => {
+  it('geo_communes error path: unknown municipality returns isError:true code MUNICIPALITY_NOT_FOUND', async () => {
     let geoCommunesHandler: ((input: unknown) => Promise<unknown>) | undefined;
     const mockServer = {
       registerTool: (name: string, _meta: unknown, handler: (input: unknown) => Promise<unknown>) => {
@@ -85,10 +85,21 @@ describe('registerGeoTools', () => {
       },
     };
     registerGeoTools(mockServer as never);
-    // 'Calumbo' exists in both Icolo e Bengo and Luanda provinces — triggers AMBIGUOUS_MUNICIPALITY
-    const result = await geoCommunesHandler!({ municipality: 'Calumbo' }) as { isError?: boolean; content: Array<{ text: string }> };
+    const result = await geoCommunesHandler!({ municipality: 'UnknownPlace99' }) as { isError?: boolean; content: Array<{ text: string }> };
     expect(result.isError).toBe(true);
     const parsed = JSON.parse(result.content[0].text);
-    expect(parsed.code).toBe('AMBIGUOUS_MUNICIPALITY');
+    expect(parsed.code).toBe('MUNICIPALITY_NOT_FOUND');
+  });
+
+  it('geo_communes description mentions the province disambiguation parameter (D-03 anti-collision)', () => {
+    const registeredTools: Record<string, { description?: string }> = {};
+    const mockServer = {
+      registerTool: (name: string, meta: { description?: string }) => {
+        registeredTools[name] = meta;
+      },
+    };
+    registerGeoTools(mockServer as never);
+    // The description must mention 'province' to guide LLMs on disambiguation (Pitfall 3)
+    expect(registeredTools['geo_communes']?.description).toMatch(/province/i);
   });
 });
