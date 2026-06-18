@@ -16,6 +16,12 @@ const handler = createMcpHandler(
   {
     basePath: '/api',
     maxDuration: 60,
+    // SSE transport in mcp-handler requires Redis (initializeRedis throws
+    // "redisUrl is required"), which conflicts with the locked no-Redis /
+    // free-tier constraint. Disable it so the SSE GET returns a clean 404
+    // instead of a 500. Streamable HTTP (POST) needs no Redis and is the
+    // transport all modern MCP clients use.
+    disableSse: true,
     verboseLogs: process.env.NODE_ENV === 'development',
   },
 );
