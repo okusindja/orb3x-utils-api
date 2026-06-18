@@ -22,7 +22,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 ### Location Tools (Phone, Geo, Address)
 
 - [x] **LOC-01**: Client can validate/parse an Angola phone number via an MCP tool
-- [ ] **LOC-02**: Client can resolve Angola geolocation data (provinces/municipalities) via an MCP tool
+- [x] **LOC-02**: Client can resolve Angola geolocation data (provinces/municipalities) via an MCP tool
 - [ ] **LOC-03**: Client can parse/normalize an Angola address via an MCP tool
 
 ### Calendar Tools
@@ -104,7 +104,7 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | PERF-01 | Phase 1 | Complete |
 | SAL-01 | Phase 2 | Complete |
 | LOC-01 | Phase 2 | Complete |
-| LOC-02 | Phase 2 | Pending |
+| LOC-02 | Phase 2 | Complete |
 | LOC-03 | Phase 2 | Pending |
 | CAL-01 | Phase 2 | Pending |
 | FIN-01 | Phase 3 | Pending |
