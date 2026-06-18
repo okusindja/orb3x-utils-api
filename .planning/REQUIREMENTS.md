@@ -27,7 +27,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Calendar Tools
 
-- [ ] **CAL-01**: Client can query Angola calendar/holiday information via an MCP tool
+- [x] **CAL-01**: Client can query Angola calendar/holiday information via an MCP tool
 
 ### Finance & Currency Tools
 
@@ -106,7 +106,7 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | LOC-01 | Phase 2 | Complete |
 | LOC-02 | Phase 2 | Complete |
 | LOC-03 | Phase 2 | Pending |
-| CAL-01 | Phase 2 | Pending |
+| CAL-01 | Phase 2 | Complete |
 | FIN-01 | Phase 3 | Pending |
 | FIN-02 | Phase 3 | Pending |
 | NIF-01 | Phase 3 | Pending |
