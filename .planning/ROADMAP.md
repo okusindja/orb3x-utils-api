@@ -94,7 +94,23 @@ Plans:
   3. Client calls the NIF lookup tool with a valid NIF and receives AGT portal data; when the portal does not respond within ~25 s, the tool returns `{ isError: true }` with retry guidance text
   4. Client calls the translate tool with a text string and target locale and receives translated text; upstream failures return a structured `isError` response
 
-**Plans**: TBD
+**Plans**: 6 plans
+
+Plans:
+**Wave 1** *(foundation — shared tool-error.ts, must precede external tools, D-02)*
+
+- [ ] 03-01-PLAN.md — mcpToolHandler duck-typed domain-error branch + regression tests (D-01) [FIN-02, NIF-01, TRN-01]
+
+**Wave 2** *(parallel — disjoint per-domain tool modules, depends on Wave 1, D-05)*
+
+- [ ] 03-02-PLAN.md — finance tools (finance_vat, finance_invoice_total, finance_inflation_adjust) + test [FIN-01]
+- [ ] 03-03-PLAN.md — currency tools (currency_rates, currency_convert) + 60s cache + 20s timeout + test [FIN-02]
+- [ ] 03-04-PLAN.md — nif tool (nif_lookup) + D-04 retry enrichment + 25s timeouts (both paths) + test [NIF-01]
+- [ ] 03-05-PLAN.md — translation tool (translate_text) + DoS guard + D-04 enrichment + test [TRN-01]
+
+**Wave 3** *(blocked on Wave 2 — single registry.ts edit, D-05)*
+
+- [ ] 03-06-PLAN.md — registry integration: wire 4 register*Tools + integration test asserting 22 tools + full suite/tsc gate [all]
 
 ### Phase 4: Document Tools
 
@@ -137,6 +153,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. MCP Foundation | 5/5 | Complete   | 2026-06-18 |
 | 2. Core Utility Tools | 6/6 | Complete    | 2026-06-18 |
-| 3. External HTTP Tools | 0/TBD | Not started | - |
+| 3. External HTTP Tools | 0/6 | Not started | - |
 | 4. Document Tools | 0/TBD | Not started | - |
 | 5. MCP Documentation | 0/TBD | Not started | - |
