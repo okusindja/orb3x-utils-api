@@ -1,6 +1,7 @@
 import {
   buildAngolanIbanFromBban,
   findAngolaBankByCode,
+  getAngolaBankLogoBytes,
   getAngolaBanks,
   validateAngolanBankAccount,
   validateAngolanIban,
@@ -30,27 +31,23 @@ describe('angola banks', () => {
     expect(bank?.code).toBe('BAI');
   });
 
-  it('maps embedded asset aliases onto canonical bank codes', () => {
+  it('maps logo bytes for banks with alias-resolved PNG files', () => {
     const banks = getAngolaBanks();
     const bai = banks.find((bank) => bank.code === 'BAI');
-    const bancoValor = banks.find((bank) => bank.code === 'BVB');
-    const finibanco = banks.find((bank) => bank.code === 'FNB');
-    const bancoPostal = banks.find((bank) => bank.code === 'BPT');
-    const bancoSol = banks.find((bank) => bank.code === 'BSOL');
+    const bancoSol = banks.find((bank) => bank.code === 'BSOL'); // alias: SOL.png
 
-    expect(bai?.image).toMatch(/^data:image\/png;base64,/);
-    expect(bancoValor?.image).toMatch(/^data:image\/svg\+xml;base64,/);
-    expect(finibanco?.image).toMatch(/^data:image\/jpeg;base64,/);
-    expect(bancoPostal?.image).toMatch(/^data:image\/webp;base64,/);
-    expect(bancoSol?.image).toMatch(/^data:image\/png;base64,/);
+    // Known logos resolve to Uint8Array with bytes
+    expect(bai?.image).toBeInstanceOf(Uint8Array);
+    expect((bai?.image as Uint8Array).length).toBeGreaterThan(0);
+    expect(bancoSol?.image).toBeInstanceOf(Uint8Array);
+    expect((bancoSol?.image as Uint8Array).length).toBeGreaterThan(0);
   });
 
-  it('uses one shared placeholder image when no embedded logo exists', () => {
-    const banks = getAngolaBanks();
-    const bancoMais = banks.find((bank) => bank.code === 'BMAIS');
-    const bancoDaChina = banks.find((bank) => bank.code === 'BOCLB');
+  it('returns null from getAngolaBankLogoBytes for a bank with no logo file', () => {
+    // A bank whose code has no matching PNG in public/bank-logos/ returns null (D-06)
+    const missingBank = { code: 'NONEXISTENT', name: 'Test', shortName: 'T', ibanBankCode: '9999', aliases: [] };
+    const result = getAngolaBankLogoBytes(missingBank);
 
-    expect(bancoMais?.image).toMatch(/^data:image\/svg\+xml;base64,/);
-    expect(bancoMais?.image).toBe(bancoDaChina?.image);
+    expect(result).toBeNull();
   });
 });
