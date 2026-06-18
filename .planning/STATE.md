@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed Phase 02 Plan 04 — address MCP tools
-last_updated: "2026-06-18T16:30:50.089Z"
+status: verifying
+stopped_at: Completed 02-06-PLAN.md
+last_updated: "2026-06-18T16:33:28.806Z"
 last_activity: 2026-06-18
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 11
-  completed_plans: 10
-  percent: 20
+  completed_plans: 11
+  percent: 40
 ---
 
 # Project State
@@ -27,10 +27,10 @@ See: .planning/PROJECT.md (updated 2026-06-18)
 
 Phase: 2 (core-utility-tools) — EXECUTING
 Plan: 6 of 6
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-06-18
 
-Progress: [█████████░] 91%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [█████████░] 91%
 | Phase 02-core-utility-tools P02 | 5m | 2 tasks | 2 files |
 | Phase 02-core-utility-tools P04 | 5m | 2 tasks | 2 files |
 | Phase 02-core-utility-tools P05 | 1m | 2 tasks | 2 files |
+| Phase 02-core-utility-tools P06 | 8 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,9 @@ Recent decisions affecting current work:
 - Roadmap init: Document tools (Phase 4) deferred until pure-function and external-HTTP patterns are proven.
 - [Phase ?]: Used z.number() (not z.coerce) for MCP typed-JSON salary inputs; registry.ts untouched per D-05
 - [Phase 02 P04]: Used z.number() (not z.coerce) for address limit; address_normalize description documents null components as best-effort (not error); registry.ts untouched per D-05
+- [Phase ?]: Alphabetical ordering (address/calendar/geo/phone/salary after health) in registerAllTools for stable diffs
+- [Phase ?]: Single Wave-2 plan for registry wiring keeps Wave-1 domain plans disjoint and parallel
+- [Phase ?]: 14-name integration test enumerates every tool explicitly as canonical registry assertion
 
 ### Pending Todos
 
@@ -92,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-18T16:30:50.082Z
-Stopped at: Completed Phase 02 Plan 04 — address MCP tools
+Last session: 2026-06-18T16:33:28.787Z
+Stopped at: Completed 02-06-PLAN.md
 Resume file: None
