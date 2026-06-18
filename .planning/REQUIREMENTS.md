@@ -13,7 +13,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 - [x] **MCP-02**: Server runs statelessly on the Vercel free tier — no Redis, Node.js runtime, `maxDuration: 60`. **Revised in Phase 1:** SSE disabled (`disableSse: true`) because `mcp-handler` SSE requires Redis (conflicts with the no-Redis lock); Streamable HTTP is the supported transport, with `mcp-remote` as the bridge for SSE-only clients
 - [x] **MCP-03**: Client can discover all available tools via `tools/list`, each with a `name`, `title`, `description`, and Zod `inputSchema` with per-field descriptions
 - [x] **MCP-04**: A tool that fails returns a structured MCP error (`{ isError: true, content: [...] }`) instead of throwing, mapping `RouteError` and domain error classes to a consistent shape
-- [x] **MCP-05**: Requests to `/api/mcp` are rate-limited per IP via stateless in-memory `middleware.ts` throttling
+- [x] **MCP-05**: Requests to `/api/mcp` are rate-limited per IP via stateless in-memory `middleware.ts` throttling. **Caveat (Phase 1):** best-effort only — per-instance state cannot enforce a global per-IP cap across Vercel's scaled instances (live burst showed 0× 429). Logic unit-verified; a true global limit is deferred to v2 (SEC-01: Vercel Firewall WAF or shared KV)
 
 ### Salary & Tax Tools
 
