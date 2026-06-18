@@ -40,13 +40,13 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 **Wave 1**
 
-- [ ] 01-01-PLAN.md — Wave 0: install MCP packages, extract bank logo PNGs, create failing test scaffolds
+- [x] 01-01-PLAN.md — Wave 0: install MCP packages, extract bank logo PNGs, create failing test scaffolds
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 01-02-PLAN.md — MCP core slice: tool-error boundary, health stub, registry, /api/mcp route (GET/POST/DELETE)
-- [ ] 01-03-PLAN.md — Per-IP rate-limit middleware.ts (60/min, /api/mcp + /api/sse, 429 RouteError shape)
-- [ ] 01-04-PLAN.md — PERF-01: bank-images base64 -> filesystem refactor + banks.ts logo-bytes read
+- [x] 01-02-PLAN.md — MCP core slice: tool-error boundary, health stub, registry, /api/mcp route (GET/POST/DELETE)
+- [x] 01-03-PLAN.md — Per-IP rate-limit middleware.ts (60/min, /api/mcp + /api/sse, 429 RouteError shape)
+- [x] 01-04-PLAN.md — PERF-01: bank-images base64 -> filesystem refactor + banks.ts logo-bytes read
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -122,7 +122,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. MCP Foundation | 0/5 | Planned | - |
+| 1. MCP Foundation | 4/5 | In Progress|  |
 | 2. Core Utility Tools | 0/TBD | Not started | - |
 | 3. External HTTP Tools | 0/TBD | Not started | - |
 | 4. Document Tools | 0/TBD | Not started | - |

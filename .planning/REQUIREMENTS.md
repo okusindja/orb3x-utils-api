@@ -9,11 +9,11 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### MCP Server Foundation
 
-- [ ] **MCP-01**: MCP client can connect to a public Streamable HTTP endpoint at `/api/mcp` (served by `mcp-handler` from `app/api/[transport]/route.ts`, exporting GET/POST/DELETE)
-- [ ] **MCP-02**: Server runs statelessly on the Vercel free tier — no Redis, Node.js runtime, `maxDuration: 60`; both Streamable HTTP and SSE transports left enabled for client compatibility
-- [ ] **MCP-03**: Client can discover all available tools via `tools/list`, each with a `name`, `title`, `description`, and Zod `inputSchema` with per-field descriptions
-- [ ] **MCP-04**: A tool that fails returns a structured MCP error (`{ isError: true, content: [...] }`) instead of throwing, mapping `RouteError` and domain error classes to a consistent shape
-- [ ] **MCP-05**: Requests to `/api/mcp` are rate-limited per IP via stateless in-memory `middleware.ts` throttling
+- [x] **MCP-01**: MCP client can connect to a public Streamable HTTP endpoint at `/api/mcp` (served by `mcp-handler` from `app/api/[transport]/route.ts`, exporting GET/POST/DELETE)
+- [x] **MCP-02**: Server runs statelessly on the Vercel free tier — no Redis, Node.js runtime, `maxDuration: 60`. **Revised in Phase 1:** SSE disabled (`disableSse: true`) because `mcp-handler` SSE requires Redis (conflicts with the no-Redis lock); Streamable HTTP is the supported transport, with `mcp-remote` as the bridge for SSE-only clients
+- [x] **MCP-03**: Client can discover all available tools via `tools/list`, each with a `name`, `title`, `description`, and Zod `inputSchema` with per-field descriptions
+- [x] **MCP-04**: A tool that fails returns a structured MCP error (`{ isError: true, content: [...] }`) instead of throwing, mapping `RouteError` and domain error classes to a consistent shape
+- [x] **MCP-05**: Requests to `/api/mcp` are rate-limited per IP via stateless in-memory `middleware.ts` throttling
 
 ### Salary & Tax Tools
 
@@ -52,7 +52,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Performance Hardening
 
-- [ ] **PERF-01**: `src/lib/angola/bank-images.ts` is refactored from ~1.4 MB inline base64 to URL references under `public/bank-logos/`, reducing PDF payload size and cold-start time
+- [x] **PERF-01**: `src/lib/angola/bank-images.ts` is refactored from ~1.4 MB inline base64 to URL references under `public/bank-logos/`, reducing PDF payload size and cold-start time
 
 ### Documentation
 
@@ -96,12 +96,12 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MCP-01 | Phase 1 | Pending |
-| MCP-02 | Phase 1 | Pending |
-| MCP-03 | Phase 1 | Pending |
-| MCP-04 | Phase 1 | Pending |
-| MCP-05 | Phase 1 | Pending |
-| PERF-01 | Phase 1 | Pending |
+| MCP-01 | Phase 1 | Complete |
+| MCP-02 | Phase 1 | Complete |
+| MCP-03 | Phase 1 | Complete |
+| MCP-04 | Phase 1 | Complete |
+| MCP-05 | Phase 1 | Complete |
+| PERF-01 | Phase 1 | Complete |
 | SAL-01 | Phase 2 | Pending |
 | LOC-01 | Phase 2 | Pending |
 | LOC-02 | Phase 2 | Pending |

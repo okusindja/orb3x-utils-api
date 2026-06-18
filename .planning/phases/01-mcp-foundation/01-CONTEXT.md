@@ -35,7 +35,7 @@ Covers requirements MCP-01, MCP-02, MCP-03, MCP-04, MCP-05, PERF-01. No domain t
 - **D-07:** Phase 1 ships a minimal **`health` stub tool** (returns server status) so `tools/list` + tool-call + error-path are exercised end-to-end before real tools land. The stub may be removed or kept once Phase 2 adds real tools.
 
 ### Endpoint & Transport (MCP-01, MCP-02)
-- **D-08:** Public path is **`/api/mcp`** (`basePath: '/api'`, `[transport]` dynamic segment). Both Streamable HTTP (POST) and SSE (GET) transports stay enabled for client compatibility — do NOT pass `disableSse`.
+- **D-08:** Public path is **`/api/mcp`** (`basePath: '/api'`, `[transport]` dynamic segment). **Revised during execution (2026-06-18):** SSE is **disabled** (`disableSse: true`). Verification proved `mcp-handler@1.1.0`'s SSE GET transport calls `initializeRedis()` and throws `"redisUrl is required"` → HTTP 500 without Redis. Keeping SSE would require Redis, which violates the locked no-Redis / free-tier constraint. Streamable HTTP (POST) needs no Redis and is the transport all modern MCP clients (Claude Desktop/Code, Cursor) use; SSE-only clients can bridge via `mcp-remote`. The earlier "keep both transports" wording was based on a research assumption (MEDIUM confidence) that SSE worked statelessly — disproven by MCP Inspector.
 
 ### Verification
 - **D-09:** Validate with **MCP Inspector** (`npx @modelcontextprotocol/inspector`) against `http://localhost:3000/api/mcp`, AND connect a **real MCP client (Claude Desktop/Code)** to the deployed `/api/mcp` before declaring the phase done.

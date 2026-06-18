@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { RouteError } from '@/lib/route-error';
 import {
   compactWhitespace,
@@ -6,7 +7,7 @@ import {
   onlyAlphaNumeric,
   onlyDigits,
 } from '@/lib/angola/shared';
-import { ANGOLA_BANK_IMAGE_DATA } from '@/lib/angola/bank-images';
+import { getAngolaBankLogoPath } from '@/lib/angola/bank-images';
 
 export type AngolaBank = {
   code: string;
@@ -62,13 +63,22 @@ const BANK_IMAGE_CODE_ALIASES: Record<string, string> = {
   FNB: 'FINIBANCO',
 };
 
-const BANK_IMAGE_PLACEHOLDER = ANGOLA_BANK_IMAGE_DATA.PLACEHOLDER;
-const bankImageCache = new Map<string, string>();
+export function getAngolaBankLogoBytes(bank: AngolaBank): Uint8Array | null {
+  const imageKey = BANK_IMAGE_CODE_ALIASES[bank.code] ?? bank.code;
+  const path = getAngolaBankLogoPath(imageKey);
+  if (!path) return null;
+  try {
+    const buf = readFileSync(path);
+    return new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+  } catch {
+    return null; // D-06: graceful degradation — missing file → no logo
+  }
+}
 
 export function getAngolaBanks() {
   return BANKS.map((bank) => ({
     ...bank,
-    image: getAngolaBankImage(bank),
+    image: getAngolaBankLogoBytes(bank),
   }));
 }
 
@@ -164,7 +174,7 @@ export function validateAngolanBankAccount(rawAccount: string) {
           ibanBankCode: bank.ibanBankCode,
           name: bank.name,
           shortName: bank.shortName,
-          image: getAngolaBankImage(bank),
+          image: getAngolaBankLogoBytes(bank),
         }
       : null,
     components: parts,
@@ -223,7 +233,7 @@ export function validateAngolanIban(rawIban: string) {
           ibanBankCode: bank.ibanBankCode,
           name: bank.name,
           shortName: bank.shortName,
-          image: getAngolaBankImage(bank),
+          image: getAngolaBankLogoBytes(bank),
         }
       : null,
     components: parts,
@@ -269,16 +279,3 @@ function computeIbanCheckDigits(countryCode: string, bban: string) {
   return String(98 - remainder).padStart(2, '0');
 }
 
-function getAngolaBankImage(bank: AngolaBank) {
-  const cached = bankImageCache.get(bank.code);
-
-  if (cached) {
-    return cached;
-  }
-
-  const imageKey = BANK_IMAGE_CODE_ALIASES[bank.code] ?? bank.code;
-  const image = ANGOLA_BANK_IMAGE_DATA[imageKey] ?? BANK_IMAGE_PLACEHOLDER;
-
-  bankImageCache.set(bank.code, image);
-  return image;
-}
