@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 2 context gathered
-last_updated: "2026-06-18T16:25:16.807Z"
+last_updated: "2026-06-18T17:00:00.000Z"
 last_activity: 2026-06-18
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 11
-  completed_plans: 8
-  percent: 20
+  completed_plans: 9
+  percent: 22
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-18)
 ## Current Position
 
 Phase: 2 (core-utility-tools) — EXECUTING
-Plan: 4 of 6
+Plan: 5 of 6
 Status: Ready to execute
 Last activity: 2026-06-18
 
-Progress: [███████░░░] 73%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [███████░░░] 73%
 | Phase 01 P05 | 3m | 2 tasks | 0 files |
 | Phase 02-core-utility-tools P01 | 5m | 2 tasks | 2 files |
 | Phase 02-core-utility-tools P02 | 5m | 2 tasks | 2 files |
+| Phase 02-core-utility-tools P04 | 5m | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,7 @@ Recent decisions affecting current work:
 - Roadmap init: Rate limiting (MCP-05) placed in Phase 1 — must be in place before the endpoint is public.
 - Roadmap init: Document tools (Phase 4) deferred until pure-function and external-HTTP patterns are proven.
 - [Phase ?]: Used z.number() (not z.coerce) for MCP typed-JSON salary inputs; registry.ts untouched per D-05
+- [Phase 02 P04]: Used z.number() (not z.coerce) for address limit; address_normalize description documents null components as best-effort (not error); registry.ts untouched per D-05
 
 ### Pending Todos
 
@@ -89,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-18T16:25:16.800Z
-Stopped at: Phase 2 context gathered
+Last session: 2026-06-18T17:00:00.000Z
+Stopped at: Completed Phase 02 Plan 04 — address MCP tools
 Resume file: None
