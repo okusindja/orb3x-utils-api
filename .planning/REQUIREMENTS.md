@@ -9,8 +9,8 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### MCP Server Foundation
 
-- [ ] **MCP-01**: MCP client can connect to a public Streamable HTTP endpoint at `/api/mcp` (served by `mcp-handler` from `app/api/[transport]/route.ts`, exporting GET/POST/DELETE)
-- [ ] **MCP-02**: Server runs statelessly on the Vercel free tier — no Redis, Node.js runtime, `maxDuration: 60`; both Streamable HTTP and SSE transports left enabled for client compatibility
+- [x] **MCP-01**: MCP client can connect to a public Streamable HTTP endpoint at `/api/mcp` (served by `mcp-handler` from `app/api/[transport]/route.ts`, exporting GET/POST/DELETE)
+- [x] **MCP-02**: Server runs statelessly on the Vercel free tier — no Redis, Node.js runtime, `maxDuration: 60`; both Streamable HTTP and SSE transports left enabled for client compatibility
 - [x] **MCP-03**: Client can discover all available tools via `tools/list`, each with a `name`, `title`, `description`, and Zod `inputSchema` with per-field descriptions
 - [x] **MCP-04**: A tool that fails returns a structured MCP error (`{ isError: true, content: [...] }`) instead of throwing, mapping `RouteError` and domain error classes to a consistent shape
 - [x] **MCP-05**: Requests to `/api/mcp` are rate-limited per IP via stateless in-memory `middleware.ts` throttling
@@ -96,8 +96,8 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MCP-01 | Phase 1 | Pending |
-| MCP-02 | Phase 1 | Pending |
+| MCP-01 | Phase 1 | Complete |
+| MCP-02 | Phase 1 | Complete |
 | MCP-03 | Phase 1 | Complete |
 | MCP-04 | Phase 1 | Complete |
 | MCP-05 | Phase 1 | Complete |
