@@ -616,7 +616,7 @@ All code-level claims (signatures, error codes, timeout locations, line numbers)
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **D-01 `mcpToolHandler` extra-property spread:** Should the duck-typed branch spread ALL additional enumerable error properties (enabling `retryable`, `retryAfterSeconds` set via `Object.assign` in tool callbacks), or should those fields be serialized explicitly? The spread approach is cleaner (domain-agnostic) but relies on `Object.assign` side-effects. **Recommendation:** Use the spread — it's still domain-agnostic and avoids the handler needing any per-field knowledge.
 
