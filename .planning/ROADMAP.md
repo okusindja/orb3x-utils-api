@@ -14,7 +14,7 @@ This milestone adds a public MCP server to the existing Angola utilities API. Th
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: MCP Foundation** - Endpoint live, rate-limited, error-safe, with bank-images refactored (completed 2026-06-18)
-- [ ] **Phase 2: Core Utility Tools** - Salary, phone, geo, address, and calendar tools registered and callable
+- [x] **Phase 2: Core Utility Tools** - Salary, phone, geo, address, and calendar tools registered and callable (completed 2026-06-18)
 - [ ] **Phase 3: External HTTP Tools** - Finance, currency, NIF, and translation tools with upstream timeout guards
 - [ ] **Phase 4: Document Tools** - Invoice, receipt, and contract PDF tools with size guard and restored v1 shims
 - [ ] **Phase 5: MCP Documentation** - MCP docs page live in all 7 locales
@@ -71,15 +71,15 @@ Plans:
 Plans:
 **Wave 1** *(parallel — disjoint per-domain tool modules, D-05)*
 
-- [ ] 02-01-PLAN.md — salary tools (salary_net, salary_gross, salary_employer_cost) + test [SAL-01]
-- [ ] 02-02-PLAN.md — phone tools (phone_parse, phone_validate, phone_operator) + test [LOC-01]
-- [ ] 02-03-PLAN.md — geo tools (geo_provinces, geo_municipalities, geo_communes) + test [LOC-02]
-- [ ] 02-04-PLAN.md — address tools (address_normalize, address_suggest) + test [LOC-03]
-- [ ] 02-05-PLAN.md — calendar tools (calendar_holidays, calendar_working_days, calendar_add_working_days) + test [CAL-01]
+- [x] 02-01-PLAN.md — salary tools (salary_net, salary_gross, salary_employer_cost) + test [SAL-01]
+- [x] 02-02-PLAN.md — phone tools (phone_parse, phone_validate, phone_operator) + test [LOC-01]
+- [x] 02-03-PLAN.md — geo tools (geo_provinces, geo_municipalities, geo_communes) + test [LOC-02]
+- [x] 02-04-PLAN.md — address tools (address_normalize, address_suggest) + test [LOC-03]
+- [x] 02-05-PLAN.md — calendar tools (calendar_holidays, calendar_working_days, calendar_add_working_days) + test [CAL-01]
 
 **Wave 2** *(blocked on Wave 1 — single registry.ts edit, D-05)*
 
-- [ ] 02-06-PLAN.md — registry integration: wire all 5 register*Tools + integration test asserting 14 tools + tsc gate [all]
+- [x] 02-06-PLAN.md — registry integration: wire all 5 register*Tools + integration test asserting 14 tools + tsc gate [all]
 
 ### Phase 3: External HTTP Tools
 
@@ -136,7 +136,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. MCP Foundation | 5/5 | Complete   | 2026-06-18 |
-| 2. Core Utility Tools | 0/6 | Not started | - |
+| 2. Core Utility Tools | 6/6 | Complete    | 2026-06-18 |
 | 3. External HTTP Tools | 0/TBD | Not started | - |
 | 4. Document Tools | 0/TBD | Not started | - |
 | 5. MCP Documentation | 0/TBD | Not started | - |

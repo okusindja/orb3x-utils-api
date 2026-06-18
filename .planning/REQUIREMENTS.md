@@ -17,17 +17,17 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Salary & Tax Tools
 
-- [ ] **SAL-01**: Client can calculate Angola net salary and tax breakdown from gross input via an MCP tool (reusing `src/lib/angola/salary.ts`)
+- [x] **SAL-01**: Client can calculate Angola net salary and tax breakdown from gross input via an MCP tool (reusing `src/lib/angola/salary.ts`)
 
 ### Location Tools (Phone, Geo, Address)
 
-- [ ] **LOC-01**: Client can validate/parse an Angola phone number via an MCP tool
-- [ ] **LOC-02**: Client can resolve Angola geolocation data (provinces/municipalities) via an MCP tool
-- [ ] **LOC-03**: Client can parse/normalize an Angola address via an MCP tool
+- [x] **LOC-01**: Client can validate/parse an Angola phone number via an MCP tool
+- [x] **LOC-02**: Client can resolve Angola geolocation data (provinces/municipalities) via an MCP tool
+- [x] **LOC-03**: Client can parse/normalize an Angola address via an MCP tool
 
 ### Calendar Tools
 
-- [ ] **CAL-01**: Client can query Angola calendar/holiday information via an MCP tool
+- [x] **CAL-01**: Client can query Angola calendar/holiday information via an MCP tool
 
 ### Finance & Currency Tools
 
@@ -102,11 +102,11 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | MCP-04 | Phase 1 | Complete |
 | MCP-05 | Phase 1 | Complete |
 | PERF-01 | Phase 1 | Complete |
-| SAL-01 | Phase 2 | Pending |
-| LOC-01 | Phase 2 | Pending |
-| LOC-02 | Phase 2 | Pending |
-| LOC-03 | Phase 2 | Pending |
-| CAL-01 | Phase 2 | Pending |
+| SAL-01 | Phase 2 | Complete |
+| LOC-01 | Phase 2 | Complete |
+| LOC-02 | Phase 2 | Complete |
+| LOC-03 | Phase 2 | Complete |
+| CAL-01 | Phase 2 | Complete |
 | FIN-01 | Phase 3 | Pending |
 | FIN-02 | Phase 3 | Pending |
 | NIF-01 | Phase 3 | Pending |

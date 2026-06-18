@@ -39,4 +39,44 @@ describe('registerAllTools', () => {
     expect(typeof schema).toBe('object');
     expect(schema).not.toBeNull();
   });
+
+  it('registers all 14 core utility tools', () => {
+    const registeredTools: Record<string, { title?: string; description?: string; inputSchema?: unknown }> = {};
+
+    const mockServer = {
+      registerTool: (
+        name: string,
+        meta: { title?: string; description?: string; inputSchema?: unknown },
+      ) => {
+        registeredTools[name] = meta;
+      },
+    };
+
+    registerAllTools(mockServer as never);
+
+    const expectedTools = [
+      'salary_net',
+      'salary_gross',
+      'salary_employer_cost',
+      'phone_parse',
+      'phone_validate',
+      'phone_operator',
+      'geo_provinces',
+      'geo_municipalities',
+      'geo_communes',
+      'address_normalize',
+      'address_suggest',
+      'calendar_holidays',
+      'calendar_working_days',
+      'calendar_add_working_days',
+    ];
+
+    for (const name of expectedTools) {
+      expect(registeredTools[name]).toBeDefined();
+      expect(typeof registeredTools[name].description).toBe('string');
+      expect((registeredTools[name].description ?? '').length).toBeGreaterThan(0);
+    }
+
+    expect(Object.keys(registeredTools).length).toBeGreaterThanOrEqual(15);
+  });
 });
