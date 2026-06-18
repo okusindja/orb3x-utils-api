@@ -45,7 +45,7 @@ describe('middleware rate limiter', () => {
     }
 
     const response = mw(makeRequest('9.10.11.12'));
-    const retryAfter = response?.headers?.get?.('Retry-After') ?? response?.headers?.['Retry-After'];
+    const retryAfter = response?.headers?.get('Retry-After');
     expect(retryAfter).toBeDefined();
     expect(Number(retryAfter)).toBeGreaterThan(0);
   });
