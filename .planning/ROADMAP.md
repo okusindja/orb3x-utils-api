@@ -66,7 +66,20 @@ Plans:
   4. Client calls `parse_address` with an address string and receives a normalized Angola address structure
   5. Client calls `query_calendar` with a date or year and receives Angola public holiday/calendar data
 
-**Plans**: TBD
+**Plans**: 6 plans
+
+Plans:
+**Wave 1** *(parallel — disjoint per-domain tool modules, D-05)*
+
+- [ ] 02-01-PLAN.md — salary tools (salary_net, salary_gross, salary_employer_cost) + test [SAL-01]
+- [ ] 02-02-PLAN.md — phone tools (phone_parse, phone_validate, phone_operator) + test [LOC-01]
+- [ ] 02-03-PLAN.md — geo tools (geo_provinces, geo_municipalities, geo_communes) + test [LOC-02]
+- [ ] 02-04-PLAN.md — address tools (address_normalize, address_suggest) + test [LOC-03]
+- [ ] 02-05-PLAN.md — calendar tools (calendar_holidays, calendar_working_days, calendar_add_working_days) + test [CAL-01]
+
+**Wave 2** *(blocked on Wave 1 — single registry.ts edit, D-05)*
+
+- [ ] 02-06-PLAN.md — registry integration: wire all 5 register*Tools + integration test asserting 14 tools + tsc gate [all]
 
 ### Phase 3: External HTTP Tools
 
@@ -123,7 +136,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. MCP Foundation | 5/5 | Complete   | 2026-06-18 |
-| 2. Core Utility Tools | 0/TBD | Not started | - |
+| 2. Core Utility Tools | 0/6 | Not started | - |
 | 3. External HTTP Tools | 0/TBD | Not started | - |
 | 4. Document Tools | 0/TBD | Not started | - |
 | 5. MCP Documentation | 0/TBD | Not started | - |
