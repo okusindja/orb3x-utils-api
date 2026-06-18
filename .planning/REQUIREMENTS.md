@@ -17,7 +17,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Salary & Tax Tools
 
-- [ ] **SAL-01**: Client can calculate Angola net salary and tax breakdown from gross input via an MCP tool (reusing `src/lib/angola/salary.ts`)
+- [x] **SAL-01**: Client can calculate Angola net salary and tax breakdown from gross input via an MCP tool (reusing `src/lib/angola/salary.ts`)
 
 ### Location Tools (Phone, Geo, Address)
 
@@ -102,7 +102,7 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | MCP-04 | Phase 1 | Complete |
 | MCP-05 | Phase 1 | Complete |
 | PERF-01 | Phase 1 | Complete |
-| SAL-01 | Phase 2 | Pending |
+| SAL-01 | Phase 2 | Complete |
 | LOC-01 | Phase 2 | Pending |
 | LOC-02 | Phase 2 | Pending |
 | LOC-03 | Phase 2 | Pending |

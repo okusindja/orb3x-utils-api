@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 2 context gathered
-last_updated: "2026-06-18T16:13:57.976Z"
-last_activity: 2026-06-18 -- Phase 2 execution started
+last_updated: "2026-06-18T16:16:43.310Z"
+last_activity: 2026-06-18
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 11
-  completed_plans: 5
+  completed_plans: 6
   percent: 20
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-18)
 ## Current Position
 
 Phase: 2 (core-utility-tools) — EXECUTING
-Plan: 1 of 6
-Status: Executing Phase 2
-Last activity: 2026-06-18 -- Phase 2 execution started
+Plan: 2 of 6
+Status: Ready to execute
+Last activity: 2026-06-18
 
-Progress: [██████████] 100%
+Progress: [██████░░░░] 55%
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Progress: [██████████] 100%
 | Phase 01-mcp-foundation P03 | 5m | 1 tasks | 1 files |
 | Phase 01-mcp-foundation P04 | 10m | 2 tasks | 3 files |
 | Phase 01 P05 | 3m | 2 tasks | 0 files |
+| Phase 02-core-utility-tools P01 | 5m | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,7 @@ Recent decisions affecting current work:
 - Roadmap init: bank-images refactor (PERF-01) placed in Phase 1 as a prerequisite — eliminates cold-start risk and PDF payload ceiling risk before any document tools are built.
 - Roadmap init: Rate limiting (MCP-05) placed in Phase 1 — must be in place before the endpoint is public.
 - Roadmap init: Document tools (Phase 4) deferred until pure-function and external-HTTP patterns are proven.
+- [Phase ?]: Used z.number() (not z.coerce) for MCP typed-JSON salary inputs; registry.ts untouched per D-05
 
 ### Pending Todos
 
@@ -86,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-18T15:51:41.631Z
+Last session: 2026-06-18T16:16:34.584Z
 Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-core-utility-tools/02-CONTEXT.md
+Resume file: None

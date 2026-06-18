@@ -71,7 +71,7 @@ Plans:
 Plans:
 **Wave 1** *(parallel — disjoint per-domain tool modules, D-05)*
 
-- [ ] 02-01-PLAN.md — salary tools (salary_net, salary_gross, salary_employer_cost) + test [SAL-01]
+- [x] 02-01-PLAN.md — salary tools (salary_net, salary_gross, salary_employer_cost) + test [SAL-01]
 - [ ] 02-02-PLAN.md — phone tools (phone_parse, phone_validate, phone_operator) + test [LOC-01]
 - [ ] 02-03-PLAN.md — geo tools (geo_provinces, geo_municipalities, geo_communes) + test [LOC-02]
 - [ ] 02-04-PLAN.md — address tools (address_normalize, address_suggest) + test [LOC-03]
@@ -136,7 +136,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. MCP Foundation | 5/5 | Complete   | 2026-06-18 |
-| 2. Core Utility Tools | 0/6 | Not started | - |
+| 2. Core Utility Tools | 1/6 | In Progress|  |
 | 3. External HTTP Tools | 0/TBD | Not started | - |
 | 4. Document Tools | 0/TBD | Not started | - |
 | 5. MCP Documentation | 0/TBD | Not started | - |
