@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Phase 5 UI-SPEC approved
-last_updated: "2026-06-19T13:45:29.623Z"
-last_activity: 2026-06-19 -- Phase 05 planning complete
+status: verifying
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-06-19T14:16:01.073Z"
+last_activity: 2026-06-19
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 19
-  completed_plans: 18
-  percent: 80
+  completed_plans: 19
+  percent: 100
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-18)
 
 **Core value:** AI clients can reliably invoke Angola utility functions as MCP tools over a single hosted Vercel endpoint, reusing existing `src/lib/angola/` logic with zero new paid infrastructure.
-**Current focus:** Phase 5 — mcp documentation
+**Current focus:** Phase 05 — mcp-documentation
 
 ## Current Position
 
-Phase: 5
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-06-19 -- Phase 05 planning complete
+Phase: 05 (mcp-documentation) — EXECUTING
+Plan: 1 of 1
+Status: Phase complete — ready for verification
+Last activity: 2026-06-19
 
 Progress: [██████████] 100%
 
@@ -72,6 +72,7 @@ Progress: [██████████] 100%
 | Phase 03-external-http-tools P05 | 8m | 1 tasks | 2 files |
 | Phase 03-external-http-tools P06 | 5 | 2 tasks | 4 files |
 | Phase 04 P01 | 2m | 3 tasks | 4 files |
+| Phase 05 P01 | 25 | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ Recent decisions affecting current work:
 - [Phase 03 P05]: Full per-code comparisons required for retryable guard — bare string literals are always truthy and wrongly mark INVALID_TEXT/INVALID_LANGUAGE as retryable; enriched message uses lowercase 'retry' to satisfy toContain('retry') case-sensitive assertion
 - [Phase ?]: [Phase 04 P01] runPdfTool made generic (T extends { content: unknown[] }) so the 2-block PDF success type satisfies the SDK CallToolResult; only pnpm build's tsc caught it
 - [Phase ?]: [Phase 04 P01] PDF tool success path bypasses mcpToolHandler (returns resource+text directly); only the error path delegates to the shared formatter
+- [Phase ?]: [Phase 05 P01] health tool docsSlug resolved to api-reference (no dedicated HTTP doc page exists)
+- [Phase ?]: [Phase 05 P01] DocsTableCell union widens DocsTable.rows backward-compatibly; DataTable renders object cells as next/link with guarded keys
+- [Phase ?]: [Phase 05 P01] Claude Desktop snippet uses mcp-remote stdio bridge not bare url; '5–30' uses EN DASH U+2013 in all 7 locales; test accessor getLocalizedDocsPage
 
 ### Pending Todos
 
@@ -114,6 +118,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-19T11:10:46.568Z
-Stopped at: Phase 5 UI-SPEC approved
-Resume file: .planning/phases/05-mcp-documentation/05-UI-SPEC.md
+Last session: 2026-06-19T14:16:01.067Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None
