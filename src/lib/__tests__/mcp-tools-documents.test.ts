@@ -123,6 +123,54 @@ describe('registerDocumentTools', () => {
     expect(parsed.retryable).toBe(false);
   });
 
+  // T-04-03 mitigation: the Zod inputSchema must BOUND input size (not just shape),
+  // so an unauthenticated caller cannot drive unbounded O(n) work before the output guard.
+  it('generate_invoice_pdf inputSchema caps items array length (.max)', () => {
+    const { mockServer, registeredTools } = buildMockServer();
+    registerDocumentTools(mockServer);
+
+    const schema = registeredTools['generate_invoice_pdf'].meta.inputSchema as {
+      safeParse: (v: unknown) => { success: boolean };
+    };
+    const baseItem = { description: 'x', quantity: 1, unitPrice: 1, vatRate: 14 };
+    const valid = {
+      seller: { name: 'S' },
+      buyer: { name: 'B' },
+      items: Array.from({ length: 200 }, () => baseItem),
+    };
+    const oversized = {
+      seller: { name: 'S' },
+      buyer: { name: 'B' },
+      items: Array.from({ length: 201 }, () => baseItem),
+    };
+
+    expect(schema.safeParse(valid).success).toBe(true);
+    expect(schema.safeParse(oversized).success).toBe(false);
+  });
+
+  it('generate_contract_pdf inputSchema caps parties and clauses arrays (.max)', () => {
+    const { mockServer, registeredTools } = buildMockServer();
+    registerDocumentTools(mockServer);
+
+    const schema = registeredTools['generate_contract_pdf'].meta.inputSchema as {
+      safeParse: (v: unknown) => { success: boolean };
+    };
+    const party = { name: 'P' };
+
+    const tooManyParties = {
+      parties: Array.from({ length: 51 }, () => party),
+      clauses: ['c'],
+    };
+    const tooManyClauses = {
+      parties: [party, party],
+      clauses: Array.from({ length: 201 }, () => 'c'),
+    };
+
+    expect(schema.safeParse({ parties: [party, party], clauses: ['c'] }).success).toBe(true);
+    expect(schema.safeParse(tooManyParties).success).toBe(false);
+    expect(schema.safeParse(tooManyClauses).success).toBe(false);
+  });
+
   it('generate_invoice_pdf validation error: RouteError surfaces via shared mapping', async () => {
     const { mockServer, registeredTools } = buildMockServer();
     registerDocumentTools(mockServer);
