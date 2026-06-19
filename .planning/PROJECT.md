@@ -1,5 +1,13 @@
 # orb3x-utils-api
 
+## Current State (v1.0 — shipped 2026-06-19)
+
+**Shipped:** Public MCP server (`POST /api/mcp`, Streamable HTTP, Vercel free tier — stateless, no Redis) exposing **25 Angola utility tools** across 11 domains (salary, phone, geo, address, calendar, finance, currency, NIF, translation, documents, health), with a structured error boundary, binary PDF document tools, and a **localized MCP docs page in all 7 locales**. ~31.5k LOC TS/TSX · 25 test files / 119 tests · all 5 phases verified + Nyquist-compliant; external-HTTP/binary/docs phases security-verified.
+
+**Validated (v1.0):** MCP-01..05, CAP-01/02, SAL-01, CAL-01, FIN-01/02, LOC-01/02/03, TRN-01, NIF-01, DOC-01..05, DOCS-01/02/03, PERF-01, STRUCT-01/02. (Full traceability: `milestones/v1.0-REQUIREMENTS.md`.)
+
+**Next milestone goals (candidate):** SEC-01 — true global per-IP rate limiting (Vercel Firewall WAF / shared KV) to replace the best-effort per-instance throttle; STRUCT-02 — MCP content annotations; docs-row↔catalog test (machine-tie the 7-locale docs tables to `MCP_TOOL_CATALOG`); NIF TLS cert-pinning (AR-03-1). Run `/gsd:new-milestone` to define v1.1.
+
 ## What This Is
 
 A Next.js 16 API and documentation site providing Angola-specific utilities — salary/tax
