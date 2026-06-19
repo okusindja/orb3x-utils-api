@@ -304,7 +304,7 @@ Framework: **Jest 30.x** (`jest.config.js`), `@/` → `src/` path alias mirrored
 ### Phase Requirements → Test Map
 | Req ID | Behavior | Test Type | Automated Command | File Exists? |
 |--------|----------|-----------|-------------------|-------------|
-| DOCS-01 | Catalog tool-name set == registry set (no missing/phantom), count == 25 | unit | `pnpm test -- mcp-catalog` | ❌ Wave 0 (new `src/lib/mcp/__tests__/mcp-catalog.test.ts`) |
+| DOCS-01 | Catalog tool-name set == registry set (no missing/phantom), count == 25 | unit | `pnpm test -- mcp-catalog` | ❌ Wave 0 (new `src/lib/__tests__/mcp-catalog.test.ts`) |
 | DOCS-01 | `mcp` page exists & renders for each locale | unit/integration | assert `getLocalizedDocsPage(locale,'mcp')` returns a page with `endpoint.path === '/api/mcp'` for all 7 locales | ❌ Wave 0 |
 | DOCS-02 | All 4 connection snippets present in `connect` section | unit | assert the en `mcp` page `connect` section has 4 `codes[]` and each contains the endpoint URL (or `mcp-remote`) | ❌ Wave 0 |
 | DOCS-02 | NIF 5–30 s latency string present (both surfaces) | unit | assert `nif_lookup` row description contains `5–30` AND a `latency` section note contains `5–30` | ❌ Wave 0 |
@@ -316,7 +316,7 @@ Framework: **Jest 30.x** (`jest.config.js`), `@/` → `src/` path alias mirrored
 - **Phase gate:** `pnpm build` green (TS totality) + full suite green before `/gsd:verify-work`.
 
 ### Wave 0 Gaps
-- [ ] `src/lib/mcp/__tests__/mcp-catalog.test.ts` — registry↔catalog coverage + snippet/latency presence (covers DOCS-01, DOCS-02). Reuse the `jest.mock('@/lib/agt-nif', …)` block from `mcp-registry.test.ts`.
+- [ ] `src/lib/__tests__/mcp-catalog.test.ts` — registry↔catalog coverage + snippet/latency presence (covers DOCS-01, DOCS-02). Reuse the `jest.mock('@/lib/agt-nif', …)` block from `mcp-registry.test.ts`.
 - [ ] `src/lib/mcp/catalog.ts` (or equivalent shared name list) — single source the page AND the test both read.
 - No framework install needed — Jest already configured.
 
@@ -353,14 +353,16 @@ No new local tooling required. Internet access is NOT needed at build/test time 
 | A2 | `health` is the 25th tool (24 enumerated in the existing test + `health` asserted separately) | Tool names | Low — count `>= 25` and the new set-equality test would catch any drift at CI time |
 | A3 | The 6 non-en docs files may reuse en strings for English-canonical fields and still satisfy `DocsPageMap` | Pitfall 3 | Low — verified the annotation is total; reuse is a content choice, types are satisfied either way |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Exact Claude Desktop config form to lead with (bridge vs. Connectors UI).**
+> RESOLVED in 05-01-PLAN.md: Q1 → lead with the `mcp-remote` bridge JSON + a Connectors-UI note; Q2 → `health` links to `api-reference`.
+
+1. **Exact Claude Desktop config form to lead with (bridge vs. Connectors UI).** — RESOLVED: mcp-remote bridge JSON, with a Connectors-UI note.
    - What we know: bare `url` does NOT work in `claude_desktop_config.json`; both the `mcp-remote` bridge and the Settings → Connectors UI do.
    - What's unclear: which the team wants as the primary documented path.
    - Recommendation: lead with the `mcp-remote` bridge JSON (it's copy-pasteable into the snippet block, matching D-05's "Claude Desktop `claude_desktop_config.json`" framing) and add the one-line Connectors-UI note. This satisfies D-05 verbatim while staying correct.
 
-2. **`health` tool docs-slug link target** (Claude's discretion per CONTEXT). Recommend linking to `api-reference` (it exists in `docsPageSlugs`) or rendering it linkless. No blocker.
+2. **`health` tool docs-slug link target** (Claude's discretion per CONTEXT). — RESOLVED: link to `api-reference` (it exists in `docsPageSlugs`). No blocker.
 
 ## Sources
 

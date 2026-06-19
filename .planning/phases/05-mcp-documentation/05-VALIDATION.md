@@ -51,7 +51,7 @@ created: 2026-06-19
 
 ## Wave 0 Requirements
 
-- [ ] `src/lib/__tests__/mcp-catalog.test.ts` (or similar) — registry↔catalog set-equality test + connection-snippet presence + NIF latency string presence. Mirror `mcp-registry.test.ts`'s mock-server `registerTool` capture; keep the `jest.mock('@/lib/agt-nif', …)` block (cheerio/ESM breaks under jsdom otherwise).
+- [ ] `src/lib/__tests__/mcp-catalog.test.ts` — registry↔catalog set-equality test + connection-snippet presence + NIF latency string presence. Mirror `mcp-registry.test.ts`'s mock-server `registerTool` capture; keep the `jest.mock('@/lib/agt-nif', …)` block (cheerio/ESM breaks under jsdom otherwise).
 - [ ] Canonical tool-name source `src/lib/mcp/catalog.ts` (recommended) so the page and the test read ONE list.
 
 *Existing jest infrastructure covers all phase requirements — no framework install needed. The 7-locale totality gate relies on `pnpm build` (tsc), not jest.*
