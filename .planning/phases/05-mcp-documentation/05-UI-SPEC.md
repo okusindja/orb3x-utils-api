@@ -1,10 +1,11 @@
 ---
 phase: 5
 slug: mcp-documentation
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-06-19
+reviewed_at: 2026-06-19
 ---
 
 # Phase 5 — UI Design Contract
@@ -63,6 +64,8 @@ Inherited from `DocsDetailContent`. The MCP page MUST NOT introduce new sizes/we
 | Code | 12.8px | 400 | mono | shiki, `--font-mono` |
 
 2 weights total (400 / 600), as enforced by the renderer. Author content to fit these roles; do not request bold/italic inline emphasis (the renderer outputs plain strings).
+
+> **Note (documented-for-reference, not net-new):** The 7 size roles above are the EXISTING fixed roles of the unchanged `DocsDetailContent` renderer — this phase introduces **none** of them. They are listed only so authored content fits within them. The count exceeds the generic 4-size guideline by inheritance, not by new design debt; no new type scale is created.
 
 ---
 
@@ -173,8 +176,9 @@ Render note: `DocsDetailContent.splitUsageSamples` only special-cases a leading 
   This stays backward-compatible — every existing `string[][]` rows array still satisfies `DocsTableCell[][]`, so no existing locale file changes.
 - `DataTable` in `site-primitives.tsx`: in the cell map, if `typeof cell === 'object'`, render a `next/link` `<Link>` styled `text-primary font-semibold` (matches the accent contract and the existing `relatedSlugs` "Open" link style at `docs-detail-content.tsx` line 175); else render the string as today.
 - `DataTable`'s `rows` prop type widens from `readonly (readonly string[])[]` to accept the cell union.
+- **Key collision (checker note):** `DataTable` currently uses `key={cell}` (`site-primitives.tsx` line 447), which assumes a string. For an object link cell, switch the key to a stable value (e.g. `typeof cell === 'object' ? cell.href : cell`, or the column index). Fold this into the same ~6-line render change — do NOT keep `key={cell}` for object cells.
 
-Scope: ~2 type lines + ~6 render lines. No new component, no new CSS token (reuses `text-primary`). This is in-scope for the planner and is the ONLY render/type change this phase needs.
+Scope: ~2 type lines + ~6 render lines (incl. the key fix). No new component, no new CSS token (reuses `text-primary`). This is in-scope for the planner and is the ONLY render/type change this phase needs.
 
 **Option B — fallback if the team wants zero type changes.** Drop the `Docs` column from the table; instead, after each domain table, render the per-tool links as a `bullets[]` list (the renderer already left-borders bullets) OR rely solely on `relatedSlugs` at the page bottom for navigation. This satisfies "links exist" but weakens D-02's per-row affordance. Use only if Option A is rejected.
 
