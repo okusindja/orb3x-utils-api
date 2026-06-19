@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 Plan 01 complete — duck-typed domain-error branch landed
-last_updated: "2026-06-19T08:59:42.369Z"
+stopped_at: Phase 3 Plan 05 complete — translate_text MCP tool with DoS guard and D-04 enrichment
+last_updated: "2026-06-19T09:08:00.000Z"
 last_activity: 2026-06-19
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 17
-  completed_plans: 15
-  percent: 40
+  completed_plans: 16
+  percent: 94
 ---
 
 # Project State
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-06-18)
 ## Current Position
 
 Phase: 3 (external-http-tools) — EXECUTING
-Plan: 5 of 6
-Status: Ready to execute
+Plan: 6 of 6
+Status: Ready to execute (Plan 05 complete)
 Last activity: 2026-06-19
 
 Progress: [█████████░] 88%
@@ -67,6 +67,7 @@ Progress: [█████████░] 88%
 | Phase 03-external-http-tools P02 | 8min | 1 tasks | 2 files |
 | Phase 03-external-http-tools P03 | 8m | 1 tasks | 3 files |
 | Phase 03-external-http-tools P04 | 5m | 1 tasks | 3 files |
+| Phase 03-external-http-tools P05 | 8m | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,7 @@ Recent decisions affecting current work:
 - [Phase ?]: Cache key normalized BEFORE sanitizeCurrencyCode to avoid divergence (Pitfall 3)
 - [Phase ?]: retryAfterSeconds=5 for UPSTREAM_TIMEOUT/UPSTREAM_UNAVAILABLE; undefined otherwise
 - [Phase ?]: jest.mock for agt-nif in nif test avoids cheerio ESM browser export under jsdom; retryAfterSeconds values: UPSTREAM_TIMEOUT=10, UPSTREAM_UNAVAILABLE=15, UPSTREAM_BAD_RESPONSE=10
+- [Phase 03 P05]: Full per-code comparisons required for retryable guard — bare string literals are always truthy and wrongly mark INVALID_TEXT/INVALID_LANGUAGE as retryable; enriched message uses lowercase 'retry' to satisfy toContain('retry') case-sensitive assertion
 
 ### Pending Todos
 
@@ -106,6 +108,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-19T08:59:38.598Z
-Stopped at: Phase 3 Plan 01 complete — duck-typed domain-error branch landed
+Last session: 2026-06-19T09:08:00.000Z
+Stopped at: Phase 3 Plan 05 complete — translate_text MCP tool with DoS guard and D-04 enrichment
 Resume file: None
