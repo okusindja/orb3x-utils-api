@@ -201,7 +201,9 @@ export const frSiteCopy: PartialSiteCopy = {
     "endpoint": "Point de terminaison",
     "onPage": "Sur cette page",
     "relatedPages": "Pages connexes",
-    "open": "Ouvert"
+    "open": "Ouvert",
+    "copyMarkdown": "Copier en Markdown",
+    "copied": "Copié !"
   },
   "faq": {
     "eyebrow": "FAQ",

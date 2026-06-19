@@ -163,6 +163,8 @@ export const ptSiteCopy = {
     onPage: 'Nesta página',
     relatedPages: 'Páginas relacionadas',
     open: 'Abrir',
+    copyMarkdown: 'Copiar como Markdown',
+    copied: 'Copiado!',
   },
   docsPages: ptDocsPages,
   faq: {

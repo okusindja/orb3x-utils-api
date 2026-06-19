@@ -201,7 +201,9 @@ export const jaSiteCopy: PartialSiteCopy = {
     "endpoint": "エンドポイント",
     "onPage": "このページでは",
     "relatedPages": "関連ページ",
-    "open": "開く"
+    "open": "開く",
+    "copyMarkdown": "Markdown としてコピー",
+    "copied": "コピーしました！"
   },
   "faq": {
     "eyebrow": "FAQ",
