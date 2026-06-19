@@ -2000,12 +2000,29 @@ export const jaDocsPages: DocsPageMap = {
     ],
     "sections": [
       {
+        "id": "example-request",
+        "title": "リクエスト例",
+        "description": "既知の NIF をパスで使用して、納税者のライブペイロードを取得します。",
+        "codes": [
+          {
+            "label": "cURL 使用法",
+            "language": "bash",
+            "content": "curl -s \"https://utils.api.orb3x.com/api/nif/5000509442\""
+          },
+          {
+            "label": "Node.js 使用法",
+            "language": "js",
+            "content": "async function main() {\n  const response = await fetch(\"https://utils.api.orb3x.com/api/nif/5000509442\");\n  if (!response.ok) {\n    throw new Error(`Request failed with status ${response.status}`);\n  }\n  const data = await response.json();\n  console.log(\"Response\", data);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+          }
+        ]
+      },
+      {
         "id": "success-shape",
         "title": "成功のペイロード",
         "code": {
           "label": "200 応答",
           "language": "json",
-          "content": "{\n  \"NIF\": \"004813023LA040\",\n  \"Name\": \"EMPRESA EXEMPLO, LDA\",\n  \"Type\": \"Pessoa Colectiva\",\n  \"Status\": \"Activo\",\n  \"Defaulting\": \"Não\",\n  \"VATRegime\": \"Regime Geral\",\n  \"isTaxResident\": true\n}"
+          "content": "{\n  \"NIF\": \"5000509442\",\n  \"Name\": \"EMPRESA EXEMPLO, LDA\",\n  \"Type\": \"Pessoa Colectiva\",\n  \"Status\": \"Activo\",\n  \"Defaulting\": \"Não\",\n  \"VATRegime\": \"Regime Geral\",\n  \"isTaxResident\": true\n}"
         }
       },
       {
@@ -2314,12 +2331,12 @@ export const jaDocsPages: DocsPageMap = {
           {
             "label": "ターミナルスモークテスト (cURL)",
             "language": "bash",
-            "content": "curl -s https://utils.api.orb3x.com/api/nif/004813023LA040\n\ncurl -s -X POST https://utils.api.orb3x.com/api/translate \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"text\":\"Preciso de ajuda\",\"to\":\"en\"}'\n\ncurl -s \"https://utils.api.orb3x.com/api/exchange/aoa?amount=250000\""
+            "content": "curl -s https://utils.api.orb3x.com/api/nif/5000509442\n\ncurl -s -X POST https://utils.api.orb3x.com/api/translate \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"text\":\"Preciso de ajuda\",\"to\":\"en\"}'\n\ncurl -s \"https://utils.api.orb3x.com/api/exchange/aoa?amount=250000\""
           },
           {
             "label": "ターミナルスモークテスト (Node.js)",
             "language": "js",
-            "content": "async function main() {\n  const response1 = await fetch(\"https://utils.api.orb3x.com/api/nif/004813023LA040\");\n  if (!response1.ok) {\n    throw new Error(`Request failed with status ${response1.status}`);\n  }\n  const data1 = await response1.json();\n  console.log(\"Example 1\", data1);\n\n  const payload2 = {\n    \"text\": \"Preciso de ajuda\",\n    \"to\": \"en\"\n  };\n  const response2 = await fetch(\"https://utils.api.orb3x.com/api/translate\", {\n    method: \"POST\",\n    headers: {\n      \"Content-Type\": \"application/json\",\n    },\n    body: JSON.stringify(payload2)\n  });\n  if (!response2.ok) {\n    throw new Error(`Request failed with status ${response2.status}`);\n  }\n  const data2 = await response2.json();\n  console.log(\"Example 2\", data2);\n\n  const response3 = await fetch(\"https://utils.api.orb3x.com/api/exchange/aoa?amount=250000\");\n  if (!response3.ok) {\n    throw new Error(`Request failed with status ${response3.status}`);\n  }\n  const data3 = await response3.json();\n  console.log(\"Example 3\", data3);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
+            "content": "async function main() {\n  const response1 = await fetch(\"https://utils.api.orb3x.com/api/nif/5000509442\");\n  if (!response1.ok) {\n    throw new Error(`Request failed with status ${response1.status}`);\n  }\n  const data1 = await response1.json();\n  console.log(\"Example 1\", data1);\n\n  const payload2 = {\n    \"text\": \"Preciso de ajuda\",\n    \"to\": \"en\"\n  };\n  const response2 = await fetch(\"https://utils.api.orb3x.com/api/translate\", {\n    method: \"POST\",\n    headers: {\n      \"Content-Type\": \"application/json\",\n    },\n    body: JSON.stringify(payload2)\n  });\n  if (!response2.ok) {\n    throw new Error(`Request failed with status ${response2.status}`);\n  }\n  const data2 = await response2.json();\n  console.log(\"Example 2\", data2);\n\n  const response3 = await fetch(\"https://utils.api.orb3x.com/api/exchange/aoa?amount=250000\");\n  if (!response3.ok) {\n    throw new Error(`Request failed with status ${response3.status}`);\n  }\n  const data3 = await response3.json();\n  console.log(\"Example 3\", data3);\n}\n\nmain().catch((error) => {\n  console.error(error);\n  process.exit(1);\n});"
           }
         ]
       },

@@ -1234,13 +1234,22 @@ Content-Disposition: attachment; filename="contract.pdf"`,
     ],
     sections: [
       {
+        id: 'example-request',
+        title: 'Pedido de exemplo',
+        description: 'Use um NIF conhecido no caminho para obter o payload ao vivo do contribuinte.',
+        codes: makeCurlAndNodeCodeSamples(`curl -s "https://utils.api.orb3x.com/api/nif/5000509442"`, {
+          curl: 'Uso em cURL',
+          node: 'Uso em Node.js',
+        }),
+      },
+      {
         id: 'success-shape',
         title: 'Payload de sucesso',
         code: {
           label: 'Resposta 200',
           language: 'json',
           content: `{
-  "NIF": "004813023LA040",
+  "NIF": "5000509442",
   "Name": "EMPRESA EXEMPLO, LDA",
   "Type": "Pessoa Colectiva",
   "Status": "Activo",
@@ -1481,7 +1490,7 @@ Content-Disposition: attachment; filename="contract.pdf"`,
         id: 'curl',
         title: 'Exemplos em cURL e Node.js',
         codes: makeCurlAndNodeCodeSamples(
-          `curl -s https://utils.api.orb3x.com/api/nif/004813023LA040
+          `curl -s https://utils.api.orb3x.com/api/nif/5000509442
 
 curl -s -X POST https://utils.api.orb3x.com/api/translate \\
   -H "Content-Type: application/json" \\

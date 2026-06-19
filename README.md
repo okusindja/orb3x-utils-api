@@ -16,11 +16,35 @@ Runtime notes:
 
 ### `GET /api/nif/[nif]`
 
+Examples:
+
+```bash
+curl -s "https://utils.api.orb3x.com/api/nif/5000509442"
+```
+
+```js
+async function main() {
+  const response = await fetch("https://utils.api.orb3x.com/api/nif/5000509442");
+
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+
+  const data = await response.json();
+  console.log("Response", data);
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
+```
+
 Returns:
 
 ```json
 {
-  "NIF": "004813023LA040",
+  "NIF": "5000509442",
   "Name": "OKUSINDJA SANGUMBA RODRIGUES DE ALMEIDA",
   "Type": "SINGULAR",
   "Status": "Activo",
