@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 3 Plan 01 complete — duck-typed domain-error branch landed
-last_updated: "2026-06-19T08:51:55.207Z"
+last_updated: "2026-06-19T08:55:35.919Z"
 last_activity: 2026-06-19
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 17
-  completed_plans: 13
+  completed_plans: 14
   percent: 40
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-18)
 ## Current Position
 
 Phase: 3 (external-http-tools) — EXECUTING
-Plan: 3 of 6
+Plan: 4 of 6
 Status: Ready to execute
 Last activity: 2026-06-19
 
-Progress: [████████░░] 76%
+Progress: [████████░░] 82%
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ Progress: [████████░░] 76%
 | Phase 02-core-utility-tools P06 | 8 | 2 tasks | 2 files |
 | Phase 03-external-http-tools P01 | 10m | 1 tasks | 2 files |
 | Phase 03-external-http-tools P02 | 8min | 1 tasks | 2 files |
+| Phase 03-external-http-tools P03 | 8m | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,8 @@ Recent decisions affecting current work:
 - [Phase ?]: 14-name integration test enumerates every tool explicitly as canonical registry assertion
 - [Phase 03 P01]: Double-cast through unknown (as unknown as Record<string,unknown>) required for Object.entries on Error intersection type — TS2352 direct cast rejected
 - [Phase ?]: from/to fields in finance_inflation_adjust use z.string() because adjustForInflation slices strings internally (Pitfall 5)
+- [Phase ?]: Cache key normalized BEFORE sanitizeCurrencyCode to avoid divergence (Pitfall 3)
+- [Phase ?]: retryAfterSeconds=5 for UPSTREAM_TIMEOUT/UPSTREAM_UNAVAILABLE; undefined otherwise
 
 ### Pending Todos
 
@@ -101,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-19T08:51:49.103Z
+Last session: 2026-06-19T08:55:33.238Z
 Stopped at: Phase 3 Plan 01 complete — duck-typed domain-error branch landed
 Resume file: None

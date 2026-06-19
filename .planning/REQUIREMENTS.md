@@ -32,7 +32,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 ### Finance & Currency Tools
 
 - [x] **FIN-01**: Client can run Angola finance utilities (`src/lib/angola/finance.ts`) via an MCP tool
-- [ ] **FIN-02**: Client can fetch currency exchange rates via an MCP tool, with an upstream timeout guard and structured error on failure
+- [x] **FIN-02**: Client can fetch currency exchange rates via an MCP tool, with an upstream timeout guard and structured error on failure
 
 ### NIF Tool
 
@@ -108,7 +108,7 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | LOC-03 | Phase 2 | Complete |
 | CAL-01 | Phase 2 | Complete |
 | FIN-01 | Phase 3 | Complete |
-| FIN-02 | Phase 3 | Pending |
+| FIN-02 | Phase 3 | Complete |
 | NIF-01 | Phase 3 | Pending |
 | TRN-01 | Phase 3 | Pending |
 | DOC-01 | Phase 4 | Pending |
