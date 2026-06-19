@@ -30,6 +30,7 @@ export function Header() {
   const navigationItems = [
     { href: '/docs', label: copy.navigation.docs },
     { href: '/docs/api-reference', label: copy.navigation.apiReference },
+    { href: '/docs/mcp', label: copy.navigation.mcp },
     { href: '/docs/examples', label: copy.navigation.examples },
     { href: '/faq', label: copy.navigation.faq },
   ];
