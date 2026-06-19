@@ -2358,5 +2358,195 @@ export const frDocsPages: DocsPageMap = {
       "api-reference",
       "translation"
     ]
+  },
+  "mcp": {
+    "slug": "mcp",
+    "label": "Serveur MCP",
+    "description": "Connectez des clients IA aux 25 outils utilitaires de l'Angola via un seul endpoint MCP hébergé.",
+    "eyebrow": "Model Context Protocol",
+    "title": "Appelez chaque utilitaire angolais comme un outil MCP via un seul endpoint hébergé",
+    "intro": "Le serveur MCP public expose les 25 outils utilitaires de l'Angola — salaire, téléphone, géographie, adresses, calendrier, finance, change, NIF, traduction et génération de documents — via un seul endpoint Streamable HTTP. Pointez n'importe quel client compatible MCP et découvrez les outils via tools/list.",
+    "endpoint": {
+      "method": "POST",
+      "path": "/api/mcp",
+      "detail": "Streamable HTTP ; SSE est désactivé — utilisez le pont mcp-remote pour les clients SSE uniquement."
+    },
+    "summaryCards": [
+      { "label": "Outils", "value": "25 tools" },
+      { "label": "Transport", "value": "Streamable HTTP" },
+      { "label": "Langues", "value": "7 languages" }
+    ],
+    "sections": [
+      {
+        "id": "connect",
+        "title": "Connecter un client",
+        "description": "Ajoutez l'endpoint hébergé à votre client MCP. Le transport est Streamable HTTP (POST /api/mcp) ; SSE est désactivé. Aucune clé d'API n'est requise — l'endpoint est public. Certains clients nomment le transport \"streamable-http\" ou \"transport\": \"http\" au lieu de \"http\".",
+        "codes": [
+          {
+            "label": "Claude Desktop",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"mcp-remote\", \"https://utils.api.orb3x.com/api/mcp\"]\n    }\n  }\n}"
+          },
+          {
+            "label": "Cursor",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "Generic mcp.json",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"type\": \"http\",\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "mcp-remote bridge",
+            "language": "bash",
+            "content": "npx -y mcp-remote https://utils.api.orb3x.com/api/mcp"
+          }
+        ],
+        "note": "Claude Desktop n'a pas de champ d'URL distante dans claude_desktop_config.json — utilisez le pont mcp-remote ci-dessus, ou ajoutez https://utils.api.orb3x.com/api/mcp directement via Paramètres → Connecteurs → Ajouter un connecteur personnalisé."
+      },
+      {
+        "id": "catalog-platform",
+        "title": "Plateforme",
+        "description": "Outils de disponibilité et d'état du serveur.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["health", "Vérifiez que le serveur MCP est actif et répond.", { "label": "api-reference", "href": "/docs/api-reference" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-salary",
+        "title": "Outils de salaire",
+        "description": "Calcul de paie en Angola : salaire net, brut et coût total employeur.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["salary_net", "Calculez le salaire net après IRT et sécurité sociale à partir du brut.", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_gross", "Calculez le salaire brut requis à partir d'un net cible.", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_employer_cost", "Calculez le coût total employeur, cotisations de sécurité sociale comprises.", { "label": "salary", "href": "/docs/salary" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-phone",
+        "title": "Outils de téléphone",
+        "description": "Analysez, validez et identifiez l'opérateur des numéros de téléphone angolais.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["phone_parse", "Analysez un numéro de téléphone angolais en ses composants structurés.", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_validate", "Validez si une chaîne est un numéro de téléphone angolais bien formé.", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_operator", "Identifiez l'opérateur mobile d'un numéro de téléphone angolais.", { "label": "phone", "href": "/docs/phone" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-address-geo",
+        "title": "Outils d'adresse et de géographie",
+        "description": "Normalisez les adresses et parcourez la hiérarchie province/municipalité/commune.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["address_normalize", "Normalisez une adresse angolaise libre en composants structurés.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["address_suggest", "Suggérez des complétions d'adresse à partir d'une saisie partielle.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_provinces", "Listez toutes les provinces de l'Angola.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_municipalities", "Listez les municipalités d'une province.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_communes", "Listez les communes d'une municipalité.", { "label": "address-geo", "href": "/docs/address-geo" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-calendar",
+        "title": "Outils de calendrier",
+        "description": "Jours fériés de l'Angola et arithmétique des jours ouvrés.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["calendar_holidays", "Listez les jours fériés de l'Angola pour une année donnée.", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_working_days", "Comptez les jours ouvrés entre deux dates, hors jours fériés.", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_add_working_days", "Ajoutez un nombre de jours ouvrés à une date, en sautant les jours fériés.", { "label": "calendar", "href": "/docs/calendar" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-finance",
+        "title": "Outils de finance",
+        "description": "TVA, totaux de facture et ajustement à l'inflation.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["finance_vat", "Calculez la TVA angolaise pour un montant et un taux donnés.", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_invoice_total", "Calculez le total d'une facture à partir de lignes avec TVA appliquée.", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_inflation_adjust", "Ajustez un montant monétaire à l'inflation entre deux dates.", { "label": "finance", "href": "/docs/finance" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-currency",
+        "title": "Outils de change",
+        "description": "Taux de change en temps réel et conversion de devises.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["currency_rates", "Récupérez les taux de change actuels pour une devise de base.", { "label": "currency-exchange", "href": "/docs/currency-exchange" }],
+            ["currency_convert", "Convertissez un montant d'une devise à une autre au taux actuel.", { "label": "currency-exchange", "href": "/docs/currency-exchange" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-nif",
+        "title": "Recherche de NIF",
+        "description": "Recherchez un contribuable par NIF sur le portail AGT en temps réel.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["nif_lookup", "Recherchez un NIF sur le portail AGT. Scraping en direct — 5–30 s ; définissez des délais d'attente généreux.", { "label": "nif-verification", "href": "/docs/nif-verification" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-translation",
+        "title": "Traduction",
+        "description": "Traduisez du texte entre les langues.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["translate_text", "Traduisez du texte et détectez la langue source.", { "label": "translation", "href": "/docs/translation" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-documents",
+        "title": "Génération de documents",
+        "description": "Générez des documents PDF au format de l'Angola.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["generate_invoice_pdf", "Générez un PDF de facture à partir de données structurées.", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_receipt_pdf", "Générez un PDF de reçu à partir de données structurées.", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_contract_pdf", "Générez un PDF de contrat à partir de données structurées.", { "label": "documents", "href": "/docs/documents" }]
+          ]
+        }
+      },
+      {
+        "id": "latency",
+        "title": "Performance et latence",
+        "description": "L'outil nif_lookup fait du scraping en direct sur le portail AGT, il est donc bien plus lent que les outils à fonction pure.",
+        "note": "Les recherches sur le portail AGT prennent 5–30 s. Définissez des délais d'attente clients généreux ; le serveur applique déjà un plafond d'environ 25 s en amont."
+      }
+    ],
+    "relatedSlugs": [
+      "salary",
+      "phone",
+      "address-geo",
+      "calendar",
+      "finance",
+      "documents",
+      "nif-verification",
+      "translation",
+      "currency-exchange"
+    ]
   }
 };

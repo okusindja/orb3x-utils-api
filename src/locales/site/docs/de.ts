@@ -2358,5 +2358,195 @@ export const deDocsPages: DocsPageMap = {
       "api-reference",
       "translation"
     ]
+  },
+  "mcp": {
+    "slug": "mcp",
+    "label": "MCP-Server",
+    "description": "Verbinden Sie KI-Clients mit allen 25 Angola-Utility-Tools über einen einzigen gehosteten MCP-Endpoint.",
+    "eyebrow": "Model Context Protocol",
+    "title": "Rufen Sie jedes Angola-Utility als MCP-Tool über einen einzigen gehosteten Endpoint auf",
+    "intro": "Der öffentliche MCP-Server stellt alle 25 Angola-Utility-Tools — Gehalt, Telefon, Geografie, Adressen, Kalender, Finanzen, Währungsumrechnung, NIF, Übersetzung und Dokumentenerstellung — über einen einzigen Streamable-HTTP-Endpoint bereit. Richten Sie einen beliebigen MCP-kompatiblen Client darauf und entdecken Sie die Tools über tools/list.",
+    "endpoint": {
+      "method": "POST",
+      "path": "/api/mcp",
+      "detail": "Streamable HTTP; SSE ist deaktiviert — verwenden Sie die mcp-remote-Bridge für reine SSE-Clients."
+    },
+    "summaryCards": [
+      { "label": "Tools", "value": "25 tools" },
+      { "label": "Transport", "value": "Streamable HTTP" },
+      { "label": "Sprachen", "value": "7 languages" }
+    ],
+    "sections": [
+      {
+        "id": "connect",
+        "title": "Einen Client verbinden",
+        "description": "Fügen Sie den gehosteten Endpoint zu Ihrem MCP-Client hinzu. Der Transport ist Streamable HTTP (POST /api/mcp); SSE ist deaktiviert. Es ist kein API-Schlüssel erforderlich — der Endpoint ist öffentlich. Manche Clients nennen den Transport \"streamable-http\" oder \"transport\": \"http\" statt \"http\".",
+        "codes": [
+          {
+            "label": "Claude Desktop",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"mcp-remote\", \"https://utils.api.orb3x.com/api/mcp\"]\n    }\n  }\n}"
+          },
+          {
+            "label": "Cursor",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "Generic mcp.json",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"type\": \"http\",\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "mcp-remote bridge",
+            "language": "bash",
+            "content": "npx -y mcp-remote https://utils.api.orb3x.com/api/mcp"
+          }
+        ],
+        "note": "Claude Desktop hat kein Feld für eine Remote-URL in claude_desktop_config.json — verwenden Sie die mcp-remote-Bridge oben, oder fügen Sie https://utils.api.orb3x.com/api/mcp direkt über Einstellungen → Connectors → Benutzerdefinierten Connector hinzufügen hinzu."
+      },
+      {
+        "id": "catalog-platform",
+        "title": "Plattform",
+        "description": "Tools für Verfügbarkeit und Serverstatus.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["health", "Prüfen Sie, ob der MCP-Server aktiv ist und antwortet.", { "label": "api-reference", "href": "/docs/api-reference" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-salary",
+        "title": "Gehalts-Tools",
+        "description": "Lohnabrechnung in Angola: Nettogehalt, Bruttogehalt und Gesamtarbeitgeberkosten.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["salary_net", "Berechnen Sie das Nettogehalt nach IRT und Sozialversicherung aus dem Brutto.", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_gross", "Berechnen Sie das erforderliche Bruttogehalt aus einem Zielnetto.", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_employer_cost", "Berechnen Sie die Gesamtarbeitgeberkosten inklusive Sozialversicherungsbeiträgen.", { "label": "salary", "href": "/docs/salary" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-phone",
+        "title": "Telefon-Tools",
+        "description": "Analysieren, validieren und identifizieren Sie den Betreiber angolanischer Telefonnummern.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["phone_parse", "Zerlegen Sie eine angolanische Telefonnummer in ihre strukturierten Bestandteile.", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_validate", "Validieren Sie, ob eine Zeichenkette eine wohlgeformte angolanische Telefonnummer ist.", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_operator", "Identifizieren Sie den Mobilfunkbetreiber einer angolanischen Telefonnummer.", { "label": "phone", "href": "/docs/phone" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-address-geo",
+        "title": "Adress- und Geografie-Tools",
+        "description": "Normalisieren Sie Adressen und durchsuchen Sie die Hierarchie Provinz/Gemeinde/Kommune.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["address_normalize", "Normalisieren Sie eine freie angolanische Adresse in strukturierte Bestandteile.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["address_suggest", "Schlagen Sie passende Adressvervollständigungen aus einer Teileingabe vor.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_provinces", "Listen Sie alle Provinzen Angolas auf.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_municipalities", "Listen Sie die Gemeinden einer Provinz auf.", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_communes", "Listen Sie die Kommunen einer Gemeinde auf.", { "label": "address-geo", "href": "/docs/address-geo" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-calendar",
+        "title": "Kalender-Tools",
+        "description": "Gesetzliche Feiertage Angolas und Arbeitstagsarithmetik.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["calendar_holidays", "Listen Sie die gesetzlichen Feiertage Angolas für ein bestimmtes Jahr auf.", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_working_days", "Zählen Sie die Arbeitstage zwischen zwei Daten, ohne Feiertage.", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_add_working_days", "Addieren Sie eine Anzahl Arbeitstage zu einem Datum und überspringen Sie Feiertage.", { "label": "calendar", "href": "/docs/calendar" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-finance",
+        "title": "Finanz-Tools",
+        "description": "Mehrwertsteuer, Rechnungssummen und Inflationsanpassung.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["finance_vat", "Berechnen Sie die angolanische Mehrwertsteuer für einen Betrag und Satz.", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_invoice_total", "Berechnen Sie eine Rechnungssumme aus Positionen mit angewandter Mehrwertsteuer.", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_inflation_adjust", "Passen Sie einen Geldbetrag zwischen zwei Daten an die Inflation an.", { "label": "finance", "href": "/docs/finance" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-currency",
+        "title": "Währungs-Tools",
+        "description": "Wechselkurse in Echtzeit und Währungsumrechnung.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["currency_rates", "Rufen Sie die aktuellen Wechselkurse für eine Basiswährung ab.", { "label": "currency-exchange", "href": "/docs/currency-exchange" }],
+            ["currency_convert", "Rechnen Sie einen Betrag zum aktuellen Kurs von einer Währung in eine andere um.", { "label": "currency-exchange", "href": "/docs/currency-exchange" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-nif",
+        "title": "NIF-Abfrage",
+        "description": "Schlagen Sie einen Steuerpflichtigen per NIF im AGT-Portal in Echtzeit nach.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["nif_lookup", "Schlagen Sie eine NIF im AGT-Portal nach. Live-Scraping — 5–30 s; großzügige Timeouts setzen.", { "label": "nif-verification", "href": "/docs/nif-verification" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-translation",
+        "title": "Übersetzung",
+        "description": "Übersetzen Sie Text zwischen Sprachen.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["translate_text", "Übersetzen Sie Text und erkennen Sie die Ausgangssprache.", { "label": "translation", "href": "/docs/translation" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-documents",
+        "title": "Dokumentenerstellung",
+        "description": "Erstellen Sie PDF-Dokumente im Angola-Format.",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["generate_invoice_pdf", "Erstellen Sie ein Rechnungs-PDF aus strukturierten Daten.", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_receipt_pdf", "Erstellen Sie ein Quittungs-PDF aus strukturierten Daten.", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_contract_pdf", "Erstellen Sie ein Vertrags-PDF aus strukturierten Daten.", { "label": "documents", "href": "/docs/documents" }]
+          ]
+        }
+      },
+      {
+        "id": "latency",
+        "title": "Leistung und Latenz",
+        "description": "Das Tool nif_lookup scrapt das AGT-Portal live und ist daher deutlich langsamer als die reinen Funktions-Tools.",
+        "note": "AGT-Portal-Abfragen dauern 5–30 s. Setzen Sie großzügige Client-Timeouts; der Server erzwingt bereits eine Obergrenze von ~25 s vorgelagert."
+      }
+    ],
+    "relatedSlugs": [
+      "salary",
+      "phone",
+      "address-geo",
+      "calendar",
+      "finance",
+      "documents",
+      "nif-verification",
+      "translation",
+      "currency-exchange"
+    ]
   }
 };

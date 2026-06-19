@@ -1548,4 +1548,216 @@ export async function callApi<T>(input: RequestInfo, init?: RequestInit): Promis
     ],
     relatedSlugs: ['getting-started', 'api-reference', 'translation'],
   },
+  mcp: {
+    slug: 'mcp',
+    label: 'MCP Server',
+    description: 'Connect AI clients to all 25 Angola utility tools over one hosted MCP endpoint.',
+    eyebrow: 'Model Context Protocol',
+    title: 'Call every Angola utility as an MCP tool over one hosted endpoint',
+    intro:
+      'The public MCP server exposes all 25 Angola utility tools — salary, phone, geo, address, calendar, finance, currency, NIF, translation, and document generation — over a single Streamable HTTP endpoint. Point any MCP-compatible client at it and discover the tools via tools/list.',
+    endpoint: {
+      method: 'POST',
+      path: '/api/mcp',
+      detail: 'Streamable HTTP; SSE is disabled — use the mcp-remote bridge for SSE-only clients.',
+    },
+    summaryCards: [
+      { label: 'Tools', value: '25 tools' },
+      { label: 'Transport', value: 'Streamable HTTP' },
+      { label: 'Locales', value: '7 languages' },
+    ],
+    sections: [
+      {
+        id: 'connect',
+        title: 'Connect a client',
+        description:
+          'Add the hosted endpoint to your MCP client. Transport is Streamable HTTP (POST /api/mcp); SSE is disabled. No API key is required — the endpoint is public. Some clients name the transport "streamable-http" or "transport": "http" instead of "http".',
+        codes: [
+          {
+            label: 'Claude Desktop',
+            language: 'json',
+            content: `{
+  "mcpServers": {
+    "orb3x-utils": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://utils.api.orb3x.com/api/mcp"]
+    }
+  }
+}`,
+          },
+          {
+            label: 'Cursor',
+            language: 'json',
+            content: `{
+  "mcpServers": {
+    "orb3x-utils": {
+      "url": "https://utils.api.orb3x.com/api/mcp"
+    }
+  }
+}`,
+          },
+          {
+            label: 'Generic mcp.json',
+            language: 'json',
+            content: `{
+  "mcpServers": {
+    "orb3x-utils": {
+      "type": "http",
+      "url": "https://utils.api.orb3x.com/api/mcp"
+    }
+  }
+}`,
+          },
+          {
+            label: 'mcp-remote bridge',
+            language: 'bash',
+            content: 'npx -y mcp-remote https://utils.api.orb3x.com/api/mcp',
+          },
+        ],
+        note: 'Claude Desktop has no remote URL field in claude_desktop_config.json — use the mcp-remote bridge above, or add https://utils.api.orb3x.com/api/mcp directly via Settings → Connectors → Add custom connector.',
+      },
+      {
+        id: 'catalog-platform',
+        title: 'Platform',
+        description: 'Liveness and server-health tooling.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['health', 'Check that the MCP server is up and responding.', { label: 'api-reference', href: '/docs/api-reference' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-salary',
+        title: 'Salary tools',
+        description: 'Angola payroll math: net pay, gross-up, and total employer cost.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['salary_net', 'Compute net salary after IRT and social security from a gross figure.', { label: 'salary', href: '/docs/salary' }],
+            ['salary_gross', 'Work backwards from a target net salary to the required gross.', { label: 'salary', href: '/docs/salary' }],
+            ['salary_employer_cost', 'Compute the total employer cost including social-security contributions.', { label: 'salary', href: '/docs/salary' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-phone',
+        title: 'Phone tools',
+        description: 'Parse, validate, and identify the operator for Angolan phone numbers.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['phone_parse', 'Parse an Angolan phone number into its structured components.', { label: 'phone', href: '/docs/phone' }],
+            ['phone_validate', 'Validate whether a string is a well-formed Angolan phone number.', { label: 'phone', href: '/docs/phone' }],
+            ['phone_operator', 'Identify the mobile operator for an Angolan phone number.', { label: 'phone', href: '/docs/phone' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-address-geo',
+        title: 'Address & geography tools',
+        description: 'Normalize addresses and browse the province/municipality/commune hierarchy.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['address_normalize', 'Normalize a free-form Angolan address into structured components.', { label: 'address-geo', href: '/docs/address-geo' }],
+            ['address_suggest', 'Suggest matching address completions from a partial input.', { label: 'address-geo', href: '/docs/address-geo' }],
+            ['geo_provinces', 'List all Angolan provinces.', { label: 'address-geo', href: '/docs/address-geo' }],
+            ['geo_municipalities', 'List the municipalities within a province.', { label: 'address-geo', href: '/docs/address-geo' }],
+            ['geo_communes', 'List the communes within a municipality.', { label: 'address-geo', href: '/docs/address-geo' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-calendar',
+        title: 'Calendar tools',
+        description: 'Angolan public holidays and working-day arithmetic.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['calendar_holidays', 'List Angolan public holidays for a given year.', { label: 'calendar', href: '/docs/calendar' }],
+            ['calendar_working_days', 'Count working days between two dates, excluding holidays.', { label: 'calendar', href: '/docs/calendar' }],
+            ['calendar_add_working_days', 'Add a number of working days to a date, skipping holidays.', { label: 'calendar', href: '/docs/calendar' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-finance',
+        title: 'Finance tools',
+        description: 'VAT, invoice totals, and inflation adjustment.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['finance_vat', 'Compute Angolan VAT for a given amount and rate.', { label: 'finance', href: '/docs/finance' }],
+            ['finance_invoice_total', 'Compute an invoice total from line items with VAT applied.', { label: 'finance', href: '/docs/finance' }],
+            ['finance_inflation_adjust', 'Adjust a monetary amount for inflation between two dates.', { label: 'finance', href: '/docs/finance' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-currency',
+        title: 'Currency tools',
+        description: 'Live exchange rates and currency conversion.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['currency_rates', 'Fetch current exchange rates for a base currency.', { label: 'currency-exchange', href: '/docs/currency-exchange' }],
+            ['currency_convert', 'Convert an amount from one currency to another at the live rate.', { label: 'currency-exchange', href: '/docs/currency-exchange' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-nif',
+        title: 'NIF lookup',
+        description: 'Look up a taxpayer by NIF on the live AGT portal.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['nif_lookup', 'Look up a NIF on the AGT portal. Live scrape — 5–30 s; set generous timeouts.', { label: 'nif-verification', href: '/docs/nif-verification' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-translation',
+        title: 'Translation',
+        description: 'Translate text between languages.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['translate_text', 'Translate text and detect the source language.', { label: 'translation', href: '/docs/translation' }],
+          ],
+        },
+      },
+      {
+        id: 'catalog-documents',
+        title: 'Document generation',
+        description: 'Generate Angola-format PDF documents.',
+        table: {
+          columns: ['Tool', 'Description', 'Docs'],
+          rows: [
+            ['generate_invoice_pdf', 'Generate an invoice PDF from structured data.', { label: 'documents', href: '/docs/documents' }],
+            ['generate_receipt_pdf', 'Generate a receipt PDF from structured data.', { label: 'documents', href: '/docs/documents' }],
+            ['generate_contract_pdf', 'Generate a contract PDF from structured data.', { label: 'documents', href: '/docs/documents' }],
+          ],
+        },
+      },
+      {
+        id: 'latency',
+        title: 'Performance & latency',
+        description: 'The nif_lookup tool scrapes the live AGT portal, so it is far slower than the pure-function tools.',
+        note: 'AGT portal lookups take 5–30 s. Set generous client timeouts; the server already enforces a ~25 s upstream cap.',
+      },
+    ],
+    relatedSlugs: [
+      'salary',
+      'phone',
+      'address-geo',
+      'calendar',
+      'finance',
+      'documents',
+      'nif-verification',
+      'translation',
+      'currency-exchange',
+    ],
+  },
 };
