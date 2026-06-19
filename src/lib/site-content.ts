@@ -13,6 +13,7 @@ export const docsPageSlugs = [
   'translation',
   'currency-exchange',
   'examples',
+  'mcp',
 ] as const;
 
 export type DocsPageSlug = (typeof docsPageSlugs)[number];
@@ -23,9 +24,11 @@ export type NavItem = {
   description?: string;
 };
 
+export type DocsTableCell = string | { label: string; href: string };
+
 export type DocsTable = {
   columns: string[];
-  rows: string[][];
+  rows: DocsTableCell[][];
 };
 
 export type DocsCodeSample = {
