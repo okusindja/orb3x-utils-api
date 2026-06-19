@@ -146,8 +146,13 @@ Plans:
   3. The NIF tool's AGT portal latency (5–30 s) is disclosed on the docs page with appropriate user guidance
   4. The MCP docs page content follows the existing deep-merge site-copy pattern (`mergeDeep(enSiteCopy, localeCopy)`) and all 7 locale files compile without TypeScript errors
 
-**Plans**: TBD
+**Plans**: 1 plan
 **UI hint**: yes
+
+Plans:
+**Wave 1** *(single complete vertical slice — one localized docs page, no parallel waves)*
+
+- [ ] 05-01-PLAN.md — /docs/mcp page: catalog.ts source + registry-coverage test + DocsTableCell link extension + mcp DocsPage authored & localized in all 7 locales [DOCS-01, DOCS-02, DOCS-03]
 
 ## Progress
 
