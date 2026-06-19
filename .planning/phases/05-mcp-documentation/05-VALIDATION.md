@@ -1,9 +1,9 @@
 ---
 phase: 5
 slug: mcp-documentation
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: verified
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-06-19
 ---
 
@@ -39,11 +39,12 @@ created: 2026-06-19
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 05-01-xx | 01 | 1 | DOCS-01 | — | Registry↔catalog coverage: the `mcp` page catalog lists EXACTLY the registered tool names (set equality vs `registerAllTools`) — no missing, no phantom | unit | `pnpm test -- mcp-catalog` | ❌ W0 | ⬜ pending |
-| 05-01-xx | 01 | 1 | DOCS-01 | — | `'mcp'` added to `docsPageSlugs`; an `mcp` `DocsPage` exists in all 7 locale `DocsPageMap`s; `pnpm build` (tsc) passes | build | `pnpm build` | ❌ W0 | ⬜ pending |
-| 05-01-xx | 01 | 1 | DOCS-02 | — | The `mcp` page includes 4 connection snippets (Claude Desktop via mcp-remote, Cursor, generic mcp.json, npx mcp-remote command), all referencing `https://utils.api.orb3x.com/api/mcp` | unit | `pnpm test -- mcp-catalog` | ❌ W0 | ⬜ pending |
-| 05-01-xx | 01 | 1 | DOCS-03 | — | NIF 5–30 s latency disclosed BOTH inline on the `nif_lookup` catalog row AND in a dedicated "Performance & latency" section | unit | `pnpm test -- mcp-catalog` | ❌ W0 | ⬜ pending |
-| 05-01-xx | 01 | 1 | DOCS-01 | — | `DocsTableCell` link-cell extension renders a working `/docs/[slug]` link without breaking existing `string[][]` tables (existing docs render tests stay green) | unit/build | `pnpm test && pnpm build` | ✅ (existing) | ⬜ pending |
+| 05-01-01 | 01 | 1 | DOCS-01 | — | Registry↔catalog coverage: the `mcp` catalog lists EXACTLY the registered tool names (two-way `Set` equality vs `registerAllTools`, length 25) — no missing, no phantom | unit | `pnpm test -- mcp-catalog` | ✅ | ✅ green |
+| 05-01-02 | 01 | 1 | DOCS-01/03 | — | `'mcp'` in `docsPageSlugs`; a complete `mcp` `DocsPage` exists in all 7 locale `DocsPageMap`s; `pnpm build` (tsc totality) passes | build | `pnpm build` | ✅ | ✅ green |
+| 05-01-01 | 01 | 1 | DOCS-02 | — | The `mcp` page connect section has exactly 4 snippets, each referencing the endpoint URL or `mcp-remote` (Claude Desktop bridge, Cursor, generic mcp.json, npx) | unit | `pnpm test -- mcp-catalog` | ✅ | ✅ green |
+| 05-01-01 | 01 | 1 | DOCS-02/03 | — | NIF `5–30` s latency disclosed BOTH inline on the `nif_lookup` row description AND in the dedicated `latency` section note | unit | `pnpm test -- mcp-catalog` | ✅ | ✅ green |
+| 05-01-02 | 01 | 1 | DOCS-01 | — | `DocsTableCell` link-cell extension renders a working `/docs/[slug]` link without breaking existing `string[][]` tables (full suite + build stay green) | unit/build | `pnpm test && pnpm build` | ✅ | ✅ green |
+| UAT-add | 01 | 1 | (extra) | — | `docsPageToMarkdown(page)` serializer correctness (title/intro/endpoint/cards/sections/tables-with-link-cells/code/notes/related) — 6 tests | unit | `pnpm test -- docs-markdown` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -51,10 +52,10 @@ created: 2026-06-19
 
 ## Wave 0 Requirements
 
-- [ ] `src/lib/__tests__/mcp-catalog.test.ts` — registry↔catalog set-equality test + connection-snippet presence + NIF latency string presence. Mirror `mcp-registry.test.ts`'s mock-server `registerTool` capture; keep the `jest.mock('@/lib/agt-nif', …)` block (cheerio/ESM breaks under jsdom otherwise).
-- [ ] Canonical tool-name source `src/lib/mcp/catalog.ts` (recommended) so the page and the test read ONE list.
+- [x] `src/lib/__tests__/mcp-catalog.test.ts` — registry↔catalog two-way set-equality + 4-snippet presence + NIF 5–30 on both surfaces. Mirrors `mcp-registry.test.ts`'s mock-server `registerTool` capture; keeps the `jest.mock('@/lib/agt-nif', …)` block.
+- [x] Canonical tool-name source `src/lib/mcp/catalog.ts` — `MCP_TOOL_CATALOG` / `MCP_TOOL_NAMES`, read by the test (one source).
 
-*Existing jest infrastructure covers all phase requirements — no framework install needed. The 7-locale totality gate relies on `pnpm build` (tsc), not jest.*
+*Existing jest infrastructure covered all phase requirements — no framework install needed. The 7-locale totality gate relies on `pnpm build` (tsc), confirmed passing.*
 
 ---
 
@@ -71,11 +72,23 @@ created: 2026-06-19
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 30s (tests)
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 30s (catalog + markdown suites ~0.7s)
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** verified 2026-06-19
+
+---
+
+## Validation Audit 2026-06-19
+
+| Metric | Count |
+|--------|-------|
+| Gaps found | 0 |
+| Resolved | 0 |
+| Escalated | 0 |
+
+All 3 requirements (DOCS-01..DOCS-03) have automated verification: `mcp-catalog.test.ts` (registry↔catalog two-way set equality + 25-count, 4 connection snippets, NIF 5–30 s on both surfaces) and the `pnpm build` tsc-totality gate (the `mcp` `DocsPage` is present and complete in all 7 locale `DocsPageMap`s). No MISSING or PARTIAL gaps — auditor spawn not required. The UAT-added `docs-markdown.ts` serializer also carries 6 dedicated tests. Manual-only surfaces (per-locale visual render, live MCP-client connect) confirmed via UAT (5/5 passed) — not requirement gaps, so Nyquist compliance stands.
