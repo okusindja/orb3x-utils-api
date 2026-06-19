@@ -61,7 +61,7 @@ function pdfToolResult(bytes: Uint8Array, meta: PdfToolResultMeta) {
 // (it must NOT pass through mcpToolHandler, which JSON-stringifies into a single text block).
 // Any throw is re-routed through the shared mcpToolHandler formatter so RouteError +
 // duck-typed + INTERNAL_SERVER_ERROR mapping is identical to every other tool — zero edit to tool-error.ts.
-async function runPdfTool(produce: () => Promise<{ content: unknown[] }>) {
+async function runPdfTool<T extends { content: unknown[] }>(produce: () => Promise<T>) {
   try {
     return await produce();
   } catch (error) {
