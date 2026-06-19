@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { CheckIcon, CopyIcon } from 'lucide-react';
 
 import { useSiteCopy } from '@/components/locale-provider';
 import { CodeBlock, CodeSampleSwitcher, DataTable, Eyebrow } from '@/components/site-primitives';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { docsPageToMarkdown } from '@/lib/docs-markdown';
@@ -66,14 +68,21 @@ export function DocsDetailContent({ slug }: { slug: string }) {
                 <span>{page.endpoint.path}</span>
               </div>
             ) : null}
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={handleCopyMarkdown}
               aria-live="polite"
-              className="ml-auto inline-flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="ml-auto"
             >
+              {copied ? (
+                <CheckIcon className="size-4 text-primary" />
+              ) : (
+                <CopyIcon className="size-4" />
+              )}
               {copied ? copy.docsDetail.copied : copy.docsDetail.copyMarkdown}
-            </button>
+            </Button>
           </div>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
             {page.title}
