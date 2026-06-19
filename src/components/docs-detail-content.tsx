@@ -1,11 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 import { useSiteCopy } from '@/components/locale-provider';
 import { CodeBlock, CodeSampleSwitcher, DataTable, Eyebrow } from '@/components/site-primitives';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { docsPageToMarkdown } from '@/lib/docs-markdown';
 import { isDocsPageSlug } from '@/lib/site-content';
 
 function splitUsageSamples(
@@ -34,11 +36,23 @@ function splitUsageSamples(
 
 export function DocsDetailContent({ slug }: { slug: string }) {
   const copy = useSiteCopy();
+  const [copied, setCopied] = useState(false);
   const page = isDocsPageSlug(slug) ? copy.docsPages[slug] : null;
 
   if (!page) {
     return null;
   }
+
+  const currentPage = page;
+  const handleCopyMarkdown = async () => {
+    try {
+      await navigator.clipboard.writeText(docsPageToMarkdown(currentPage));
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard API unavailable (non-secure context / denied) — fail silently.
+    }
+  };
 
   return (
     <div className="grid items-start gap-10 xl:grid-cols-[minmax(0,1fr)_14rem]">
@@ -52,6 +66,14 @@ export function DocsDetailContent({ slug }: { slug: string }) {
                 <span>{page.endpoint.path}</span>
               </div>
             ) : null}
+            <button
+              type="button"
+              onClick={handleCopyMarkdown}
+              aria-live="polite"
+              className="ml-auto inline-flex items-center gap-2 rounded-md border border-border bg-secondary px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {copied ? copy.docsDetail.copied : copy.docsDetail.copyMarkdown}
+            </button>
           </div>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
             {page.title}

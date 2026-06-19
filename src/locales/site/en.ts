@@ -164,6 +164,8 @@ export const enSiteCopy = {
     onPage: 'On this page',
     relatedPages: 'Related pages',
     open: 'Open',
+    copyMarkdown: 'Copy as Markdown',
+    copied: 'Copied!',
   },
   docsPages: enDocsPages,
   faq: {
