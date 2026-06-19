@@ -60,7 +60,7 @@ describe('registerAllTools', () => {
     expect(schema).not.toBeNull();
   });
 
-  it('registers all 22 core utility tools', () => {
+  it('registers all 25 core utility tools', () => {
     const registeredTools: Record<string, { title?: string; description?: string; inputSchema?: unknown }> = {};
 
     const mockServer = {
@@ -96,6 +96,9 @@ describe('registerAllTools', () => {
       'currency_convert',
       'nif_lookup',
       'translate_text',
+      'generate_invoice_pdf',
+      'generate_receipt_pdf',
+      'generate_contract_pdf',
     ];
 
     for (const name of expectedTools) {
@@ -104,6 +107,6 @@ describe('registerAllTools', () => {
       expect((registeredTools[name].description ?? '').length).toBeGreaterThan(0);
     }
 
-    expect(Object.keys(registeredTools).length).toBeGreaterThanOrEqual(22);
+    expect(Object.keys(registeredTools).length).toBeGreaterThanOrEqual(25);
   });
 });

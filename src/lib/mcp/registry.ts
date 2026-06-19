@@ -9,6 +9,7 @@ import { registerFinanceTools } from './tools/finance';
 import { registerCurrencyTools } from './tools/currency';
 import { registerNifTools } from './tools/nif';
 import { registerTranslationTools } from './tools/translation';
+import { registerDocumentTools } from './tools/documents';
 
 export function registerAllTools(server: McpServer): void {
   registerHealthTool(server);
@@ -21,4 +22,5 @@ export function registerAllTools(server: McpServer): void {
   registerCurrencyTools(server);
   registerNifTools(server);
   registerTranslationTools(server);
+  registerDocumentTools(server);
 }

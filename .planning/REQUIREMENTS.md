@@ -44,11 +44,11 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Document Tools (PDF)
 
-- [ ] **DOC-01**: Client can generate an invoice PDF via an MCP tool, returned as a base64 embedded resource blob plus a `text` fallback block
-- [ ] **DOC-02**: Client can generate a receipt PDF via an MCP tool, returned as base64 + text fallback
-- [ ] **DOC-03**: Client can generate a contract PDF via an MCP tool, returned as base64 + text fallback
-- [ ] **DOC-04**: Document tools enforce a size guard (`pdfBytes.length * 1.34 > 4_000_000` → `isError: true`) so a too-large PDF fails cleanly instead of a Vercel 413
-- [ ] **DOC-05**: The deleted versioned shims `app/api/v1/documents/contract/route.ts` and `app/api/v1/documents/receipt/route.ts` are restored (re-export shims mirroring the existing `invoice` shim) so the build and versioned URLs work again
+- [x] **DOC-01**: Client can generate an invoice PDF via an MCP tool, returned as a base64 embedded resource blob plus a `text` fallback block
+- [x] **DOC-02**: Client can generate a receipt PDF via an MCP tool, returned as base64 + text fallback
+- [x] **DOC-03**: Client can generate a contract PDF via an MCP tool, returned as base64 + text fallback
+- [x] **DOC-04**: Document tools enforce a size guard (`pdfBytes.length * 1.34 > 4_000_000` → `isError: true`) so a too-large PDF fails cleanly instead of a Vercel 413
+- [x] **DOC-05**: The deleted versioned shims `app/api/v1/documents/contract/route.ts` and `app/api/v1/documents/receipt/route.ts` are restored (re-export shims mirroring the existing `invoice` shim) so the build and versioned URLs work again
 
 ### Performance Hardening
 
@@ -111,11 +111,11 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | FIN-02 | Phase 3 | Complete |
 | NIF-01 | Phase 3 | Complete |
 | TRN-01 | Phase 3 | Complete |
-| DOC-01 | Phase 4 | Pending |
-| DOC-02 | Phase 4 | Pending |
-| DOC-03 | Phase 4 | Pending |
-| DOC-04 | Phase 4 | Pending |
-| DOC-05 | Phase 4 | Pending |
+| DOC-01 | Phase 4 | Complete |
+| DOC-02 | Phase 4 | Complete |
+| DOC-03 | Phase 4 | Complete |
+| DOC-04 | Phase 4 | Complete |
+| DOC-05 | Phase 4 | Complete |
 | DOCS-01 | Phase 5 | Pending |
 | DOCS-02 | Phase 5 | Pending |
 | DOCS-03 | Phase 5 | Pending |

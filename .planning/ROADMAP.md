@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: MCP Foundation** - Endpoint live, rate-limited, error-safe, with bank-images refactored (completed 2026-06-18)
 - [x] **Phase 2: Core Utility Tools** - Salary, phone, geo, address, and calendar tools registered and callable (completed 2026-06-18)
 - [x] **Phase 3: External HTTP Tools** - Finance, currency, NIF, and translation tools with upstream timeout guards (completed 2026-06-19)
-- [ ] **Phase 4: Document Tools** - Invoice, receipt, and contract PDF tools with size guard and restored v1 shims
+- [x] **Phase 4: Document Tools** - Invoice, receipt, and contract PDF tools with size guard and restored v1 shims (completed 2026-06-19)
 - [ ] **Phase 5: MCP Documentation** - MCP docs page live in all 7 locales
 
 ## Phase Details
@@ -130,7 +130,7 @@ Plans:
 Plans:
 **Wave 1** *(single complete vertical slice — one domain, no parallel waves per D-05)*
 
-- [ ] 04-01-PLAN.md — document tools (generate_invoice_pdf / generate_receipt_pdf / generate_contract_pdf) + pdfToolResult size guard + registry wiring (25 tools) + v1 shim verify [DOC-01..DOC-05]
+- [x] 04-01-PLAN.md — document tools (generate_invoice_pdf / generate_receipt_pdf / generate_contract_pdf) + pdfToolResult size guard + registry wiring (25 tools) + v1 shim verify [DOC-01..DOC-05]
 **UI hint**: no
 
 ### Phase 5: MCP Documentation
@@ -146,8 +146,13 @@ Plans:
   3. The NIF tool's AGT portal latency (5–30 s) is disclosed on the docs page with appropriate user guidance
   4. The MCP docs page content follows the existing deep-merge site-copy pattern (`mergeDeep(enSiteCopy, localeCopy)`) and all 7 locale files compile without TypeScript errors
 
-**Plans**: TBD
+**Plans**: 1 plan
 **UI hint**: yes
+
+Plans:
+**Wave 1** *(single complete vertical slice — one localized docs page, no parallel waves)*
+
+- [ ] 05-01-PLAN.md — /docs/mcp page: catalog.ts source + registry-coverage test + DocsTableCell link extension + mcp DocsPage authored & localized in all 7 locales [DOCS-01, DOCS-02, DOCS-03]
 
 ## Progress
 
@@ -159,5 +164,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. MCP Foundation | 5/5 | Complete   | 2026-06-18 |
 | 2. Core Utility Tools | 6/6 | Complete    | 2026-06-18 |
 | 3. External HTTP Tools | 6/6 | Complete    | 2026-06-19 |
-| 4. Document Tools | 0/TBD | Not started | - |
+| 4. Document Tools | 1/1 | Complete   | 2026-06-19 |
 | 5. MCP Documentation | 0/TBD | Not started | - |
