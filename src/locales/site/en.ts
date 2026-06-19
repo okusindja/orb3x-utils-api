@@ -42,6 +42,7 @@ export const enSiteCopy = {
   navigation: {
     docs: 'Docs',
     apiReference: 'API Reference',
+    mcp: 'MCP Server',
     examples: 'Examples',
     faq: 'FAQ',
     privacy: 'Privacy',
@@ -163,6 +164,8 @@ export const enSiteCopy = {
     onPage: 'On this page',
     relatedPages: 'Related pages',
     open: 'Open',
+    copyMarkdown: 'Copy as Markdown',
+    copied: 'Copied!',
   },
   docsPages: enDocsPages,
   faq: {

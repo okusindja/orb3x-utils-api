@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { PropsWithChildren, ReactNode } from 'react';
 
 import { ArrowRightIcon } from '@/components/icons';
+import type { DocsTableCell } from '@/lib/site-content';
 import {
   type BundledLanguage,
   CodeBlock as UICodeBlock,
@@ -419,7 +420,7 @@ export function DataTable({
   rows,
 }: {
   columns: readonly string[];
-  rows: readonly (readonly string[])[];
+  rows: readonly (readonly DocsTableCell[])[];
 }) {
   const shouldReduceMotion = Boolean(useReducedMotion());
 
@@ -441,13 +442,19 @@ export function DataTable({
           </thead>
           <tbody className="divide-y divide-border bg-card">
             {rows.map((row, index) => (
-              <tr key={`${row[0]}-${index}`}>
-                {row.map((cell) => (
+              <tr key={`${typeof row[0] === 'object' ? row[0].href : row[0]}-${index}`}>
+                {row.map((cell, cellIndex) => (
                   <td
-                    key={cell}
+                    key={typeof cell === 'object' ? cell.href : `${cell}-${cellIndex}`}
                     className="px-4 py-3.5 align-top leading-7 text-muted-foreground sm:px-5 sm:py-4"
                   >
-                    {cell}
+                    {typeof cell === 'object' ? (
+                      <Link href={cell.href} className="font-semibold text-primary">
+                        {cell.label}
+                      </Link>
+                    ) : (
+                      cell
+                    )}
                   </td>
                 ))}
               </tr>

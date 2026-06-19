@@ -201,7 +201,9 @@ export const zhSiteCopy: PartialSiteCopy = {
     "endpoint": "端点",
     "onPage": "在此页面上",
     "relatedPages": "相关页面",
-    "open": "打开"
+    "open": "打开",
+    "copyMarkdown": "复制为 Markdown",
+    "copied": "已复制！"
   },
   "faq": {
     "eyebrow": "FAQ",

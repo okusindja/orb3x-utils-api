@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Core Utility Tools** - Salary, phone, geo, address, and calendar tools registered and callable (completed 2026-06-18)
 - [x] **Phase 3: External HTTP Tools** - Finance, currency, NIF, and translation tools with upstream timeout guards (completed 2026-06-19)
 - [x] **Phase 4: Document Tools** - Invoice, receipt, and contract PDF tools with size guard and restored v1 shims (completed 2026-06-19)
-- [ ] **Phase 5: MCP Documentation** - MCP docs page live in all 7 locales
+- [x] **Phase 5: MCP Documentation** - MCP docs page live in all 7 locales (completed 2026-06-19)
 
 ## Phase Details
 
@@ -152,7 +152,7 @@ Plans:
 Plans:
 **Wave 1** *(single complete vertical slice — one localized docs page, no parallel waves)*
 
-- [ ] 05-01-PLAN.md — /docs/mcp page: catalog.ts source + registry-coverage test + DocsTableCell link extension + mcp DocsPage authored & localized in all 7 locales [DOCS-01, DOCS-02, DOCS-03]
+- [x] 05-01-PLAN.md — /docs/mcp page: catalog.ts source + registry-coverage test + DocsTableCell link extension + mcp DocsPage authored & localized in all 7 locales [DOCS-01, DOCS-02, DOCS-03]
 
 ## Progress
 
@@ -165,4 +165,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Core Utility Tools | 6/6 | Complete    | 2026-06-18 |
 | 3. External HTTP Tools | 6/6 | Complete    | 2026-06-19 |
 | 4. Document Tools | 1/1 | Complete   | 2026-06-19 |
-| 5. MCP Documentation | 0/TBD | Not started | - |
+| 5. MCP Documentation | 1/1 | Complete   | 2026-06-19 |

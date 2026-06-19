@@ -201,7 +201,9 @@ export const esSiteCopy: PartialSiteCopy = {
     "endpoint": "Punto final",
     "onPage": "En esta pagina",
     "relatedPages": "Páginas relacionadas",
-    "open": "Abierto"
+    "open": "Abierto",
+    "copyMarkdown": "Copiar como Markdown",
+    "copied": "¡Copiado!"
   },
   "faq": {
     "eyebrow": "FAQ",

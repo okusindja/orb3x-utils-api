@@ -2358,5 +2358,195 @@ export const jaDocsPages: DocsPageMap = {
       "api-reference",
       "translation"
     ]
+  },
+  "mcp": {
+    "slug": "mcp",
+    "label": "MCP サーバー",
+    "description": "1 つのホスト型 MCP エンドポイントを通じて、AI クライアントを 25 個すべてのアンゴラ ユーティリティ ツールに接続します。",
+    "eyebrow": "Model Context Protocol",
+    "title": "1 つのホスト型エンドポイントを通じて、各アンゴラ ユーティリティを MCP ツールとして呼び出す",
+    "intro": "パブリック MCP サーバーは、25 個すべてのアンゴラ ユーティリティ ツール（給与、電話、地理、住所、カレンダー、財務、為替、NIF、翻訳、ドキュメント生成）を 1 つの Streamable HTTP エンドポイントで公開します。MCP 対応クライアントを向けて、tools/list でツールを検出してください。",
+    "endpoint": {
+      "method": "POST",
+      "path": "/api/mcp",
+      "detail": "Streamable HTTP。SSE は無効です — SSE 専用クライアントには mcp-remote ブリッジを使用してください。"
+    },
+    "summaryCards": [
+      { "label": "ツール", "value": "25 tools" },
+      { "label": "トランスポート", "value": "Streamable HTTP" },
+      { "label": "言語", "value": "7 languages" }
+    ],
+    "sections": [
+      {
+        "id": "connect",
+        "title": "クライアントを接続する",
+        "description": "ホスト型エンドポイントを MCP クライアントに追加します。トランスポートは Streamable HTTP（POST /api/mcp）で、SSE は無効です。API キーは不要です — エンドポイントは公開されています。一部のクライアントは、トランスポートを \"http\" ではなく \"streamable-http\" または \"transport\": \"http\" と呼びます。",
+        "codes": [
+          {
+            "label": "Claude Desktop",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"mcp-remote\", \"https://utils.api.orb3x.com/api/mcp\"]\n    }\n  }\n}"
+          },
+          {
+            "label": "Cursor",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "Generic mcp.json",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"type\": \"http\",\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "mcp-remote bridge",
+            "language": "bash",
+            "content": "npx -y mcp-remote https://utils.api.orb3x.com/api/mcp"
+          }
+        ],
+        "note": "Claude Desktop の claude_desktop_config.json にはリモート URL フィールドがありません — 上記の mcp-remote ブリッジを使用するか、設定 → コネクタ → カスタム コネクタを追加 から https://utils.api.orb3x.com/api/mcp を直接追加してください。"
+      },
+      {
+        "id": "catalog-platform",
+        "title": "プラットフォーム",
+        "description": "可用性とサーバー稼働状態のツール。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["health", "MCP サーバーが稼働して応答しているか確認します。", { "label": "api-reference", "href": "/docs/api-reference" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-salary",
+        "title": "給与ツール",
+        "description": "アンゴラの給与計算：手取り給与、額面給与、雇用主総コスト。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["salary_net", "額面から IRT と社会保障を差し引いた手取り給与を計算します。", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_gross", "目標の手取り額から必要な額面給与を逆算します。", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_employer_cost", "社会保障拠出を含む雇用主の総コストを計算します。", { "label": "salary", "href": "/docs/salary" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-phone",
+        "title": "電話ツール",
+        "description": "アンゴラの電話番号を解析・検証し、通信事業者を特定します。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["phone_parse", "アンゴラの電話番号を構造化された構成要素に解析します。", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_validate", "文字列が正しい形式のアンゴラ電話番号かどうかを検証します。", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_operator", "アンゴラの電話番号のモバイル通信事業者を特定します。", { "label": "phone", "href": "/docs/phone" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-address-geo",
+        "title": "住所・地理ツール",
+        "description": "住所を正規化し、州/市/コミューンの階層を参照します。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["address_normalize", "自由形式のアンゴラ住所を構造化された構成要素に正規化します。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["address_suggest", "部分入力から一致する住所補完を提案します。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_provinces", "アンゴラのすべての州を一覧表示します。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_municipalities", "ある州内の市を一覧表示します。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_communes", "ある市内のコミューンを一覧表示します。", { "label": "address-geo", "href": "/docs/address-geo" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-calendar",
+        "title": "カレンダーツール",
+        "description": "アンゴラの祝日と営業日計算。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["calendar_holidays", "指定した年のアンゴラの祝日を一覧表示します。", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_working_days", "祝日を除き、2 つの日付間の営業日を数えます。", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_add_working_days", "祝日をスキップして、日付に営業日数を加算します。", { "label": "calendar", "href": "/docs/calendar" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-finance",
+        "title": "財務ツール",
+        "description": "VAT、請求書合計、インフレ調整。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["finance_vat", "指定した金額と税率でアンゴラの VAT を計算します。", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_invoice_total", "VAT を適用した明細行から請求書合計を計算します。", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_inflation_adjust", "2 つの日付間で金額をインフレ調整します。", { "label": "finance", "href": "/docs/finance" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-currency",
+        "title": "為替ツール",
+        "description": "リアルタイムの為替レートと通貨換算。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["currency_rates", "基準通貨の現在の為替レートを取得します。", { "label": "currency-exchange", "href": "/docs/currency-exchange" }],
+            ["currency_convert", "現在のレートで金額をある通貨から別の通貨に換算します。", { "label": "currency-exchange", "href": "/docs/currency-exchange" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-nif",
+        "title": "NIF 検索",
+        "description": "AGT ポータルで NIF により納税者をリアルタイムで検索します。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["nif_lookup", "AGT ポータルで NIF を検索します。ライブスクレイピング — 5–30 秒。余裕のあるタイムアウトを設定してください。", { "label": "nif-verification", "href": "/docs/nif-verification" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-translation",
+        "title": "翻訳",
+        "description": "言語間でテキストを翻訳します。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["translate_text", "テキストを翻訳し、ソース言語を検出します。", { "label": "translation", "href": "/docs/translation" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-documents",
+        "title": "ドキュメント生成",
+        "description": "アンゴラ形式の PDF ドキュメントを生成します。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["generate_invoice_pdf", "構造化データから請求書 PDF を生成します。", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_receipt_pdf", "構造化データから領収書 PDF を生成します。", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_contract_pdf", "構造化データから契約書 PDF を生成します。", { "label": "documents", "href": "/docs/documents" }]
+          ]
+        }
+      },
+      {
+        "id": "latency",
+        "title": "パフォーマンスとレイテンシ",
+        "description": "nif_lookup ツールは AGT ポータルをライブでスクレイピングするため、純粋な関数ツールよりもはるかに遅くなります。",
+        "note": "AGT ポータルの検索には 5–30 秒かかります。余裕のあるクライアント タイムアウトを設定してください。サーバーは既に上流で約 25 秒の上限を適用しています。"
+      }
+    ],
+    "relatedSlugs": [
+      "salary",
+      "phone",
+      "address-geo",
+      "calendar",
+      "finance",
+      "documents",
+      "nif-verification",
+      "translation",
+      "currency-exchange"
+    ]
   }
 };

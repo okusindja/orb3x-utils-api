@@ -56,9 +56,9 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Documentation
 
-- [ ] **DOCS-01**: A docs-site page documents the MCP server — endpoint URL and the catalog of available tools
-- [ ] **DOCS-02**: The MCP docs page includes client connection snippets for native Streamable HTTP and the `mcp-remote` bridge fallback, plus NIF portal latency disclosure
-- [ ] **DOCS-03**: The MCP docs page is localized across all 7 site locales (en, pt, es, fr, de, zh, ja) using the existing deep-merge site-copy pattern
+- [x] **DOCS-01**: A docs-site page documents the MCP server — endpoint URL and the catalog of available tools
+- [x] **DOCS-02**: The MCP docs page includes client connection snippets for native Streamable HTTP and the `mcp-remote` bridge fallback, plus NIF portal latency disclosure
+- [x] **DOCS-03**: The MCP docs page is localized across all 7 site locales (en, pt, es, fr, de, zh, ja) using the existing deep-merge site-copy pattern
 
 ## v2 Requirements
 
@@ -116,9 +116,9 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | DOC-03 | Phase 4 | Complete |
 | DOC-04 | Phase 4 | Complete |
 | DOC-05 | Phase 4 | Complete |
-| DOCS-01 | Phase 5 | Pending |
-| DOCS-02 | Phase 5 | Pending |
-| DOCS-03 | Phase 5 | Pending |
+| DOCS-01 | Phase 5 | Complete |
+| DOCS-02 | Phase 5 | Complete |
+| DOCS-03 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 23 total

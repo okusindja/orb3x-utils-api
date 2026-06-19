@@ -2358,5 +2358,195 @@ export const zhDocsPages: DocsPageMap = {
       "api-reference",
       "translation"
     ]
+  },
+  "mcp": {
+    "slug": "mcp",
+    "label": "MCP 服务器",
+    "description": "通过单个托管的 MCP 端点，将 AI 客户端连接到全部 25 个安哥拉实用工具。",
+    "eyebrow": "Model Context Protocol",
+    "title": "通过单个托管端点，将每个安哥拉实用工具作为 MCP 工具调用",
+    "intro": "公共 MCP 服务器通过单个 Streamable HTTP 端点公开全部 25 个安哥拉实用工具——薪资、电话、地理、地址、日历、财务、汇率、NIF、翻译和文档生成。将任何兼容 MCP 的客户端指向它，并通过 tools/list 发现工具。",
+    "endpoint": {
+      "method": "POST",
+      "path": "/api/mcp",
+      "detail": "Streamable HTTP；SSE 已禁用——对于仅支持 SSE 的客户端，请使用 mcp-remote 桥接。"
+    },
+    "summaryCards": [
+      { "label": "工具", "value": "25 tools" },
+      { "label": "传输", "value": "Streamable HTTP" },
+      { "label": "语言", "value": "7 languages" }
+    ],
+    "sections": [
+      {
+        "id": "connect",
+        "title": "连接客户端",
+        "description": "将托管端点添加到您的 MCP 客户端。传输方式为 Streamable HTTP（POST /api/mcp）；SSE 已禁用。无需 API 密钥——该端点是公开的。某些客户端将传输方式命名为 \"streamable-http\" 或 \"transport\": \"http\"，而非 \"http\"。",
+        "codes": [
+          {
+            "label": "Claude Desktop",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"mcp-remote\", \"https://utils.api.orb3x.com/api/mcp\"]\n    }\n  }\n}"
+          },
+          {
+            "label": "Cursor",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "Generic mcp.json",
+            "language": "json",
+            "content": "{\n  \"mcpServers\": {\n    \"orb3x-utils\": {\n      \"type\": \"http\",\n      \"url\": \"https://utils.api.orb3x.com/api/mcp\"\n    }\n  }\n}"
+          },
+          {
+            "label": "mcp-remote bridge",
+            "language": "bash",
+            "content": "npx -y mcp-remote https://utils.api.orb3x.com/api/mcp"
+          }
+        ],
+        "note": "Claude Desktop 在 claude_desktop_config.json 中没有远程 URL 字段——请使用上面的 mcp-remote 桥接，或通过 设置 → 连接器 → 添加自定义连接器 直接添加 https://utils.api.orb3x.com/api/mcp。"
+      },
+      {
+        "id": "catalog-platform",
+        "title": "平台",
+        "description": "可用性和服务器健康工具。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["health", "检查 MCP 服务器是否已启动并正在响应。", { "label": "api-reference", "href": "/docs/api-reference" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-salary",
+        "title": "薪资工具",
+        "description": "安哥拉薪资计算：净工资、税前工资和雇主总成本。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["salary_net", "根据税前金额计算扣除 IRT 和社会保障后的净工资。", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_gross", "根据目标净工资反算所需的税前工资。", { "label": "salary", "href": "/docs/salary" }],
+            ["salary_employer_cost", "计算包含社会保障缴款的雇主总成本。", { "label": "salary", "href": "/docs/salary" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-phone",
+        "title": "电话工具",
+        "description": "解析、验证并识别安哥拉电话号码的运营商。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["phone_parse", "将安哥拉电话号码解析为其结构化组成部分。", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_validate", "验证字符串是否为格式正确的安哥拉电话号码。", { "label": "phone", "href": "/docs/phone" }],
+            ["phone_operator", "识别安哥拉电话号码的移动运营商。", { "label": "phone", "href": "/docs/phone" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-address-geo",
+        "title": "地址与地理工具",
+        "description": "规范化地址并浏览省/市/公社层级结构。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["address_normalize", "将自由格式的安哥拉地址规范化为结构化组成部分。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["address_suggest", "根据部分输入建议匹配的地址补全。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_provinces", "列出安哥拉所有省份。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_municipalities", "列出某省份内的所有市。", { "label": "address-geo", "href": "/docs/address-geo" }],
+            ["geo_communes", "列出某市内的所有公社。", { "label": "address-geo", "href": "/docs/address-geo" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-calendar",
+        "title": "日历工具",
+        "description": "安哥拉公共假日和工作日运算。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["calendar_holidays", "列出指定年份的安哥拉公共假日。", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_working_days", "计算两个日期之间的工作日，排除假日。", { "label": "calendar", "href": "/docs/calendar" }],
+            ["calendar_add_working_days", "在某个日期上增加若干工作日，跳过假日。", { "label": "calendar", "href": "/docs/calendar" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-finance",
+        "title": "财务工具",
+        "description": "增值税、发票合计和通货膨胀调整。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["finance_vat", "为给定金额和税率计算安哥拉增值税。", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_invoice_total", "根据已应用增值税的明细行计算发票合计。", { "label": "finance", "href": "/docs/finance" }],
+            ["finance_inflation_adjust", "在两个日期之间按通货膨胀调整货币金额。", { "label": "finance", "href": "/docs/finance" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-currency",
+        "title": "汇率工具",
+        "description": "实时汇率和货币转换。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["currency_rates", "获取某基础货币的当前汇率。", { "label": "currency-exchange", "href": "/docs/currency-exchange" }],
+            ["currency_convert", "按当前汇率将金额从一种货币转换为另一种货币。", { "label": "currency-exchange", "href": "/docs/currency-exchange" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-nif",
+        "title": "NIF 查询",
+        "description": "在 AGT 门户上实时按 NIF 查询纳税人。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["nif_lookup", "在 AGT 门户上查询 NIF。实时抓取——5–30 秒；请设置宽松的超时。", { "label": "nif-verification", "href": "/docs/nif-verification" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-translation",
+        "title": "翻译",
+        "description": "在不同语言之间翻译文本。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["translate_text", "翻译文本并检测源语言。", { "label": "translation", "href": "/docs/translation" }]
+          ]
+        }
+      },
+      {
+        "id": "catalog-documents",
+        "title": "文档生成",
+        "description": "生成安哥拉格式的 PDF 文档。",
+        "table": {
+          "columns": ["Tool", "Description", "Docs"],
+          "rows": [
+            ["generate_invoice_pdf", "根据结构化数据生成发票 PDF。", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_receipt_pdf", "根据结构化数据生成收据 PDF。", { "label": "documents", "href": "/docs/documents" }],
+            ["generate_contract_pdf", "根据结构化数据生成合同 PDF。", { "label": "documents", "href": "/docs/documents" }]
+          ]
+        }
+      },
+      {
+        "id": "latency",
+        "title": "性能与延迟",
+        "description": "nif_lookup 工具会实时抓取 AGT 门户，因此比纯函数工具慢得多。",
+        "note": "AGT 门户查询需要 5–30 秒。请设置宽松的客户端超时；服务器已在上游强制执行约 25 秒的上限。"
+      }
+    ],
+    "relatedSlugs": [
+      "salary",
+      "phone",
+      "address-geo",
+      "calendar",
+      "finance",
+      "documents",
+      "nif-verification",
+      "translation",
+      "currency-exchange"
+    ]
   }
 };
