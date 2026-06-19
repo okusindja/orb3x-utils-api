@@ -20,7 +20,7 @@ global.fetch = mockFetch as typeof fetch;
 type McpResult = { content: Array<{ type: string; text: string }>; isError?: boolean };
 type MockTools = Record<string, { meta: unknown; handler: (input: unknown) => Promise<McpResult> }>;
 
-function buildMockServer(): { mockServer: { registerTool: (...args: unknown[]) => void }; registeredTools: MockTools } {
+function buildMockServer(): { mockServer: never; registeredTools: MockTools } {
   const registeredTools: MockTools = {};
   const mockServer = {
     registerTool: (
@@ -31,7 +31,7 @@ function buildMockServer(): { mockServer: { registerTool: (...args: unknown[]) =
       registeredTools[name] = { meta, handler };
     },
   };
-  return { mockServer, registeredTools };
+  return { mockServer: mockServer as never, registeredTools };
 }
 
 describe('registerCurrencyTools', () => {
@@ -108,9 +108,9 @@ describe('registerCurrencyTools', () => {
     const { mockServer, registeredTools } = buildMockServer();
     registerCurrencyTools(mockServer as never);
 
-    mockFetch.mockRejectedValueOnce(
-      Object.assign(new DOMException('Timeout', 'TimeoutError'), { name: 'TimeoutError' }),
-    );
+    // DOMException('Timeout', 'TimeoutError') sets .name = 'TimeoutError' via the constructor;
+    // currency.ts checks error.name === 'TimeoutError' to detect AbortSignal timeout.
+    mockFetch.mockRejectedValueOnce(new DOMException('Timeout', 'TimeoutError'));
 
     const result = await registeredTools['currency_rates'].handler({ base: 'AOA' });
 

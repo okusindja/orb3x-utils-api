@@ -45,7 +45,7 @@ export async function fetchCurrencyRates(rawBaseCurrency: string): Promise<Curre
         "User-Agent":
           "Mozilla/5.0 (compatible; Orb3xUtils/1.0; +https://vercel.com)",
       },
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(20000),
     });
   } catch (error) {
     if (error instanceof Error && error.name === "TimeoutError") {
