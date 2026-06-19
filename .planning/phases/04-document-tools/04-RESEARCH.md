@@ -301,14 +301,14 @@ No new secrets, no auth surface, no upstream calls (unlike Phase 3). Lowest-risk
 
 > All other claims are VERIFIED against installed SDK source, project code, or a runtime measurement.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Exact Vercel Hobby body limit (A1).**
+1. **Exact Vercel Hobby body limit (A1).** — RESOLVED: ship the `4_000_000` ceiling (D-04 locked) exposed as a tunable `MAX_BASE64_BYTES` constant; do not block the phase.
    - What we know: 4_000_000 ceiling with 1.34 factor leaves headroom vs the assumed ~4.5 MB.
    - What's unclear: precise current Hobby-tier limit.
    - Recommendation: ship the guard as specified (D-04 locked); expose `MAX_BASE64_BYTES` as a constant so it's trivially tunable. Do NOT block the phase on this — the guard is strictly safer than no guard.
 
-2. **Should runtime-required fields be required in Zod, or left optional (generator enforces)?**
+2. **Should runtime-required fields be required in Zod, or left optional (generator enforces)?** — RESOLVED: make the clearly-required fields required in Zod; generator stays source of truth (Claude's Discretion, either choice passes tests).
    - What we know: generators throw `RouteError` for missing required fields; HTTP routes do zero pre-validation.
    - Recommendation (discretion): make the clearly-required fields required in Zod for a better `tools/list` schema and earlier client feedback, while the generator stays the source of truth. Either choice passes tests.
 
