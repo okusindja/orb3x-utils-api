@@ -125,7 +125,12 @@ Plans:
   3. When a generated PDF would exceed the size guard threshold (`pdfBytes.length * 1.34 > 4_000_000`), the tool returns `{ isError: true, content: [...] }` before any Vercel response is sent
   4. HTTP requests to `GET/POST /api/v1/documents/contract` and `GET/POST /api/v1/documents/receipt` return valid responses (restored shims; build passes with no import errors)
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+**Wave 1** *(single complete vertical slice — one domain, no parallel waves per D-05)*
+
+- [ ] 04-01-PLAN.md — document tools (generate_invoice_pdf / generate_receipt_pdf / generate_contract_pdf) + pdfToolResult size guard + registry wiring (25 tools) + v1 shim verify [DOC-01..DOC-05]
 **UI hint**: no
 
 ### Phase 5: MCP Documentation
