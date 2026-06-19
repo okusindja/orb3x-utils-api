@@ -1,3 +1,23 @@
+// Mock agt-nif to avoid loading cheerio (ESM) in Jest's jsdom environment.
+// The registry test verifies tool registration only; agt-nif runtime behaviour is covered elsewhere.
+jest.mock('@/lib/agt-nif', () => {
+  class MockPortalLookupError extends Error {
+    constructor(
+      message: string,
+      public readonly statusCode: number,
+      public readonly code: string,
+    ) {
+      super(message);
+      this.name = 'PortalLookupError';
+    }
+  }
+
+  return {
+    PortalLookupError: MockPortalLookupError,
+    lookupTaxpayerByNif: jest.fn(),
+  };
+});
+
 import { registerAllTools } from '@/lib/mcp/registry';
 
 describe('registerAllTools', () => {
@@ -40,7 +60,7 @@ describe('registerAllTools', () => {
     expect(schema).not.toBeNull();
   });
 
-  it('registers all 14 core utility tools', () => {
+  it('registers all 22 core utility tools', () => {
     const registeredTools: Record<string, { title?: string; description?: string; inputSchema?: unknown }> = {};
 
     const mockServer = {
@@ -69,6 +89,13 @@ describe('registerAllTools', () => {
       'calendar_holidays',
       'calendar_working_days',
       'calendar_add_working_days',
+      'finance_vat',
+      'finance_invoice_total',
+      'finance_inflation_adjust',
+      'currency_rates',
+      'currency_convert',
+      'nif_lookup',
+      'translate_text',
     ];
 
     for (const name of expectedTools) {
@@ -77,6 +104,6 @@ describe('registerAllTools', () => {
       expect((registeredTools[name].description ?? '').length).toBeGreaterThan(0);
     }
 
-    expect(Object.keys(registeredTools).length).toBeGreaterThanOrEqual(15);
+    expect(Object.keys(registeredTools).length).toBeGreaterThanOrEqual(22);
   });
 });

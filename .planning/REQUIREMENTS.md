@@ -31,16 +31,16 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Finance & Currency Tools
 
-- [ ] **FIN-01**: Client can run Angola finance utilities (`src/lib/angola/finance.ts`) via an MCP tool
-- [ ] **FIN-02**: Client can fetch currency exchange rates via an MCP tool, with an upstream timeout guard and structured error on failure
+- [x] **FIN-01**: Client can run Angola finance utilities (`src/lib/angola/finance.ts`) via an MCP tool
+- [x] **FIN-02**: Client can fetch currency exchange rates via an MCP tool, with an upstream timeout guard and structured error on failure
 
 ### NIF Tool
 
-- [ ] **NIF-01**: Client can look up a NIF on the AGT portal via an MCP tool, with an upstream timeout (~25s) and a structured retry-guidance error when the portal is slow/unavailable
+- [x] **NIF-01**: Client can look up a NIF on the AGT portal via an MCP tool, with an upstream timeout (~25s) and a structured retry-guidance error when the portal is slow/unavailable
 
 ### Translation Tool
 
-- [ ] **TRN-01**: Client can translate text via an MCP tool (reusing `src/lib/translate.ts`), with a structured error on upstream failure
+- [x] **TRN-01**: Client can translate text via an MCP tool (reusing `src/lib/translate.ts`), with a structured error on upstream failure
 
 ### Document Tools (PDF)
 
@@ -107,10 +107,10 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | LOC-02 | Phase 2 | Complete |
 | LOC-03 | Phase 2 | Complete |
 | CAL-01 | Phase 2 | Complete |
-| FIN-01 | Phase 3 | Pending |
-| FIN-02 | Phase 3 | Pending |
-| NIF-01 | Phase 3 | Pending |
-| TRN-01 | Phase 3 | Pending |
+| FIN-01 | Phase 3 | Complete |
+| FIN-02 | Phase 3 | Complete |
+| NIF-01 | Phase 3 | Complete |
+| TRN-01 | Phase 3 | Complete |
 | DOC-01 | Phase 4 | Pending |
 | DOC-02 | Phase 4 | Pending |
 | DOC-03 | Phase 4 | Pending |

@@ -219,7 +219,7 @@ async function requestPortalLookup(url: string): Promise<{
     const response = await fetch(url, {
       cache: "no-store",
       headers: requestHeaders(),
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(25000),
     });
 
     return {
@@ -277,7 +277,7 @@ function requestPortalLookupWithInsecureTls(
       },
     );
 
-    request.setTimeout(15000, () => {
+    request.setTimeout(25000, () => {
       request.destroy(new Error("UPSTREAM_TIMEOUT"));
     });
 

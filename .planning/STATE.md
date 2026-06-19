@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Phase 3 context gathered
-last_updated: "2026-06-18T19:07:19.998Z"
-last_activity: 2026-06-18 -- Phase 3 planning complete
+status: ready_to_plan
+stopped_at: Phase 3 complete (6/6) — ready to discuss Phase 4
+last_updated: 2026-06-19T09:13:40.248Z
+last_activity: 2026-06-19
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 17
-  completed_plans: 11
-  percent: 40
+  completed_plans: 17
+  percent: 60
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-18)
 
 **Core value:** AI clients can reliably invoke Angola utility functions as MCP tools over a single hosted Vercel endpoint, reusing existing `src/lib/angola/` logic with zero new paid infrastructure.
-**Current focus:** Phase 3 — external http tools
+**Current focus:** Phase 4 — document tools
 
 ## Current Position
 
-Phase: 3
+Phase: 4
 Plan: Not started
-Status: Ready to execute
-Last activity: 2026-06-18 -- Phase 3 planning complete
+Status: Ready to plan
+Last activity: 2026-06-19
 
 Progress: [██████████] 100%
 
@@ -36,7 +36,7 @@ Progress: [██████████] 100%
 
 **Velocity:**
 
-- Total plans completed: 11
+- Total plans completed: 17
 - Average duration: -
 - Total execution time: 0 hours
 
@@ -46,6 +46,7 @@ Progress: [██████████] 100%
 |-------|-------|-------|----------|
 | 01 | 5 | - | - |
 | 2 | 6 | - | - |
+| 3 | 6 | - | - |
 
 **Recent Trend:**
 
@@ -63,6 +64,12 @@ Progress: [██████████] 100%
 | Phase 02-core-utility-tools P04 | 5m | 2 tasks | 2 files |
 | Phase 02-core-utility-tools P05 | 1m | 2 tasks | 2 files |
 | Phase 02-core-utility-tools P06 | 8 | 2 tasks | 2 files |
+| Phase 03-external-http-tools P01 | 10m | 1 tasks | 2 files |
+| Phase 03-external-http-tools P02 | 8min | 1 tasks | 2 files |
+| Phase 03-external-http-tools P03 | 8m | 1 tasks | 3 files |
+| Phase 03-external-http-tools P04 | 5m | 1 tasks | 3 files |
+| Phase 03-external-http-tools P05 | 8m | 1 tasks | 2 files |
+| Phase 03-external-http-tools P06 | 5 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -79,6 +86,12 @@ Recent decisions affecting current work:
 - [Phase ?]: Alphabetical ordering (address/calendar/geo/phone/salary after health) in registerAllTools for stable diffs
 - [Phase ?]: Single Wave-2 plan for registry wiring keeps Wave-1 domain plans disjoint and parallel
 - [Phase ?]: 14-name integration test enumerates every tool explicitly as canonical registry assertion
+- [Phase 03 P01]: Double-cast through unknown (as unknown as Record<string,unknown>) required for Object.entries on Error intersection type — TS2352 direct cast rejected
+- [Phase ?]: from/to fields in finance_inflation_adjust use z.string() because adjustForInflation slices strings internally (Pitfall 5)
+- [Phase ?]: Cache key normalized BEFORE sanitizeCurrencyCode to avoid divergence (Pitfall 3)
+- [Phase ?]: retryAfterSeconds=5 for UPSTREAM_TIMEOUT/UPSTREAM_UNAVAILABLE; undefined otherwise
+- [Phase ?]: jest.mock for agt-nif in nif test avoids cheerio ESM browser export under jsdom; retryAfterSeconds values: UPSTREAM_TIMEOUT=10, UPSTREAM_UNAVAILABLE=15, UPSTREAM_BAD_RESPONSE=10
+- [Phase 03 P05]: Full per-code comparisons required for retryable guard — bare string literals are always truthy and wrongly mark INVALID_TEXT/INVALID_LANGUAGE as retryable; enriched message uses lowercase 'retry' to satisfy toContain('retry') case-sensitive assertion
 
 ### Pending Todos
 
@@ -97,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-18T18:46:30.753Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-external-http-tools/03-CONTEXT.md
+Last session: 2026-06-19T09:07:41.177Z
+Stopped at: Phase 3 Plan 05 complete — translate_text MCP tool with DoS guard and D-04 enrichment
+Resume file: None

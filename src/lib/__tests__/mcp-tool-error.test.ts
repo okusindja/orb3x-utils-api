@@ -49,4 +49,52 @@ describe('mcpToolHandler', () => {
     expect(parsed.code).toBe('INTERNAL_SERVER_ERROR');
     expect(typeof parsed.message).toBe('string');
   });
+
+  it('returns isError:true with code, message, statusCode for duck-typed domain error', async () => {
+    const handler = mcpToolHandler(async () => {
+      const err = Object.assign(new Error('The service timed out.'), {
+        code: 'UPSTREAM_TIMEOUT',
+        statusCode: 504,
+      });
+      throw err;
+    });
+    const result = await handler({});
+
+    expect(result.isError).toBe(true);
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.code).toBe('UPSTREAM_TIMEOUT');
+    expect(parsed.statusCode).toBe(504);
+    expect(parsed.message).toBe('The service timed out.');
+  });
+
+  it('spreads extra enumerable properties (retryable, retryAfterSeconds) from duck-typed error', async () => {
+    const handler = mcpToolHandler(async () => {
+      const err = Object.assign(new Error('Timeout'), {
+        code: 'UPSTREAM_TIMEOUT',
+        statusCode: 504,
+        retryable: true,
+        retryAfterSeconds: 5,
+      });
+      throw err;
+    });
+    const result = await handler({});
+
+    expect(result.isError).toBe(true);
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.retryable).toBe(true);
+    expect(parsed.retryAfterSeconds).toBe(5);
+  });
+
+  it('RouteError is still caught by instanceof branch (not duck-typed branch) after extension', async () => {
+    const handler = mcpToolHandler(async () => {
+      throw new RouteError('NOT_FOUND', 'Resource not found', 404);
+    });
+    const result = await handler({});
+
+    expect(result.isError).toBe(true);
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.code).toBe('NOT_FOUND');
+    // RouteError serializes via its own branch — no statusCode field in output
+    expect(parsed.statusCode).toBeUndefined();
+  });
 });
