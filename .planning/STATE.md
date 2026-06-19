@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 3 Plan 01 complete — duck-typed domain-error branch landed
-last_updated: "2026-06-19T08:55:35.919Z"
+last_updated: "2026-06-19T08:59:42.369Z"
 last_activity: 2026-06-19
 progress:
   total_phases: 5
   completed_phases: 2
   total_plans: 17
-  completed_plans: 14
+  completed_plans: 15
   percent: 40
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-06-18)
 ## Current Position
 
 Phase: 3 (external-http-tools) — EXECUTING
-Plan: 4 of 6
+Plan: 5 of 6
 Status: Ready to execute
 Last activity: 2026-06-19
 
-Progress: [████████░░] 82%
+Progress: [█████████░] 88%
 
 ## Performance Metrics
 
@@ -66,6 +66,7 @@ Progress: [████████░░] 82%
 | Phase 03-external-http-tools P01 | 10m | 1 tasks | 2 files |
 | Phase 03-external-http-tools P02 | 8min | 1 tasks | 2 files |
 | Phase 03-external-http-tools P03 | 8m | 1 tasks | 3 files |
+| Phase 03-external-http-tools P04 | 5m | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,7 @@ Recent decisions affecting current work:
 - [Phase ?]: from/to fields in finance_inflation_adjust use z.string() because adjustForInflation slices strings internally (Pitfall 5)
 - [Phase ?]: Cache key normalized BEFORE sanitizeCurrencyCode to avoid divergence (Pitfall 3)
 - [Phase ?]: retryAfterSeconds=5 for UPSTREAM_TIMEOUT/UPSTREAM_UNAVAILABLE; undefined otherwise
+- [Phase ?]: jest.mock for agt-nif in nif test avoids cheerio ESM browser export under jsdom; retryAfterSeconds values: UPSTREAM_TIMEOUT=10, UPSTREAM_UNAVAILABLE=15, UPSTREAM_BAD_RESPONSE=10
 
 ### Pending Todos
 
@@ -104,6 +106,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-19T08:55:33.238Z
+Last session: 2026-06-19T08:59:38.598Z
 Stopped at: Phase 3 Plan 01 complete — duck-typed domain-error branch landed
 Resume file: None

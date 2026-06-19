@@ -36,7 +36,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### NIF Tool
 
-- [ ] **NIF-01**: Client can look up a NIF on the AGT portal via an MCP tool, with an upstream timeout (~25s) and a structured retry-guidance error when the portal is slow/unavailable
+- [x] **NIF-01**: Client can look up a NIF on the AGT portal via an MCP tool, with an upstream timeout (~25s) and a structured retry-guidance error when the portal is slow/unavailable
 
 ### Translation Tool
 
@@ -109,7 +109,7 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | CAL-01 | Phase 2 | Complete |
 | FIN-01 | Phase 3 | Complete |
 | FIN-02 | Phase 3 | Complete |
-| NIF-01 | Phase 3 | Pending |
+| NIF-01 | Phase 3 | Complete |
 | TRN-01 | Phase 3 | Pending |
 | DOC-01 | Phase 4 | Pending |
 | DOC-02 | Phase 4 | Pending |
