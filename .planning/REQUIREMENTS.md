@@ -40,7 +40,7 @@ Requirements for this milestone. Each maps to a roadmap phase.
 
 ### Translation Tool
 
-- [ ] **TRN-01**: Client can translate text via an MCP tool (reusing `src/lib/translate.ts`), with a structured error on upstream failure
+- [x] **TRN-01**: Client can translate text via an MCP tool (reusing `src/lib/translate.ts`), with a structured error on upstream failure
 
 ### Document Tools (PDF)
 
@@ -110,7 +110,7 @@ Populated during roadmap creation. Each requirement maps to exactly one phase.
 | FIN-01 | Phase 3 | Complete |
 | FIN-02 | Phase 3 | Complete |
 | NIF-01 | Phase 3 | Complete |
-| TRN-01 | Phase 3 | Pending |
+| TRN-01 | Phase 3 | Complete |
 | DOC-01 | Phase 4 | Pending |
 | DOC-02 | Phase 4 | Pending |
 | DOC-03 | Phase 4 | Pending |
