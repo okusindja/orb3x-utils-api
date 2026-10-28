@@ -1,4 +1,11 @@
-const TRANSLATE_URL = "https://translate.googleapis.com/translate_a/single";
+const GOOGLE_ENDPOINTS = [
+  { url: "https://translate.googleapis.com/translate_a/single", client: "gtx" },
+  { url: "https://translate.google.com/translate_a/single", client: "gtx" },
+  { url: "https://translate.google.com/translate_a/single", client: "dict-chrome-ex" },
+];
+const MYMEMORY_URL = "https://api.mymemory.translated.net/get";
+const MYMEMORY_MAX_CHARS = 500;
+const RETRY_DELAYS_MS = [400];
 
 export type TranslateInput = {
   text: string;
@@ -32,48 +39,90 @@ export async function translateText(input: TranslateInput): Promise<TranslateRes
     throw new TranslationError("The text field is required.", 400, "INVALID_TEXT");
   }
 
-  const url = new URL(TRANSLATE_URL);
-  url.searchParams.set("client", "gtx");
+  let lastError: TranslationError | undefined;
+
+  for (const endpoint of GOOGLE_ENDPOINTS) {
+    try {
+      const payload = await fetchGoogleTranslation(endpoint, text, from, to);
+      const translatedText = extractTranslatedText(payload);
+
+      if (!translatedText) {
+        throw new TranslationError(
+          "The translation service returned an empty translation.",
+          502,
+          "UNPARSEABLE_RESPONSE",
+        );
+      }
+
+      return {
+        translatedText,
+        sourceLanguage: extractDetectedSourceLanguage(payload, from),
+        targetLanguage: to,
+      };
+    } catch (error) {
+      if (!(error instanceof TranslationError)) {
+        throw error;
+      }
+
+      lastError = error;
+    }
+  }
+
+  // The unofficial Google endpoints rate-limit shared serverless IPs (HTTP 429),
+  // so fall back to MyMemory before surfacing the failure.
+  if (text.length <= MYMEMORY_MAX_CHARS) {
+    try {
+      return await translateWithMyMemory(text, from, to);
+    } catch (error) {
+      if (!(error instanceof TranslationError)) {
+        throw error;
+      }
+    }
+  }
+
+  throw lastError ?? new TranslationError(
+    "The translation service could not be reached.",
+    502,
+    "UPSTREAM_UNAVAILABLE",
+  );
+}
+
+async function fetchGoogleTranslation(
+  endpoint: { url: string; client: string },
+  text: string,
+  from: string,
+  to: string,
+): Promise<unknown> {
+  const url = new URL(endpoint.url);
+  url.searchParams.set("client", endpoint.client);
   url.searchParams.set("sl", from);
   url.searchParams.set("tl", to);
   url.searchParams.set("dt", "t");
   url.searchParams.set("q", text);
 
-  let response: Response;
+  const response = await fetchWithRetry(url);
 
   try {
-    response = await fetch(url, {
-      cache: "no-store",
-      headers: {
-        Accept: "application/json,text/plain,*/*",
-        "User-Agent":
-          "Mozilla/5.0 (compatible; Orb3xUtils/1.0; +https://vercel.com)",
-      },
-      signal: AbortSignal.timeout(15000),
-    });
-  } catch (error) {
-    if (error instanceof Error && error.name === "TimeoutError") {
-      throw new TranslationError(
-        "The translation service did not respond in time.",
-        504,
-        "UPSTREAM_TIMEOUT",
-      );
-    }
-
+    return await response.json();
+  } catch {
     throw new TranslationError(
-      "The translation service could not be reached.",
+      "The translation service returned invalid JSON.",
       502,
-      "UPSTREAM_UNAVAILABLE",
+      "UNPARSEABLE_RESPONSE",
     );
   }
+}
 
-  if (!response.ok) {
-    throw new TranslationError(
-      `The translation service returned HTTP ${response.status}.`,
-      502,
-      "UPSTREAM_BAD_RESPONSE",
-    );
-  }
+async function translateWithMyMemory(
+  text: string,
+  from: string,
+  to: string,
+): Promise<TranslateResult> {
+  const url = new URL(MYMEMORY_URL);
+  url.searchParams.set("q", text);
+  url.searchParams.set("langpair", `${from === "auto" ? "Autodetect" : from}|${to}`);
+
+  const response = await fetchWithRetry(url);
 
   let payload: unknown;
 
@@ -87,10 +136,11 @@ export async function translateText(input: TranslateInput): Promise<TranslateRes
     );
   }
 
-  const translatedText = extractTranslatedText(payload);
-  const detectedSourceLanguage = extractDetectedSourceLanguage(payload, from);
+  const translatedText = (
+    payload as { responseData?: { translatedText?: unknown } } | null
+  )?.responseData?.translatedText;
 
-  if (!translatedText) {
+  if (typeof translatedText !== "string" || !translatedText.trim()) {
     throw new TranslationError(
       "The translation service returned an empty translation.",
       502,
@@ -99,10 +149,58 @@ export async function translateText(input: TranslateInput): Promise<TranslateRes
   }
 
   return {
-    translatedText,
-    sourceLanguage: detectedSourceLanguage,
+    translatedText: translatedText.trim(),
+    sourceLanguage: from,
     targetLanguage: to,
   };
+}
+
+async function fetchWithRetry(url: URL): Promise<Response> {
+  let response: Response | undefined;
+
+  for (let attempt = 0; attempt <= RETRY_DELAYS_MS.length; attempt += 1) {
+    try {
+      response = await fetch(url, {
+        cache: "no-store",
+        headers: {
+          Accept: "application/json,text/plain,*/*",
+          "User-Agent":
+            "Mozilla/5.0 (compatible; Orb3xUtils/1.0; +https://vercel.com)",
+        },
+        signal: AbortSignal.timeout(8000),
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === "TimeoutError") {
+        throw new TranslationError(
+          "The translation service did not respond in time.",
+          504,
+          "UPSTREAM_TIMEOUT",
+        );
+      }
+
+      throw new TranslationError(
+        "The translation service could not be reached.",
+        502,
+        "UPSTREAM_UNAVAILABLE",
+      );
+    }
+
+    if (response.status !== 429 || attempt === RETRY_DELAYS_MS.length) {
+      break;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, RETRY_DELAYS_MS[attempt]));
+  }
+
+  if (!response || !response.ok) {
+    throw new TranslationError(
+      `The translation service returned HTTP ${response?.status}.`,
+      502,
+      "UPSTREAM_BAD_RESPONSE",
+    );
+  }
+
+  return response;
 }
 
 function sanitizeLanguageCode(rawCode: string, label: "source" | "target"): string {

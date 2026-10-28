@@ -41,4 +41,35 @@ describe('translateText', () => {
       to: 'invalid',
     })).rejects.toThrow();
   });
+
+  it('should fall back to another endpoint when the first is rate limited', async () => {
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce({ ok: false, status: 429 })
+      .mockResolvedValueOnce({ ok: false, status: 429 })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve([[["Hola", "Hello", null, null, 0]], null, 'en']),
+      });
+
+    const result = await translateText({ text: 'Hello', to: 'es' });
+
+    expect(result.translatedText).toBe('Hola');
+  });
+
+  it('should fall back to MyMemory when Google keeps returning 429', async () => {
+    (global.fetch as jest.Mock).mockImplementation((url: URL) =>
+      String(url).includes('mymemory')
+        ? Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ responseData: { translatedText: 'Hola' } }),
+          })
+        : Promise.resolve({ ok: false, status: 429 }),
+    );
+
+    const result = await translateText({ text: 'Hello', to: 'es', from: 'en' });
+
+    expect(result.translatedText).toBe('Hola');
+    expect(result.sourceLanguage).toBe('en');
+    (global.fetch as jest.Mock).mockReset();
+  });
 });
